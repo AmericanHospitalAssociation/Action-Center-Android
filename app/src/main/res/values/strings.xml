@@ -5,4 +5,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Twitter -->
+    <string name="twitter_key">trwxm119rAqWC5KmYedIqv8Xl</string>
+    <string name="twitter_secret">6wXav43Xmw2cwJ6e37kB9gGmaIMKFnBJIQ23JhJqF7kgSgfMkT</string>
+
+    <!-- Data Feeds -->
+    <string name="feed_url">http://ahaconnect.org/feed.php?id=app_feed_1</string>
+    <string name="events_url">http://ahaconnect.org/feed.php?id=app_cal_public</string>
+
 </resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/feed_table_row"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:background="#efefef"
+          android:clickable="true"
+          android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="1dp">
+
+        <TextView
+            android:id="@+id/feed_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="FEED ITEM"/>
+
+
+    </LinearLayout>
+
+</TableRow>
