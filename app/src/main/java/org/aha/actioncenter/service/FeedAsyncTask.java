@@ -4,18 +4,12 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.aha.actioncenter.models.FeedItem;
-import org.aha.actioncenter.views.FeedActivity;
-import org.aha.actioncenter.views.FeedCallBack;
+import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.utility.AHABusProvider;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -23,10 +17,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 
 /**
  * Created by markusmcgee on 4/15/15.
@@ -37,10 +29,8 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
     private URL mUrl;
     private HttpURLConnection mConnection;
     private Context mContext;
-    private FeedCallBack callback;
 
-    public FeedAsyncTask(FeedCallBack callback, URL url, Context context) {
-        this.callback = callback;
+    public FeedAsyncTask(URL url, Context context) {
         this.mContext = context;
         this.mUrl = url;
     }
@@ -48,15 +38,27 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String feed) {
         super.onPostExecute(feed);
-        JSONArray jsonArray;
-        JSONObject json;
-        String FILENAME = "feed.txt";
 
+        JSONObject json = null;
 
         try {
             json = new JSONObject(feed);
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        FeedDataEvent event = new FeedDataEvent(FeedDataEvent.FEED_DATA);
+        event.setData(json);
+        AHABusProvider.getInstance().post(event);
+
+        /*
+        JSONArray jsonArray;
+        JSONObject json;
+        String FILENAME = "feed.txt";
+        try {
+            json = new JSONObject(feed);
             jsonArray = json.getJSONArray("FEED_PAYLOAD");
-            callback.feedCallBackDone(jsonArray);
 
             FileOutputStream fos = mContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
             fos.write(feed.getBytes());
@@ -68,7 +70,7 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
         catch (JSONException e) {
             e.printStackTrace();
         }
-
+        */
     }
 
     @Override
