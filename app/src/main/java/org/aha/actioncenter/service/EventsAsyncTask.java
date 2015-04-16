@@ -6,6 +6,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.aha.actioncenter.utility.Utility;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -49,7 +51,7 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
-        if(!isNetworkAvailable()) {
+        if(!Utility.getInstance(mContext).isNetworkAvailable()) {
             return "";
         }
 
@@ -66,17 +68,6 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
             mConnection.disconnect();
         }
         return "";
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        // if no network is available networkInfo will be null
-        // otherwise check if we are connected
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        }
-        return false;
     }
 
     public static String readStream(InputStream in) throws IOException {

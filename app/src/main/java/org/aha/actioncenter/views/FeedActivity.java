@@ -18,6 +18,7 @@ import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,10 +44,7 @@ public class FeedActivity extends Activity {
 
         String intentData = getIntent().getStringExtra("data");
         loadProcessViewData(intentData);
-
     }
-
-
 
     private void loadProcessViewData(String jsonString){
 
@@ -142,6 +140,7 @@ public class FeedActivity extends Activity {
 
         try {
             jArray = (JSONArray)event.getData().getJSONArray("FEED_PAYLOAD");
+            Utility.getInstance(getApplicationContext()).parseFeedData(jArray);
         }
         catch (JSONException e) {
             e.printStackTrace();

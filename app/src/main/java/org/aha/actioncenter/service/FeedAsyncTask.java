@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,7 +76,7 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
-        if (!isNetworkAvailable()) {
+        if (!Utility.getInstance(mContext).isNetworkAvailable()) {
             return "";
         }
 
@@ -94,16 +95,7 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
         return "";
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        // if no network is available networkInfo will be null
-        // otherwise check if we are connected
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        }
-        return false;
-    }
+
 
     public static String readStream(InputStream in) throws IOException {
         StringBuilder sb = new StringBuilder();
