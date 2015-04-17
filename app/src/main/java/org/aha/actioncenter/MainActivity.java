@@ -3,6 +3,7 @@ package org.aha.actioncenter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -87,19 +88,16 @@ public class MainActivity extends ActionBarActivity {
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mActionCenter));
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mActionCenter));
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
+        mDrawerToggle = new ActionBarDrawerToggle(this,                  /* host Activity */
                 mDrawerLayout,         /* DrawerLayout object */
                 R.string.drawer_open,  /* "open drawer" description */
-                R.string.drawer_close  /* "close drawer" description */
-        ) {
+                R.string.drawer_close  /* "close drawer" description */) {
 
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
@@ -139,7 +137,7 @@ public class MainActivity extends ActionBarActivity {
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
         try {
             JSONArray jArray = null;
-            jArray = (JSONArray)event.getData().getJSONArray("FEED_PAYLOAD");
+            jArray = (JSONArray) event.getData().getJSONArray("FEED_PAYLOAD");
             Utility.getInstance(mContext).parseFeedData(jArray);
         }
         catch (JSONException e) {
@@ -173,7 +171,9 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    /** Swaps fragments in the main content view */
+    /**
+     * Swaps fragments in the main content view
+     */
     private void selectItem(int position) {
         Log.d(TAG, "Navigation item selected.");
 
@@ -185,37 +185,62 @@ public class MainActivity extends ActionBarActivity {
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
 
-        switch (position){
+        SharedPreferences prefs;
+
+        switch (position) {
             case 0:
-                // Create a new fragment and specify the planet to show based on position
-                fragment = new ActionAlertListFragment();
+                if (Utility.getInstance(mContext).hasData(Utility.getInstance().ACTION_ALERT))
+                    fragment = new ActionAlertListFragment();
+                else
+                    return;
+
                 break;
             case 1:
-                fragment = new FactSheetListFragment();
+                if (Utility.getInstance(mContext).hasData(Utility.getInstance().FACT_SHEET))
+                    fragment = new FactSheetListFragment();
+                else
+                    return;
                 break;
+
             case 2:
-                return; //No Special Bulletins just yet.
-                //fragment = new SpecialBulletins();
-                //break;
+                if (Utility.getInstance(mContext).hasData(Utility.getInstance().BULLETIN))
+                    fragment = new SpecialBulletins();
+                else
+                    return;
+
+                break;
             case 3:
-                fragment = new AdvisoryListFragment();
+                if (Utility.getInstance(mContext).hasData(Utility.getInstance().ADVISORY))
+                    fragment = new AdvisoryListFragment();
+                else
+                    return;
                 break;
             case 4:
-                fragment = new LetterListFragment();
+                if (Utility.getInstance(mContext).hasData(Utility.getInstance().LETTER))
+                    fragment = new LetterListFragment();
+                else
+                    return;
+
                 break;
             case 5:
-                fragment = new TestimonyListFragment();
+                if (Utility.getInstance(mContext).hasData(Utility.getInstance().TESTIMONY))
+                    fragment = new TestimonyListFragment();
+                else
+                    return;
+
                 break;
             case 6:
-                fragment = new AdditionalInfoListFragment();
+                if (Utility.getInstance(mContext).hasData(Utility.getInstance().ADDITIONAL_INFO))
+                    fragment = new AdditionalInfoListFragment();
+                else
+                    return;
+
                 break;
             default:
                 break;
         }
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -254,7 +279,4 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
 }

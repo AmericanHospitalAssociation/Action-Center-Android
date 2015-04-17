@@ -35,6 +35,7 @@ public class Utility {
     public static String BULLETIN = "bulletin";
     public static String ISSUE_PAPERS = "issue-papers";
     public static String ACTION_ALERT = "action-alert";
+    public static String FACT_SHEET = "fact-sheet";
 
     private Utility(){}
 
@@ -64,6 +65,7 @@ public class Utility {
         int count = jArray.length();
 
         mDataLoaded = false;
+
         ArrayList<FeedItem> additionalInfo = new ArrayList<FeedItem>();
         ArrayList<FeedItem> letter = new ArrayList<FeedItem>();
         ArrayList<FeedItem> pressRelease = new ArrayList<FeedItem>();
@@ -72,6 +74,7 @@ public class Utility {
         ArrayList<FeedItem> bulletin = new ArrayList<FeedItem>();
         ArrayList<FeedItem> issuePapers = new ArrayList<FeedItem>();
         ArrayList<FeedItem> actionAlert = new ArrayList<FeedItem>();
+        ArrayList<FeedItem> factSheet = new ArrayList<FeedItem>();
 
         for(int i=0; i < count; i++){
 
@@ -108,6 +111,9 @@ public class Utility {
             else if(item.ContentType.equals(ACTION_ALERT)){
                 actionAlert.add(item);
             }
+            else if(item.ContentType.equals(FACT_SHEET)){
+                factSheet.add(item);
+            }
             Log.d(TAG, "Utility->parseFeedData");
         }
 
@@ -121,6 +127,7 @@ public class Utility {
         saveFeedData(BULLETIN, bulletin);
         saveFeedData(ISSUE_PAPERS, issuePapers);
         saveFeedData(ACTION_ALERT, actionAlert);
+        saveFeedData(FACT_SHEET, factSheet);
 
         mDataLoaded = true;
     }
@@ -131,13 +138,19 @@ public class Utility {
         SharedPreferences.Editor editor = prefs.edit();
 
         Gson gson = new Gson();
-        editor.putString(dataName, gson.toJson(list));
+
+        if(list.size() > 0) {
+            editor.putString(dataName, gson.toJson(list));
+        }
+        else {
+            editor.putString(dataName, "");
+        }
+
         editor.apply();
 
         Log.d(TAG, "Utility->saveFeedData");
 
     }
-
 
     public List<FeedItem> getFeedData(String dataName){
 
@@ -159,4 +172,10 @@ public class Utility {
         return mDataLoaded;
     }
 
+
+    public boolean hasData(String dataName) {
+        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
+        String dataString = prefs.getString(dataName, "");
+        return dataString.length()>0;
+    }
 }
