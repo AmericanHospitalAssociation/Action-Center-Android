@@ -25,8 +25,22 @@ public class Utility {
     private static final Utility INSTANCE  = new Utility();
     private static final String TAG = "Utility";
     private static Context mContext;
+    private static boolean mDataLoaded = false;
+
+    public static String ADDITIONAL_INFO = "additional-info";
+    public static String LETTER = "letter";
+    public static String PRESS_RELEASE = "press-release";
+    public static String TESTIMONY = "testimony";
+    public static String ADVISORY = "advisory";
+    public static String BULLETIN = "bulletin";
+    public static String ISSUE_PAPERS = "issue-papers";
+    public static String ACTION_ALERT = "action-alert";
 
     private Utility(){}
+
+    public static Utility getInstance(){
+        return INSTANCE;
+    }
 
     public static Utility getInstance(Context context){
         mContext = context;
@@ -49,6 +63,7 @@ public class Utility {
         Gson gson = null;
         int count = jArray.length();
 
+        mDataLoaded = false;
         ArrayList<FeedItem> additionalInfo = new ArrayList<FeedItem>();
         ArrayList<FeedItem> letter = new ArrayList<FeedItem>();
         ArrayList<FeedItem> pressRelease = new ArrayList<FeedItem>();
@@ -69,28 +84,28 @@ public class Utility {
                 e.printStackTrace();
             }
 
-            if(item.ContentType.equals("additional-info")){
+            if(item.ContentType.equals(ADDITIONAL_INFO)){
                 additionalInfo.add(item);
             }
-            else if(item.ContentType.equals("letter")){
+            else if(item.ContentType.equals(LETTER)){
                 letter.add(item);
             }
-            else if(item.ContentType.equals("press-release")){
+            else if(item.ContentType.equals(PRESS_RELEASE)){
                 pressRelease.add(item);
             }
-            else if(item.ContentType.equals("testimony")){
+            else if(item.ContentType.equals(TESTIMONY)){
                testimony.add(item);
             }
-            else if(item.ContentType.equals("advisory")){
+            else if(item.ContentType.equals(ADVISORY)){
                 advisory.add(item);
             }
-            else if(item.ContentType.equals("bulletin")){
+            else if(item.ContentType.equals(BULLETIN)){
                 bulletin.add(item);
             }
-            else if(item.ContentType.equals("issue-papers")){
+            else if(item.ContentType.equals(ISSUE_PAPERS)){
                 issuePapers.add(item);
             }
-            else if(item.ContentType.equals("action-alert")){
+            else if(item.ContentType.equals(ACTION_ALERT)){
                 actionAlert.add(item);
             }
             Log.d(TAG, "Utility->parseFeedData");
@@ -98,15 +113,16 @@ public class Utility {
 
         Log.d(TAG, "Utility");
 
-        saveFeedData("additional-info", additionalInfo);
-        saveFeedData("letter", letter);
-        saveFeedData("press-release", pressRelease);
-        saveFeedData("testimony", testimony);
-        saveFeedData("advisory", advisory);
-        saveFeedData("bulletin", bulletin);
-        saveFeedData("issue-papers", issuePapers);
-        saveFeedData("action-alert", actionAlert);
+        saveFeedData(ADDITIONAL_INFO, additionalInfo);
+        saveFeedData(LETTER, letter);
+        saveFeedData(PRESS_RELEASE, pressRelease);
+        saveFeedData(TESTIMONY, testimony);
+        saveFeedData(ADVISORY, advisory);
+        saveFeedData(BULLETIN, bulletin);
+        saveFeedData(ISSUE_PAPERS, issuePapers);
+        saveFeedData(ACTION_ALERT, actionAlert);
 
+        mDataLoaded = true;
     }
 
     private void saveFeedData(String dataName, List<FeedItem> list){
@@ -137,6 +153,10 @@ public class Utility {
         Log.d(TAG, "Utility->getFeedData");
 
         return list;
+    }
+
+    public boolean isDataLoaded(){
+        return mDataLoaded;
     }
 
 }
