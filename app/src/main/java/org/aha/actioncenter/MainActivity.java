@@ -186,27 +186,27 @@ public class MainActivity extends ActionBarActivity {
         FragmentManager fragmentManager = getFragmentManager();
 
         switch (position){
-            case 1:
+            case 0:
                 // Create a new fragment and specify the planet to show based on position
                 fragment = new ActionAlertListFragment();
                 break;
-            case 2:
+            case 1:
                 fragment = new FactSheetListFragment();
                 break;
-            case 3:
-                fragment = new SpecialBulletins();
+            case 2:
                 return; //No Special Bulletins just yet.
+                //fragment = new SpecialBulletins();
                 //break;
-            case 4:
+            case 3:
                 fragment = new AdvisoryListFragment();
                 break;
-            case 5:
+            case 4:
                 fragment = new LetterListFragment();
                 break;
-            case 6:
+            case 5:
                 fragment = new TestimonyListFragment();
                 break;
-            case 7:
+            case 6:
                 fragment = new AdditionalInfoListFragment();
                 break;
             default:
