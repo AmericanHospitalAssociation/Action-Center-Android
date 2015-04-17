@@ -59,7 +59,7 @@ public class TestimonyListFragment extends Fragment {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().TESTIMONY);
-            mAdapter = new ActionAlertFeedAdapter(list);
+            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
 
@@ -103,7 +103,7 @@ public class TestimonyListFragment extends Fragment {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().TESTIMONY);
-            mAdapter = new ActionAlertFeedAdapter(list);
+            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
     }

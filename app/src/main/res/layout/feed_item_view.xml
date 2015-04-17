@@ -24,8 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:singleLine="false"
-                android:textColor="#ffffffff"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque tristique egestas nulla id vehicula. Donec vel sapien ex."/>
+                android:textColor="#ffffffff"/>
 
         </LinearLayout>
 

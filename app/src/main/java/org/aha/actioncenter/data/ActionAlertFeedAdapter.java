@@ -1,5 +1,10 @@
 package org.aha.actioncenter.data;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,8 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.FeedItem;
+import org.aha.actioncenter.views.AdditionalInfoListFragment;
+import org.aha.actioncenter.views.DetailInfoFragment;
 
 import java.util.List;
 
@@ -23,9 +32,11 @@ import java.util.List;
 public class ActionAlertFeedAdapter extends RecyclerView.Adapter<ActionAlertFeedAdapter.ViewHolder> {
     private static final String TAG = "ActionAlertFeedAdapter";
 
-    private List<FeedItem> mDataSet;
+    private static List<FeedItem> mDataSet;
+    private static Activity mActivity;
 
-    public ActionAlertFeedAdapter(List<FeedItem> dataSet) {
+    public ActionAlertFeedAdapter(Activity activity, List<FeedItem> dataSet) {
+        mActivity = activity;
         mDataSet = dataSet;
     }
 
@@ -46,7 +57,23 @@ public class ActionAlertFeedAdapter extends RecyclerView.Adapter<ActionAlertFeed
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "Element " + getPosition() + " clicked.");
+                    Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
+
+                    Fragment fragment = null;
+                    Bundle args = new Bundle();
+
+                    int position = getAdapterPosition();
+
+                    FeedItem item = mDataSet.get(position);
+
+                    args.putString("item", new Gson().toJson(item));
+                    fragment = new DetailInfoFragment();
+                    fragment.setArguments(args);
+
+                    // Insert the fragment by replacing any existing fragment
+                    FragmentManager fragmentManager = mActivity.getFragmentManager();
+
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 }
             });
 

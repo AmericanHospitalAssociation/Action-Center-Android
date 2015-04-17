@@ -59,7 +59,7 @@ public class FactSheetListFragment extends Fragment {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData("action-alert");
-            mAdapter = new ActionAlertFeedAdapter(list);
+            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
 
@@ -103,7 +103,7 @@ public class FactSheetListFragment extends Fragment {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData("action-alert");
-            mAdapter = new ActionAlertFeedAdapter(list);
+            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
