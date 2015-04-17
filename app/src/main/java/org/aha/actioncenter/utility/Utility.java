@@ -122,6 +122,7 @@ public class Utility {
 
     }
 
+
     public List<FeedItem> getFeedData(String dataName){
 
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);

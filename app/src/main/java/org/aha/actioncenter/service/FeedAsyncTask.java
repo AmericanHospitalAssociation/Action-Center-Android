@@ -53,25 +53,6 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
         event.setData(json);
         AHABusProvider.getInstance().post(event);
 
-        /*
-        JSONArray jsonArray;
-        JSONObject json;
-        String FILENAME = "feed.txt";
-        try {
-            json = new JSONObject(feed);
-            jsonArray = json.getJSONArray("FEED_PAYLOAD");
-
-            FileOutputStream fos = mContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            fos.write(feed.getBytes());
-            fos.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-        */
     }
 
     @Override
@@ -94,8 +75,6 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
         }
         return "";
     }
-
-
 
     public static String readStream(InputStream in) throws IOException {
         StringBuilder sb = new StringBuilder();

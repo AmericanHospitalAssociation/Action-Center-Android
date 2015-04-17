@@ -62,18 +62,14 @@ public class MainActivity extends ActionBarActivity {
 
         Intent intent = new Intent(this, FeedActivity.class);
 
-        JSONArray jArray = null;
-
         try {
+            JSONArray jArray = null;
             jArray = (JSONArray)event.getData().getJSONArray("FEED_PAYLOAD");
             Utility.getInstance(getApplicationContext()).parseFeedData(jArray);
         }
         catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        intent.putExtra("data", jArray.toString());
         startActivity(intent);
 
     }
@@ -116,6 +112,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AHABusProvider.getInstance().unregister(this);
+        //AHABusProvider.getInstance().unregister(this);
     }
 }
