@@ -5,6 +5,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="american_hospital_association">American Hospital Association</string>
+
     <!-- Twitter -->
     <string name="twitter_key">trwxm119rAqWC5KmYedIqv8Xl</string>
     <string name="twitter_secret">6wXav43Xmw2cwJ6e37kB9gGmaIMKFnBJIQ23JhJqF7kgSgfMkT</string>
@@ -12,5 +14,28 @@
     <!-- Data Feeds -->
     <string name="feed_url">http://ahaconnect.org/feed.php?id=app_feed_1</string>
     <string name="events_url">http://ahaconnect.org/feed.php?id=app_cal_public</string>
+
+    <!-- ************************************************************ -->
+    <!-- Left Navigation Menu-->
+    <string name="navigation_home">Home</string>
+    <string name="navigation_action_center">Action Center</string>
+    <string name="navigation_latest_information">Latest Information</string>
+    <string-array name="navigation_action_center_array">
+        <item>Action Alerts</item>
+        <item>Fact Sheets</item>
+        <item>Special Bulletins</item>
+        <item>Advisory</item>
+        <item>Letters</item>
+        <item>Testimony</item>
+        <item>Additional Info</item>
+    </string-array>
+    <string name="navigation_take_action">Take Action</string>
+    <string name="navigation_events">Events</string>
+    <string name="navigation_twitter_feeds">Twitter Feeds</string>
+    <!-- ************************************************************ -->
+
+    <string name="menu_search">SOMETHING SHOULD GO HERE</string>
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_close">drawer close</string>
 
 </resources>

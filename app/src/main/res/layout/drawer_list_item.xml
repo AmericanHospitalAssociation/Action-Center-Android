@@ -10,4 +10,4 @@
           android:paddingRight="16dp"
           android:text="Loading Content ..."
           android:textAppearance="?android:attr/textAppearanceListItem"
-          android:textColor="#fff" />
+          android:textColor="#ffffff" />
