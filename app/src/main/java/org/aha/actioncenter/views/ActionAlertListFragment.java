@@ -84,7 +84,7 @@ public class ActionAlertListFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        AHABusProvider.getInstance().unregister(this);
+        //AHABusProvider.getInstance().unregister(this);
     }
 
     private void refreshFeedData() {

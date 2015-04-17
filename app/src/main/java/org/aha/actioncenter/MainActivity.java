@@ -26,6 +26,12 @@ import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 import org.aha.actioncenter.views.ActionAlertListFragment;
+import org.aha.actioncenter.views.AdditionalInfoListFragment;
+import org.aha.actioncenter.views.AdvisoryListFragment;
+import org.aha.actioncenter.views.FactSheetListFragment;
+import org.aha.actioncenter.views.LetterListFragment;
+import org.aha.actioncenter.views.SpecialBulletins;
+import org.aha.actioncenter.views.TestimonyListFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -171,15 +177,42 @@ public class MainActivity extends ActionBarActivity {
     private void selectItem(int position) {
         Log.d(TAG, "Navigation item selected.");
 
-        if(mActionCenter)
-        // Create a new fragment and specify the planet to show based on position
-        Fragment fragment = new ActionAlertListFragment();
+        Fragment fragment = null;
         Bundle args = new Bundle();
         //args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
         //fragment.setArguments(args);
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
+
+        switch (position){
+            case 1:
+                // Create a new fragment and specify the planet to show based on position
+                fragment = new ActionAlertListFragment();
+                break;
+            case 2:
+                fragment = new FactSheetListFragment();
+                break;
+            case 3:
+                fragment = new SpecialBulletins();
+                return; //No Special Bulletins just yet.
+                //break;
+            case 4:
+                fragment = new AdvisoryListFragment();
+                break;
+            case 5:
+                fragment = new LetterListFragment();
+                break;
+            case 6:
+                fragment = new TestimonyListFragment();
+                break;
+            case 7:
+                fragment = new AdditionalInfoListFragment();
+                break;
+            default:
+                break;
+        }
+
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, fragment)
                 .commit();
