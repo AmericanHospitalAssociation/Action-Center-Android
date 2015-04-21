@@ -10,19 +10,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Subscribe;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import org.aha.actioncenter.data.AHAExpandableListAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -33,11 +40,20 @@ import org.aha.actioncenter.views.FactSheetListFragment;
 import org.aha.actioncenter.views.LetterListFragment;
 import org.aha.actioncenter.views.SpecialBulletins;
 import org.aha.actioncenter.views.TestimonyListFragment;
+import org.aha.actioncenter.models.NavigationGroup;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -46,8 +62,12 @@ public class MainActivity extends ActionBarActivity {
 
     private static final String TAG = "MainActivity";
     private String[] mActionCenter;
+    private String[] mActionCenterIds;
+    private String[] mMainNavigation;
+    private String[] mMainNavigationIds;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+    //private ListView mDrawerList;
+    private ExpandableListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
@@ -64,8 +84,8 @@ public class MainActivity extends ActionBarActivity {
 
         //Register bus provider to listen to events.
         AHABusProvider.getInstance().register(this);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.twitter_key), getResources().getString(R.string.twitter_secret));
-        Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
+        //TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.twitter_key), getResources().getString(R.string.twitter_secret));
+        //Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
 
         setContentView(R.layout.activity_main);
 
@@ -83,15 +103,29 @@ public class MainActivity extends ActionBarActivity {
 
 
         mTitle = mDrawerTitle = getTitle();
-        mActionCenter = getResources().getStringArray(R.array.navigation_action_center_array);
+
+        NavigationGroup group = null;
+
+        Reader reader = null;
+        InputStream stream = getResources().openRawResource(R.raw.navigation);
+        reader = new BufferedReader(new InputStreamReader(stream), 8092);
+
+        // parse json
+        JsonParser parser = new JsonParser();
+        JsonObject jNavigation = (JsonObject)parser.parse(reader);
+
+        Type listType = new TypeToken<ArrayList<NavigationItem>>() {}.getType();
+        ArrayList<NavigationItem> navigationItemArrayList = new Gson().fromJson(jNavigation.getAsJsonArray("topnav"), listType);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        //mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer);
 
         // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mActionCenter));
+        //mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mActionCenter));
+        AHAExpandableListAdapter adapter = new AHAExpandableListAdapter(this, navigationItemArrayList);
+        mDrawerList.setAdapter(adapter);
         // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this,                  /* host Activity */
@@ -164,17 +198,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
-
     /**
      * Swaps fragments in the main content view
      */
-    private void selectItem(int position) {
+    public void selectItem(String navigationName) {
         Log.d(TAG, "Navigation item selected.");
 
         Fragment fragment = null;
@@ -185,68 +212,29 @@ public class MainActivity extends ActionBarActivity {
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
 
-        SharedPreferences prefs;
+        if (navigationName.equals(Utility.getInstance().ACTION_ALERT))
+            fragment = new ActionAlertListFragment();
+        if (navigationName.equals(Utility.getInstance().FACT_SHEET))
+            fragment = new FactSheetListFragment();
+        if (navigationName.equals(Utility.getInstance().BULLETIN))
+            fragment = new SpecialBulletins();
+        if (navigationName.equals(Utility.getInstance().ADVISORY))
+            fragment = new AdvisoryListFragment();
+        if (navigationName.equals(Utility.getInstance().LETTER))
+            fragment = new LetterListFragment();
+        if (navigationName.equals(Utility.getInstance().TESTIMONY))
+            fragment = new TestimonyListFragment();
+        if (navigationName.equals(Utility.getInstance().ADDITIONAL_INFO))
+            fragment = new AdditionalInfoListFragment();
 
-        switch (position) {
-            case 0:
-                if (Utility.getInstance(mContext).hasData(Utility.getInstance().ACTION_ALERT))
-                    fragment = new ActionAlertListFragment();
-                else
-                    return;
+        if(fragment != null) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
-                break;
-            case 1:
-                if (Utility.getInstance(mContext).hasData(Utility.getInstance().FACT_SHEET))
-                    fragment = new FactSheetListFragment();
-                else
-                    return;
-                break;
-
-            case 2:
-                if (Utility.getInstance(mContext).hasData(Utility.getInstance().BULLETIN))
-                    fragment = new SpecialBulletins();
-                else
-                    return;
-
-                break;
-            case 3:
-                if (Utility.getInstance(mContext).hasData(Utility.getInstance().ADVISORY))
-                    fragment = new AdvisoryListFragment();
-                else
-                    return;
-                break;
-            case 4:
-                if (Utility.getInstance(mContext).hasData(Utility.getInstance().LETTER))
-                    fragment = new LetterListFragment();
-                else
-                    return;
-
-                break;
-            case 5:
-                if (Utility.getInstance(mContext).hasData(Utility.getInstance().TESTIMONY))
-                    fragment = new TestimonyListFragment();
-                else
-                    return;
-
-                break;
-            case 6:
-                if (Utility.getInstance(mContext).hasData(Utility.getInstance().ADDITIONAL_INFO))
-                    fragment = new AdditionalInfoListFragment();
-                else
-                    return;
-
-                break;
-            default:
-                break;
+            // Highlight the selected item, update the title, and close the drawer
+            //mDrawerList.setItemChecked(position, true);
+            setTitle(navigationName);
+            //mDrawerLayout.closeDrawer(mDrawerList);
         }
-
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-        // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mActionCenter[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
-
     }
 
     @Override

@@ -27,6 +27,7 @@ public class Utility {
     private static Context mContext;
     private static boolean mDataLoaded = false;
 
+    public static String ACTION_CENTER = "action-center";
     public static String ADDITIONAL_INFO = "additional-info";
     public static String LETTER = "letter";
     public static String PRESS_RELEASE = "press-release";

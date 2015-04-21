@@ -1,13 +1,9 @@
 package org.aha.actioncenter.views;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +13,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.data.ActionAlertFeedAdapter;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.utility.AHABusProvider;
-import org.aha.actioncenter.utility.Utility;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 /**
  * Created by markusmcgee on 4/17/15.

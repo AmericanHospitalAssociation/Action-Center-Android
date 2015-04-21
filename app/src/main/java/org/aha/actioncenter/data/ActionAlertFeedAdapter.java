@@ -3,7 +3,6 @@ package org.aha.actioncenter.data;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,7 +15,6 @@ import com.google.gson.Gson;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.FeedItem;
-import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.DetailInfoFragment;
 
 import java.util.List;
