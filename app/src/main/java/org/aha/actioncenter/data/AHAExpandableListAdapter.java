@@ -1,12 +1,15 @@
 package org.aha.actioncenter.data;
 
 import android.app.Activity;
+import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ import java.util.Objects;
  */
 public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
 
+    private static final String TAG = "AHAExpandableListAdapter";
     private final ArrayList<NavigationItem> groups;
     public LayoutInflater inflater;
     public Activity activity;
@@ -46,17 +50,30 @@ public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final NavigationItem childName = (NavigationItem) getChild(groupPosition, childPosition);
+        final NavigationItem childItem = (NavigationItem) getChild(groupPosition, childPosition);
         TextView text = null;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_details, null);
         }
         text = (TextView) convertView.findViewById(R.id.textView1);
-        text.setText(childName.name);
+        text.setText(childItem.name);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) activity).selectItem(childName.name);
+                if(childItem.subnav.size() == 0) {
+                    ((MainActivity) activity).selectItem(childItem.id);
+                }
+                else{
+
+                    Log.d(TAG, "debug");
+                    //ExpandableListView mDrawerList = (ExpandableListView) v.findViewById(R.id.child_left_drawer);
+
+                    // Set the adapter for the list view
+                    //AHAExpandableListAdapter adapter = new AHAExpandableListAdapter(activity, childItem.subnav);
+                    //mDrawerList.setAdapter(adapter);
+
+
+                }
             }
         });
         return convertView;

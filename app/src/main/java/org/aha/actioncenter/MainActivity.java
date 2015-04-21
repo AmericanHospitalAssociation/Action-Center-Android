@@ -228,12 +228,13 @@ public class MainActivity extends ActionBarActivity {
             fragment = new AdditionalInfoListFragment();
 
         if(fragment != null) {
+
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
             // Highlight the selected item, update the title, and close the drawer
             //mDrawerList.setItemChecked(position, true);
             setTitle(navigationName);
-            //mDrawerLayout.closeDrawer(mDrawerList);
+            mDrawerLayout.closeDrawer(mDrawerList);
         }
     }
 
