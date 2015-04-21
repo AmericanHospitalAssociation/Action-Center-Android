@@ -20,7 +20,23 @@
     <string name="navigation_home">Home</string>
     <string name="navigation_action_center">Action Center</string>
     <string name="navigation_latest_information">Latest Information</string>
-    <string-array name="navigation_action_center_array">
+
+    <array name="aha_main_navigation_ids">
+        <item>home</item>
+        <item>action-center</item>
+        <item>events</item>
+        <item>twitter-feeds</item>
+    </array>
+
+    <array name="aha_main_navigation">
+        <item>Home</item>
+        <item>Action Center</item>
+        <item>Events</item>
+        <item>Twitter Feeds</item>
+    </array>
+
+    <string-array name="action_center_navigation">
+        <item>Latest Information</item>
         <item>Action Alerts</item>
         <item>Fact Sheets</item>
         <item>Special Bulletins</item>
@@ -29,6 +45,19 @@
         <item>Testimony</item>
         <item>Additional Info</item>
     </string-array>
+    <string-array name="action_center_navigation_ids">
+        <item>additional-info</item>
+        <item>letter</item>
+        <item>press-release</item>
+        <item>testimony</item>
+        <item>advisory</item>
+        <item>bulletin</item>
+        <item>issue-papers</item>
+        <item>action-alert</item>
+        <item>fact-sheet</item>
+    </string-array>
+
+
     <string name="navigation_take_action">Take Action</string>
     <string name="navigation_events">Events</string>
     <string name="navigation_twitter_feeds">Twitter Feeds</string>
@@ -37,5 +66,8 @@
     <string name="menu_search">SOMETHING SHOULD GO HERE</string>
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
+
+
+    <string name="forgot_password_btn">Forgot password? Please click here.</string>
 
 </resources>
