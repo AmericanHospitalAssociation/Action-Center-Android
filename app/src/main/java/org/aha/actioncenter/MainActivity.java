@@ -3,20 +3,16 @@ package org.aha.actioncenter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -29,6 +25,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import org.aha.actioncenter.data.AHAExpandableListAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.models.NavigationGroup;
 import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -40,7 +37,6 @@ import org.aha.actioncenter.views.FactSheetListFragment;
 import org.aha.actioncenter.views.LetterListFragment;
 import org.aha.actioncenter.views.SpecialBulletins;
 import org.aha.actioncenter.views.TestimonyListFragment;
-import org.aha.actioncenter.models.NavigationGroup;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -52,8 +48,6 @@ import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -61,12 +55,7 @@ import io.fabric.sdk.android.Fabric;
 public class MainActivity extends ActionBarActivity {
 
     private static final String TAG = "MainActivity";
-    private String[] mActionCenter;
-    private String[] mActionCenterIds;
-    private String[] mMainNavigation;
-    private String[] mMainNavigationIds;
     private DrawerLayout mDrawerLayout;
-    //private ListView mDrawerList;
     private ExpandableListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
@@ -84,8 +73,8 @@ public class MainActivity extends ActionBarActivity {
 
         //Register bus provider to listen to events.
         AHABusProvider.getInstance().register(this);
-        //TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.twitter_key), getResources().getString(R.string.twitter_secret));
-        //Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.twitter_key), getResources().getString(R.string.twitter_secret));
+        Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
 
         setContentView(R.layout.activity_main);
 
@@ -118,11 +107,9 @@ public class MainActivity extends ActionBarActivity {
         ArrayList<NavigationItem> navigationItemArrayList = new Gson().fromJson(jNavigation.getAsJsonArray("topnav"), listType);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer);
 
         // Set the adapter for the list view
-        //mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mActionCenter));
         AHAExpandableListAdapter adapter = new AHAExpandableListAdapter(this, navigationItemArrayList);
         mDrawerList.setAdapter(adapter);
         // Set the list's click listener
@@ -160,7 +147,6 @@ public class MainActivity extends ActionBarActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -206,7 +192,6 @@ public class MainActivity extends ActionBarActivity {
 
         Fragment fragment = null;
         Bundle args = new Bundle();
-        //args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
         //fragment.setArguments(args);
 
         // Insert the fragment by replacing any existing fragment
