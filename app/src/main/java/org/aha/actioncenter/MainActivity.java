@@ -12,17 +12,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Subscribe;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import org.aha.actioncenter.data.AHAExpandableListAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
@@ -50,8 +46,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import io.fabric.sdk.android.Fabric;
-
 
 public class MainActivity extends ActionBarActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
 
@@ -75,23 +69,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         mContext = getApplicationContext();
 
         //Register bus provider to listen to events.
-        AHABusProvider.getInstance().register(this);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.twitter_key), getResources().getString(R.string.twitter_secret));
-        Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
 
         setContentView(R.layout.activity_main);
-
-        URL url = null;
-        try {
-            url = new URL(getResources().getString(R.string.feed_url));
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-
-        FeedAsyncTask asyncTask = new FeedAsyncTask(url, mContext);
-        asyncTask.execute();
 
 
         mTitle = mDrawerTitle = getTitle();
@@ -148,6 +127,13 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment fragment = new HomeFragment();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        setTitle("HOME");
+
+
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -183,12 +169,6 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     protected void onPause() {
         super.onPause();
         AHABusProvider.getInstance().unregister(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //AHABusProvider.getInstance().unregister(this);
     }
 
 

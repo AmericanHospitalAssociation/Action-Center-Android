@@ -1,5 +1,7 @@
 package org.aha.actioncenter.service;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -26,10 +28,37 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
     private URL mUrl;
     private HttpURLConnection mConnection;
     private Context mContext;
+    private Activity activity;
+
+    private ProgressDialog progressDialog = null;
+
+    public FeedAsyncTask(URL url, Context context, Activity activity) {
+        this(url,context);
+        this.activity = activity;
+    }
 
     public FeedAsyncTask(URL url, Context context) {
         this.mContext = context;
         this.mUrl = url;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if(activity != null) {
+            progressDialog = new ProgressDialog(activity);
+            progressDialog.setTitle("American Hospital Association");
+            progressDialog.setMessage("Loading Data...");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.show();
+        }
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        if(progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 
     @Override
@@ -48,6 +77,8 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
         FeedDataEvent event = new FeedDataEvent(FeedDataEvent.FEED_DATA);
         event.setData(json);
         AHABusProvider.getInstance().post(event);
+        if(progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
 
     }
 
