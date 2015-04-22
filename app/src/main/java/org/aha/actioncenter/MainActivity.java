@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
 import com.crashlytics.android.Crashlytics;
@@ -25,7 +26,6 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import org.aha.actioncenter.data.AHAExpandableListAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
-import org.aha.actioncenter.models.NavigationGroup;
 import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -34,6 +34,7 @@ import org.aha.actioncenter.views.ActionAlertListFragment;
 import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
 import org.aha.actioncenter.views.FactSheetListFragment;
+import org.aha.actioncenter.views.HomeFragment;
 import org.aha.actioncenter.views.LetterListFragment;
 import org.aha.actioncenter.views.SpecialBulletins;
 import org.aha.actioncenter.views.TestimonyListFragment;
@@ -52,7 +53,7 @@ import java.util.ArrayList;
 import io.fabric.sdk.android.Fabric;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
 
     private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
@@ -62,6 +63,8 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence mTitle;
 
     private Context mContext = null;
+    private ArrayList<NavigationItem> navigationItemArrayList = null;
+    private AHAExpandableListAdapter navigationAdapter = null;
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
 
@@ -93,7 +96,7 @@ public class MainActivity extends ActionBarActivity {
 
         mTitle = mDrawerTitle = getTitle();
 
-        NavigationGroup group = null;
+        NavigationItem navigationItem = null;
 
         Reader reader = null;
         InputStream stream = getResources().openRawResource(R.raw.navigation);
@@ -101,17 +104,22 @@ public class MainActivity extends ActionBarActivity {
 
         // parse json
         JsonParser parser = new JsonParser();
-        JsonObject jNavigation = (JsonObject)parser.parse(reader);
+        JsonObject jNavigation = (JsonObject) parser.parse(reader);
 
-        Type listType = new TypeToken<ArrayList<NavigationItem>>() {}.getType();
-        ArrayList<NavigationItem> navigationItemArrayList = new Gson().fromJson(jNavigation.getAsJsonArray("topnav"), listType);
+        Type listType = new TypeToken<ArrayList<NavigationItem>>() {
+        }.getType();
+        navigationItemArrayList = new Gson().fromJson(jNavigation.getAsJsonArray("topnav"), listType);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer);
+        mDrawerList = (ExpandableListView) findViewById(R.id.navigation_view);
+
+        mDrawerList.setOnGroupClickListener(this);
+        mDrawerList.setOnChildClickListener(this);
+
 
         // Set the adapter for the list view
-        AHAExpandableListAdapter adapter = new AHAExpandableListAdapter(this, navigationItemArrayList);
-        mDrawerList.setAdapter(adapter);
+        navigationAdapter = new AHAExpandableListAdapter(this, navigationItemArrayList);
+        mDrawerList.setAdapter(navigationAdapter);
         // Set the list's click listener
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -187,7 +195,7 @@ public class MainActivity extends ActionBarActivity {
     /**
      * Swaps fragments in the main content view
      */
-    public void selectItem(String navigationName) {
+    public void selectItem(NavigationItem item) {
         Log.d(TAG, "Navigation item selected.");
 
         Fragment fragment = null;
@@ -197,28 +205,30 @@ public class MainActivity extends ActionBarActivity {
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
 
-        if (navigationName.equals(Utility.getInstance().ACTION_ALERT))
+        if (item.id.equals(Utility.getInstance().HOME))
+            fragment = new HomeFragment();
+        if (item.id.equals(Utility.getInstance().ACTION_ALERT))
             fragment = new ActionAlertListFragment();
-        if (navigationName.equals(Utility.getInstance().FACT_SHEET))
+        if (item.id.equals(Utility.getInstance().FACT_SHEET))
             fragment = new FactSheetListFragment();
-        if (navigationName.equals(Utility.getInstance().BULLETIN))
+        if (item.id.equals(Utility.getInstance().BULLETIN))
             fragment = new SpecialBulletins();
-        if (navigationName.equals(Utility.getInstance().ADVISORY))
+        if (item.id.equals(Utility.getInstance().ADVISORY))
             fragment = new AdvisoryListFragment();
-        if (navigationName.equals(Utility.getInstance().LETTER))
+        if (item.id.equals(Utility.getInstance().LETTER))
             fragment = new LetterListFragment();
-        if (navigationName.equals(Utility.getInstance().TESTIMONY))
+        if (item.id.equals(Utility.getInstance().TESTIMONY))
             fragment = new TestimonyListFragment();
-        if (navigationName.equals(Utility.getInstance().ADDITIONAL_INFO))
+        if (item.id.equals(Utility.getInstance().ADDITIONAL_INFO))
             fragment = new AdditionalInfoListFragment();
 
-        if(fragment != null) {
+        if (fragment != null) {
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
             // Highlight the selected item, update the title, and close the drawer
             //mDrawerList.setItemChecked(position, true);
-            setTitle(navigationName);
+            setTitle(item.name);
             mDrawerLayout.closeDrawer(mDrawerList);
         }
     }
@@ -252,5 +262,23 @@ public class MainActivity extends ActionBarActivity {
         // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long id) {
+        Log.d(TAG, "onGroupClick");
+        NavigationItem navigationItem = (NavigationItem) navigationAdapter.getGroup(groupPosition);
+        if (navigationItem.id.equals(Utility.getInstance().HOME)) {
+            selectItem(navigationItem);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long id) {
+        Log.d(TAG, "onChildClick");
+        NavigationItem navigationItem = (NavigationItem) navigationAdapter.getChild(groupPosition, childPosition);
+        selectItem(navigationItem);
+        return false;
     }
 }

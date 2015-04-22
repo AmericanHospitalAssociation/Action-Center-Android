@@ -1,25 +1,19 @@
 package org.aha.actioncenter.data;
 
 import android.app.Activity;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
-import android.widget.ExpandableListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.models.NavigationGroup;
 import org.aha.actioncenter.models.NavigationItem;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Created by markusmcgee on 4/20/15.
@@ -27,19 +21,21 @@ import java.util.Objects;
 public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
 
     private static final String TAG = "AHAExpandableListAdapter";
-    private final ArrayList<NavigationItem> groups;
+    private final ArrayList<NavigationItem> navigationItems;
     public LayoutInflater inflater;
     public Activity activity;
 
-    public AHAExpandableListAdapter(Activity act, ArrayList<NavigationItem> groups) {
+    private NavigationItem navigationItem = null;
+
+    public AHAExpandableListAdapter(Activity act, ArrayList<NavigationItem> navigationItems) {
         activity = act;
-        this.groups = groups;
+        this.navigationItems = navigationItems;
         inflater = act.getLayoutInflater();
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return groups.get(groupPosition).subnav.get(childPosition);
+        return navigationItems.get(groupPosition).subnav.get(childPosition);
     }
 
     @Override
@@ -50,48 +46,33 @@ public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        final NavigationItem childItem = (NavigationItem) getChild(groupPosition, childPosition);
+        navigationItem = (NavigationItem) getChild(groupPosition, childPosition);
         TextView text = null;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_details, null);
         }
         text = (TextView) convertView.findViewById(R.id.textView1);
-        text.setText(childItem.name);
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(childItem.subnav.size() == 0) {
-                    ((MainActivity) activity).selectItem(childItem.id);
-                }
-                else{
+        text.setText(navigationItem.name);
 
-                    Log.d(TAG, "debug");
-                    //ExpandableListView mDrawerList = (ExpandableListView) v.findViewById(R.id.child_left_drawer);
-
-                    // Set the adapter for the list view
-                    //AHAExpandableListAdapter adapter = new AHAExpandableListAdapter(activity, childItem.subnav);
-                    //mDrawerList.setAdapter(adapter);
-
-
-                }
-            }
-        });
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return groups.get(groupPosition).subnav.size();
+        if(navigationItems.get(groupPosition).subnav == null)
+            return 0;
+
+        return navigationItems.get(groupPosition).subnav.size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return groups.get(groupPosition);
+        return navigationItems.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return groups.size();
+        return navigationItems.size();
     }
 
     @Override
@@ -115,6 +96,7 @@ public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_group, null);
         }
+
         NavigationItem group = (NavigationItem) getGroup(groupPosition);
         ((CheckedTextView) convertView).setText(group.name);
         ((CheckedTextView) convertView).setChecked(isExpanded);
@@ -128,6 +110,6 @@ public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 }
