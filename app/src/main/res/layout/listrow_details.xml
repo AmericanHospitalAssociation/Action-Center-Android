@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/list_row"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="40dp"
-              android:clickable="true"
               android:orientation="vertical"
               android:paddingLeft="40dp"
               tools:context=".MainActivity">
 
-    <TextView
+    <CheckedTextView
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,20 +22,12 @@
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:textColor="#ffffff"/>
 
-    <!--
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:visibility="gone"
-        android:background="@android:color/black"/>
-    -->
     <!-- The navigation drawer -->
     <ExpandableListView
         android:id="@+id/child_left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:background="#111"/>

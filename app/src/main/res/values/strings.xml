@@ -21,5 +21,6 @@
 
 
     <string name="forgot_password_btn">Forgot password? Please click here.</string>
+    <string name="logout">Logout</string>
 
 </resources>
