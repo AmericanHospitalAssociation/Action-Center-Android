@@ -8,5 +8,5 @@ import java.util.ArrayList;
 public class NavigationItem {
     public String id = "";
     public String name="";
-    public ArrayList<NavigationItem> subnav = new ArrayList<NavigationItem>();
+    public ArrayList<NavigationItem> subnav = null;
 }
