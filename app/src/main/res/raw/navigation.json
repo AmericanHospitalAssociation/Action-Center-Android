@@ -2,13 +2,13 @@
         {"id":"action-center","name":"Action Center", "subnav":[
             {"name":"Latest Information", "id":"latest-information"},
             {"name":"Action Alerts", "id":"action-alert"},
-            {"name":"Fact Sheets", "id":"fact-sheets"},
-            {"name":"Special Bulletins", "id":"special-bulletins"},
+            {"name":"Fact Sheets", "id":"issue-papers"},
+            {"name":"Special Bulletins", "id":"bulletin"},
             {"name":"Advisory", "id":"advisory"},
-            {"name":"Letters", "id":"letters"},
+            {"name":"Letters", "id":"letter"},
             {"name":"Testimony", "id":"testimony"},
-            {"name":"Additional Info", "id":"additional-info"},
-            {"name":"Take Action", "id":"take-action"}
+            {"name":"Take Action", "id":"take-action"},
+            {"name":"Additional Info", "id":"additional-info"}
         ]},
         {"id":"events","name":"Events"},
         {"id":"twitter-feeds","name":"Twitter Feeds"}
