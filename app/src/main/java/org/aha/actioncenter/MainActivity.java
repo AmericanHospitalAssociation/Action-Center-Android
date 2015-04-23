@@ -3,6 +3,7 @@ package org.aha.actioncenter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
@@ -48,7 +50,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener {
+public class MainActivity extends ActionBarActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, View.OnClickListener {
 
     private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
@@ -70,6 +72,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         mContext = getApplicationContext();
 
         //Register bus provider to listen to events.
+        AHABusProvider.getInstance().register(this);
 
         setContentView(R.layout.activity_main);
 
@@ -98,13 +101,14 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
 
         LinearLayout footerLayout = (LinearLayout) view.findViewById(R.id.logout_view);
 
+        Button button = (Button)footerLayout.findViewById(R.id.logout_btn);
+        button.setOnClickListener(this);
+
         // Add the footer before the setAdapter() method
         mDrawerList.addFooterView(footerLayout);
 
-
         mDrawerList.setOnGroupClickListener(this);
         mDrawerList.setOnChildClickListener(this);
-
 
         // Set the adapter for the list view
         navigationAdapter = new AHAExpandableListAdapter(this, navigationItemArrayList);
@@ -270,5 +274,13 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getChild(groupPosition, childPosition);
         selectItem(navigationItem);
         return false;
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent;
+        intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

@@ -77,6 +77,7 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
         FeedDataEvent event = new FeedDataEvent(FeedDataEvent.FEED_DATA);
         event.setData(json);
         AHABusProvider.getInstance().post(event);
+
         if(progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
 
