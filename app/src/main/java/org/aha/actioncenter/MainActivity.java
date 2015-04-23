@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -91,6 +92,15 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ExpandableListView) findViewById(R.id.navigation_view);
+        mDrawerList.setGroupIndicator(null);
+
+        View view = getLayoutInflater().inflate(R.layout.navigation_logout_footer, null);
+
+        LinearLayout footerLayout = (LinearLayout) view.findViewById(R.id.logout_view);
+
+        // Add the footer before the setAdapter() method
+        mDrawerList.addFooterView(footerLayout);
+
 
         mDrawerList.setOnGroupClickListener(this);
         mDrawerList.setOnChildClickListener(this);
