@@ -3,11 +3,13 @@ package org.aha.actioncenter.views;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

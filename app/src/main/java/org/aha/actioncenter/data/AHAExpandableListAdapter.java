@@ -1,7 +1,6 @@
 package org.aha.actioncenter.data;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.NavigationItem;
 

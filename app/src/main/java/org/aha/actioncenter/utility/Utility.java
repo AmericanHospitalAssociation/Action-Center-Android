@@ -39,6 +39,9 @@ public class Utility {
     public static String ACTION_ALERT = "action-alert";
     public static String FACT_SHEET = "fact-sheet";
 
+    public static String WORKING_WITH_CONGRESS = "working-with-congress";
+    public static String CONGRESSIONAL_CALENDAR = "congressional-calendar";
+
     private Utility(){}
 
     public static Utility getInstance(){
@@ -78,6 +81,9 @@ public class Utility {
         ArrayList<FeedItem> actionAlert = new ArrayList<FeedItem>();
         ArrayList<FeedItem> factSheet = new ArrayList<FeedItem>();
 
+        ArrayList<FeedItem> workingWithCongress = new ArrayList<FeedItem>();
+        ArrayList<FeedItem> congressionalCalendar = new ArrayList<FeedItem>();
+
         for(int i=0; i < count; i++){
 
             gson = new Gson();
@@ -116,6 +122,13 @@ public class Utility {
             else if(item.ContentType.equals(FACT_SHEET)){
                 factSheet.add(item);
             }
+            else if(item.ContentType.equals(CONGRESSIONAL_CALENDAR)){
+                congressionalCalendar.add(item);
+            }
+            else if(item.ContentType.equals(WORKING_WITH_CONGRESS)){
+                workingWithCongress.add(item);
+            }
+
             Log.d(TAG, "Utility->parseFeedData");
         }
 
@@ -130,6 +143,8 @@ public class Utility {
         saveFeedData(ISSUE_PAPERS, issuePapers);
         saveFeedData(ACTION_ALERT, actionAlert);
         saveFeedData(FACT_SHEET, factSheet);
+        saveFeedData(WORKING_WITH_CONGRESS, workingWithCongress);
+        saveFeedData(CONGRESSIONAL_CALENDAR, congressionalCalendar);
 
         mDataLoaded = true;
     }

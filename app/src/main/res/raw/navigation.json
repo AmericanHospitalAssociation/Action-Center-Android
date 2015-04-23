@@ -8,8 +8,13 @@
                 {"name":"Advisory", "id":"advisory"},
                 {"name":"Letters", "id":"letter"},
                 {"name":"Testimony", "id":"testimony"},
-                {"name":"Take Action", "id":"take-action"},
                 {"name":"Additional Info", "id":"additional-info"}
+            ]},
+            {"id":"take-action","name":"Take Action", "subnav":[
+                {"name":"Contact Your Legislators", "id":"contact-your-legislators"},
+                {"name":"Working with Congress", "id":"working-with-congress"},
+                {"name":"Congressional Calendar", "id":"congressional-calendar"},
+                {"name":"Directory", "id":"directory"}
             ]},
             {"id":"events","name":"Events"},
             {"id":"twitter-feeds","name":"Twitter Feeds"}
