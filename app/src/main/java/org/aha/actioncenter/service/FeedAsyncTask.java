@@ -50,6 +50,7 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
             progressDialog.setTitle("American Hospital Association");
             progressDialog.setMessage("Loading Data...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
         }
     }

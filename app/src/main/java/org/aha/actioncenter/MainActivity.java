@@ -145,8 +145,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = new HomeFragment();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        setTitle("HOME");
-
+        setTitle("WELCOME");
 
     }
 

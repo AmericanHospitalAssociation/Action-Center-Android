@@ -1,14 +1,22 @@
 package org.aha.actioncenter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.squareup.otto.Subscribe;
+
+import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by markusmcgee on 4/23/15.
@@ -44,12 +52,40 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-        //SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
-        //boolean isValidLogin = prefs.getBoolean("login", false);
 
-        Intent intent;
-        intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        URL url = null;
+        try {
+            url = new URL(getResources().getString(R.string.feed_url));
+        }
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
+
+        FeedAsyncTask asyncTask = new FeedAsyncTask(url, getApplicationContext(), this);
+        asyncTask.execute();
+
+    }
+
+    //Subscribe to Feed data event.  This should probably listen only once then unregister it self.
+    //MainActivity should only be shown once?
+    @Subscribe
+    public void subscribeOnFeedDataEvent(FeedDataEvent event) {
+        try {
+            JSONArray jArray = null;
+            jArray = (JSONArray) event.getData().getJSONArray("FEED_PAYLOAD");
+            Utility.getInstance(getApplicationContext()).parseFeedData(jArray);
+
+            //SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
+            //boolean isValidLogin = prefs.getBoolean("login", false);
+
+            Intent intent;
+            intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
