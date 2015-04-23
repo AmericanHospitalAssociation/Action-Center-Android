@@ -1,7 +1,6 @@
 {"topnav":[
             {"id":"home","name":"Home"},
             {"id":"action-center","name":"Action Center", "subnav":[
-                {"name":"Latest Information", "id":"latest-information"},
                 {"name":"Action Alerts", "id":"action-alert"},
                 {"name":"Fact Sheets", "id":"issue-papers"},
                 {"name":"Special Bulletins", "id":"bulletin"},
