@@ -57,7 +57,7 @@ public class FactSheetListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isDataLoaded()) {
+        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData("action-alert");
             mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
@@ -101,7 +101,7 @@ public class FactSheetListFragment extends Fragment {
     @Subscribe
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isDataLoaded()) {
+        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData("action-alert");
             mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);

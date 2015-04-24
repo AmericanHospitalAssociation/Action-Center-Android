@@ -50,7 +50,7 @@ public class CongressionalCalendarFragment extends Fragment {
         mWebView = (WebView)view.findViewById(R.id.webview);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isDataLoaded()) {
+        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().CONGRESSIONAL_CALENDAR);
 
             String mLink = list.get(0).ResourceURI;
@@ -94,7 +94,7 @@ public class CongressionalCalendarFragment extends Fragment {
     @Subscribe
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isDataLoaded()) {
+        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().CONGRESSIONAL_CALENDAR);
         }
     }

@@ -1,10 +1,17 @@
 package org.aha.actioncenter.service;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.aha.actioncenter.events.EventsDataEvent;
+import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -23,6 +30,14 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
     private URL mUrl;
     private HttpURLConnection mConnection;
     private Context mContext;
+    private Activity activity;
+
+    private ProgressDialog progressDialog = null;
+
+    public EventsAsyncTask(URL url, Context context, Activity activity) {
+        this(url, context);
+        this.activity = activity;
+    }
 
     public EventsAsyncTask(URL url, Context context) {
         this.mContext = context;
@@ -30,20 +45,54 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String events) {
-        super.onPostExecute(events);
+    protected void onPreExecute() {
+        super.onPreExecute();
 
-        Log.d(TAG, events);
-
-        String FILENAME = "events.txt";
-        try {
-            FileOutputStream fos = mContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            fos.write(events.getBytes());
-            fos.close();
+        if (!Utility.getInstance(mContext).isNetworkAvailable(activity)) {
+            cancel(true);
         }
-        catch (IOException e) {
+
+        if (!isCancelled()) {
+            if (activity != null) {
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setTitle("American Hospital Association");
+                progressDialog.setMessage("Loading Data...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+            }
+        }
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
+
+        progressDialog = null;
+    }
+
+
+    @Override
+    protected void onPostExecute(String feed) {
+        super.onPostExecute(feed);
+
+        JSONObject json = null;
+
+        try {
+            json = new JSONObject(feed);
+        }
+        catch (JSONException e) {
             e.printStackTrace();
         }
+
+        EventsDataEvent event = new EventsDataEvent(EventsDataEvent.EVENTS_DATA);
+        event.setData(json);
+        AHABusProvider.getInstance().post(event);
+
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
 
     }
 

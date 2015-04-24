@@ -6,31 +6,23 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.TableLayout;
 
 import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.data.ActionAlertFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.service.FeedAsyncTask;
-import org.aha.actioncenter.service.PdfDownloadAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -126,7 +118,7 @@ public class WorkingWithCongressFragment extends Fragment {
     @Subscribe
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
         // specify an adapter (see also next example)
-        if (Utility.getInstance(mContext).isDataLoaded()) {
+        if (Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().WORKING_WITH_CONGRESS);
         }
     }

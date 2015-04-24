@@ -59,7 +59,7 @@ public class ActionAlertListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isDataLoaded()) {
+        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ACTION_ALERT);
             mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
@@ -103,7 +103,7 @@ public class ActionAlertListFragment extends Fragment {
     @Subscribe
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isDataLoaded()) {
+        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ACTION_ALERT);
             mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);

@@ -33,6 +33,7 @@ import org.aha.actioncenter.views.ActionAlertListFragment;
 import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
 import org.aha.actioncenter.views.CongressionalCalendarFragment;
+import org.aha.actioncenter.views.EventsListFragment;
 import org.aha.actioncenter.views.FactSheetListFragment;
 import org.aha.actioncenter.views.HomeFragment;
 import org.aha.actioncenter.views.LetterListFragment;
@@ -220,6 +221,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new CongressionalCalendarFragment();
         if (item.id.equals(Utility.getInstance().WORKING_WITH_CONGRESS))
             fragment = new WorkingWithCongressFragment();
+        if (item.id.equals(Utility.getInstance().EVENTS))
+            fragment = new EventsListFragment();
         if (fragment != null) {
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -266,7 +269,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long id) {
         Log.d(TAG, "onGroupClick");
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getGroup(groupPosition);
-        if (navigationItem.id.equals(Utility.getInstance().HOME)) {
+        if (navigationItem.id.equals(Utility.getInstance().HOME) || navigationItem.id.equals(Utility.getInstance().EVENTS)) {
             selectItem(navigationItem);
         }
         return false;

@@ -2,13 +2,16 @@ package org.aha.actioncenter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.squareup.otto.Subscribe;
 
+import org.aha.actioncenter.events.EventsDataEvent;
 import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.service.EventsAsyncTask;
 import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -52,18 +55,28 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-
-        URL url = null;
+        URL feed_url = null;
+        URL events_url = null;
         try {
-            url = new URL(getResources().getString(R.string.feed_url));
+            feed_url = new URL(getResources().getString(R.string.feed_url));
+
+            FeedAsyncTask feedAsync = new FeedAsyncTask(feed_url, getApplicationContext(), this);
+            //feedAsync.execute();
+            feedAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            events_url = new URL(getResources().getString(R.string.events_url));
+
+            //No object container will be listening for EventData events just yet.
+            EventsAsyncTask eventAsync = new EventsAsyncTask(events_url, getApplicationContext(), this);
+            //eventAsync.execute();
+            eventAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
         }
         catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
 
-        FeedAsyncTask asyncTask = new FeedAsyncTask(url, getApplicationContext(), this);
-        asyncTask.execute();
+
 
     }
 
@@ -79,9 +92,33 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             //SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
             //boolean isValidLogin = prefs.getBoolean("login", false);
 
-            Intent intent;
-            intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded()) {
+                Intent intent;
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void subscribeOnEventDataEvent(EventsDataEvent event) {
+        try {
+            JSONArray jArray = null;
+            jArray = (JSONArray) event.getData().getJSONArray("items");
+            Utility.getInstance(getApplicationContext()).parseEventData(jArray);
+
+            //SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
+            //boolean isValidLogin = prefs.getBoolean("login", false);
+
+            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded()) {
+                Intent intent;
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
 
         }
         catch (JSONException e) {

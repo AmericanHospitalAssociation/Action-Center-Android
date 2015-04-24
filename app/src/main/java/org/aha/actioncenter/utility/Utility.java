@@ -12,6 +12,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.aha.actioncenter.models.EventItem;
 import org.aha.actioncenter.models.FeedItem;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +29,8 @@ public class Utility {
     private static final Utility INSTANCE = new Utility();
     private static final String TAG = "Utility";
     private static Context mContext;
-    private static boolean mDataLoaded = false;
+    private static boolean mFeedDataLoaded = false;
+    private static boolean mEventDataLoaded = false;
 
     public static String HOME = "home";
     public static String ACTION_CENTER = "action-center";
@@ -41,6 +43,8 @@ public class Utility {
     public static String ISSUE_PAPERS = "issue-papers";
     public static String ACTION_ALERT = "action-alert";
     public static String FACT_SHEET = "fact-sheet";
+
+    public static String EVENTS = "events";
 
     public static String WORKING_WITH_CONGRESS = "working-with-congress";
     public static String CONGRESSIONAL_CALENDAR = "congressional-calendar";
@@ -95,7 +99,7 @@ public class Utility {
         Gson gson = null;
         int count = jArray.length();
 
-        mDataLoaded = false;
+        mFeedDataLoaded = false;
 
         ArrayList<FeedItem> additionalInfo = new ArrayList<FeedItem>();
         ArrayList<FeedItem> letter = new ArrayList<FeedItem>();
@@ -172,7 +176,39 @@ public class Utility {
         saveFeedData(WORKING_WITH_CONGRESS, workingWithCongress);
         saveFeedData(CONGRESSIONAL_CALENDAR, congressionalCalendar);
 
-        mDataLoaded = true;
+        mFeedDataLoaded = true;
+    }
+
+    public void parseEventData(JSONArray jArray) {
+
+        Gson gson = null;
+        int count = jArray.length();
+
+        mEventDataLoaded = false;
+
+        ArrayList<EventItem> events = new ArrayList<EventItem>();
+
+        for (int i = 0; i < count; i++) {
+
+            gson = new Gson();
+            EventItem item = null;
+            try {
+                item = gson.fromJson(jArray.get(i).toString(), EventItem.class);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+                events.add(item);
+
+            Log.d(TAG, "Utility->parseEventData");
+        }
+
+        Log.d(TAG, "Utility");
+
+        saveEventData(EVENTS, events);
+
+        mEventDataLoaded = true;
     }
 
     private void saveFeedData(String dataName, List<FeedItem> list) {
@@ -195,6 +231,27 @@ public class Utility {
 
     }
 
+    private void saveEventData(String dataName, List<EventItem> list) {
+
+        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Gson gson = new Gson();
+
+        if (list.size() > 0) {
+            editor.putString(dataName, gson.toJson(list));
+        }
+        else {
+            editor.putString(dataName, "");
+        }
+
+        editor.apply();
+
+        Log.d(TAG, "Utility->saveEventData");
+
+    }
+
+
     public List<FeedItem> getFeedData(String dataName) {
 
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
@@ -212,8 +269,29 @@ public class Utility {
         return list;
     }
 
-    public boolean isDataLoaded() {
-        return mDataLoaded;
+    public List<EventItem> getEventData(String dataName) {
+
+        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
+        String dataString = prefs.getString(dataName, "");
+
+        Gson gson = new Gson();
+
+        Type eventItemArrayListType = new TypeToken<ArrayList<EventItem>>() {
+        }.getType();
+
+        ArrayList<EventItem> list = gson.fromJson(dataString, eventItemArrayListType);
+
+        Log.d(TAG, "Utility->getEventData");
+
+        return list;
+    }
+
+    public boolean isFeedDataLoaded() {
+        return mFeedDataLoaded;
+    }
+
+    public boolean isEventDataLoaded() {
+        return mEventDataLoaded;
     }
 
 

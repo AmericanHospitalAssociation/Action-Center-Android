@@ -14,9 +14,9 @@ import android.widget.TableLayout;
 import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.data.ActionAlertFeedAdapter;
+import org.aha.actioncenter.data.EventsFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
-import org.aha.actioncenter.models.FeedItem;
+import org.aha.actioncenter.models.EventItem;
 import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -28,10 +28,11 @@ import java.util.List;
 /**
  * Created by markusmcgee on 4/17/15.
  */
-public class AdvisoryListFragment extends Fragment {
-    private static final String TAG = "AdvisoryListFragment";
+public class EventsListFragment extends Fragment {
+
+    private static final String TAG = "EventsListFragment";
     private TableLayout feedTable;
-    private List<FeedItem> list;
+    private List<EventItem> list;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -42,11 +43,11 @@ public class AdvisoryListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mContext = getActivity().getApplicationContext();
-        View view = inflater.inflate(R.layout.feed_layout_view, container, false);
+        View view = inflater.inflate(R.layout.event_layout_view, container, false);
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.feed_recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.event_recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -57,9 +58,9 @@ public class AdvisoryListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ADVISORY);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+        if(Utility.getInstance(mContext).isEventDataLoaded()) {
+            list = Utility.getInstance(mContext).getEventData(Utility.getInstance().EVENTS);
+            mAdapter = new EventsFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
 
@@ -71,7 +72,7 @@ public class AdvisoryListFragment extends Fragment {
         super.onResume();
         AHABusProvider.getInstance().register(this);
 
-        list = Utility.getInstance(mContext).getFeedData("action-alert");
+        list = Utility.getInstance(mContext).getEventData("events");
     }
 
     @Override
@@ -80,15 +81,9 @@ public class AdvisoryListFragment extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //AHABusProvider.getInstance().unregister(this);
-    }
-
     private void refreshFeedData() {
         try {
-            URL url = new URL(getResources().getString(R.string.feed_url));
+            URL url = new URL(getResources().getString(R.string.events_url));
             FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
             feedAsync.execute();
         }
@@ -101,10 +96,11 @@ public class AdvisoryListFragment extends Fragment {
     @Subscribe
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ADVISORY);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+        if(Utility.getInstance(mContext).isEventDataLoaded()) {
+            list = Utility.getInstance(mContext).getEventData(Utility.getInstance().EVENTS);
+            mAdapter = new EventsFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
+
 }
