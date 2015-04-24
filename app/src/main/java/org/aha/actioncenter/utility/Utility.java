@@ -1,6 +1,9 @@
 package org.aha.actioncenter.utility;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -22,7 +25,7 @@ import java.util.List;
  */
 public class Utility {
 
-    private static final Utility INSTANCE  = new Utility();
+    private static final Utility INSTANCE = new Utility();
     private static final String TAG = "Utility";
     private static Context mContext;
     private static boolean mDataLoaded = false;
@@ -41,16 +44,39 @@ public class Utility {
 
     public static String WORKING_WITH_CONGRESS = "working-with-congress";
     public static String CONGRESSIONAL_CALENDAR = "congressional-calendar";
+    private Activity mActivity;
 
-    private Utility(){}
+    private Utility() {
+    }
 
-    public static Utility getInstance(){
+    public static Utility getInstance() {
         return INSTANCE;
     }
 
-    public static Utility getInstance(Context context){
+    public static Utility getInstance(Context context) {
         mContext = context;
         return INSTANCE;
+    }
+
+    public boolean isNetworkAvailable(Activity activity) {
+        mActivity = activity;
+        boolean mIsNetworkAvailable = false;
+        mIsNetworkAvailable = isNetworkAvailable();
+        if (!mIsNetworkAvailable) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+            builder.setTitle("My Title");
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    //TODO
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        }
+        return mIsNetworkAvailable;
+
     }
 
     public boolean isNetworkAvailable() {
@@ -64,7 +90,7 @@ public class Utility {
         return false;
     }
 
-    public void parseFeedData(JSONArray jArray){
+    public void parseFeedData(JSONArray jArray) {
 
         Gson gson = null;
         int count = jArray.length();
@@ -84,7 +110,7 @@ public class Utility {
         ArrayList<FeedItem> workingWithCongress = new ArrayList<FeedItem>();
         ArrayList<FeedItem> congressionalCalendar = new ArrayList<FeedItem>();
 
-        for(int i=0; i < count; i++){
+        for (int i = 0; i < count; i++) {
 
             gson = new Gson();
             FeedItem item = null;
@@ -95,37 +121,37 @@ public class Utility {
                 e.printStackTrace();
             }
 
-            if(item.ContentType.equals(ADDITIONAL_INFO)){
+            if (item.ContentType.equals(ADDITIONAL_INFO)) {
                 additionalInfo.add(item);
             }
-            else if(item.ContentType.equals(LETTER)){
+            else if (item.ContentType.equals(LETTER)) {
                 letter.add(item);
             }
-            else if(item.ContentType.equals(PRESS_RELEASE)){
+            else if (item.ContentType.equals(PRESS_RELEASE)) {
                 pressRelease.add(item);
             }
-            else if(item.ContentType.equals(TESTIMONY)){
-               testimony.add(item);
+            else if (item.ContentType.equals(TESTIMONY)) {
+                testimony.add(item);
             }
-            else if(item.ContentType.equals(ADVISORY)){
+            else if (item.ContentType.equals(ADVISORY)) {
                 advisory.add(item);
             }
-            else if(item.ContentType.equals(BULLETIN)){
+            else if (item.ContentType.equals(BULLETIN)) {
                 bulletin.add(item);
             }
-            else if(item.ContentType.equals(ISSUE_PAPERS)){
+            else if (item.ContentType.equals(ISSUE_PAPERS)) {
                 issuePapers.add(item);
             }
-            else if(item.ContentType.equals(ACTION_ALERT)){
+            else if (item.ContentType.equals(ACTION_ALERT)) {
                 actionAlert.add(item);
             }
-            else if(item.ContentType.equals(FACT_SHEET)){
+            else if (item.ContentType.equals(FACT_SHEET)) {
                 factSheet.add(item);
             }
-            else if(item.ContentType.equals(CONGRESSIONAL_CALENDAR)){
+            else if (item.ContentType.equals(CONGRESSIONAL_CALENDAR)) {
                 congressionalCalendar.add(item);
             }
-            else if(item.ContentType.equals(WORKING_WITH_CONGRESS)){
+            else if (item.ContentType.equals(WORKING_WITH_CONGRESS)) {
                 workingWithCongress.add(item);
             }
 
@@ -149,14 +175,14 @@ public class Utility {
         mDataLoaded = true;
     }
 
-    private void saveFeedData(String dataName, List<FeedItem> list){
+    private void saveFeedData(String dataName, List<FeedItem> list) {
 
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
         Gson gson = new Gson();
 
-        if(list.size() > 0) {
+        if (list.size() > 0) {
             editor.putString(dataName, gson.toJson(list));
         }
         else {
@@ -169,14 +195,15 @@ public class Utility {
 
     }
 
-    public List<FeedItem> getFeedData(String dataName){
+    public List<FeedItem> getFeedData(String dataName) {
 
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
         String dataString = prefs.getString(dataName, "");
 
         Gson gson = new Gson();
 
-        Type feedItemArrayListType = new TypeToken<ArrayList<FeedItem>>(){}.getType();
+        Type feedItemArrayListType = new TypeToken<ArrayList<FeedItem>>() {
+        }.getType();
 
         ArrayList<FeedItem> list = gson.fromJson(dataString, feedItemArrayListType);
 
@@ -185,7 +212,7 @@ public class Utility {
         return list;
     }
 
-    public boolean isDataLoaded(){
+    public boolean isDataLoaded() {
         return mDataLoaded;
     }
 
@@ -193,6 +220,6 @@ public class Utility {
     public boolean hasData(String dataName) {
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
         String dataString = prefs.getString(dataName, "");
-        return dataString.length()>0;
+        return dataString.length() > 0;
     }
 }

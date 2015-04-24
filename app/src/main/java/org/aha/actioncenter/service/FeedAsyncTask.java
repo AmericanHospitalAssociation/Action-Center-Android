@@ -33,7 +33,7 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
     private ProgressDialog progressDialog = null;
 
     public FeedAsyncTask(URL url, Context context, Activity activity) {
-        this(url,context);
+        this(url, context);
         this.activity = activity;
     }
 
@@ -45,21 +45,30 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if(activity != null) {
-            progressDialog = new ProgressDialog(activity);
-            progressDialog.setTitle("American Hospital Association");
-            progressDialog.setMessage("Loading Data...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+
+        if (!Utility.getInstance(mContext).isNetworkAvailable(activity)) {
+            cancel(true);
+        }
+
+        if (!isCancelled()) {
+            if (activity != null) {
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setTitle("American Hospital Association");
+                progressDialog.setMessage("Loading Data...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+            }
         }
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        if(progressDialog != null && progressDialog.isShowing())
+        if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
+
+        progressDialog = null;
     }
 
     @Override
@@ -79,28 +88,28 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
         event.setData(json);
         AHABusProvider.getInstance().post(event);
 
-        if(progressDialog != null && progressDialog.isShowing())
+        if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
 
     }
 
     @Override
     protected String doInBackground(Void... voids) {
-        if (!Utility.getInstance(mContext).isNetworkAvailable()) {
-            return "";
-        }
 
         try {
-            mConnection = (HttpURLConnection) mUrl.openConnection();
-            InputStream in = new BufferedInputStream(mConnection.getInputStream());
-            String output = readStream(in);
-            return output;
+            if (!isCancelled()) {
+                mConnection = (HttpURLConnection) mUrl.openConnection();
+                InputStream in = new BufferedInputStream(mConnection.getInputStream());
+                String output = readStream(in);
+                return output;
+            }
         }
         catch (IOException e) {
             e.printStackTrace();
         }
         finally {
-            mConnection.disconnect();
+            if (mConnection != null)
+                mConnection.disconnect();
         }
         return "";
     }
