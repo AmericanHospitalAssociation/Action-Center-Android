@@ -32,11 +32,13 @@ import org.aha.actioncenter.utility.Utility;
 import org.aha.actioncenter.views.ActionAlertListFragment;
 import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
+import org.aha.actioncenter.views.CongressionalCalendarFragment;
 import org.aha.actioncenter.views.FactSheetListFragment;
 import org.aha.actioncenter.views.HomeFragment;
 import org.aha.actioncenter.views.LetterListFragment;
 import org.aha.actioncenter.views.SpecialBulletins;
 import org.aha.actioncenter.views.TestimonyListFragment;
+import org.aha.actioncenter.views.WorkingWithCongressFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -214,7 +216,10 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new TestimonyListFragment();
         if (item.id.equals(Utility.getInstance().ADDITIONAL_INFO))
             fragment = new AdditionalInfoListFragment();
-
+        if (item.id.equals(Utility.getInstance().CONGRESSIONAL_CALENDAR))
+            fragment = new CongressionalCalendarFragment();
+        if (item.id.equals(Utility.getInstance().WORKING_WITH_CONGRESS))
+            fragment = new WorkingWithCongressFragment();
         if (fragment != null) {
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
