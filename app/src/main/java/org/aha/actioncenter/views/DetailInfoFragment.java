@@ -1,6 +1,7 @@
 package org.aha.actioncenter.views;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -21,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
 
 import java.lang.reflect.Type;
 
@@ -48,8 +50,11 @@ public class DetailInfoFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.close_detail_action) {
-            //getFragmentManager().popBackStack();
-            return true;
+
+            getFragmentManager().popBackStack();
+            getFragmentManager().beginTransaction().remove(this);
+
+            //return true;
         }
         return super.onOptionsItemSelected(item);
     }
