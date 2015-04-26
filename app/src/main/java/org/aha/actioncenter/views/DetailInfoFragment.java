@@ -52,7 +52,7 @@ public class DetailInfoFragment extends Fragment {
         if (id == R.id.close_detail_action) {
 
             getFragmentManager().popBackStack();
-            getFragmentManager().beginTransaction().remove(this);
+            //getFragmentManager().beginTransaction().remove(this);
 
             //return true;
         }

@@ -147,7 +147,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
 
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = new HomeFragment();
-        fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(null).commit();
+        fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(Utility.getInstance().HOME).commit();
 
         setTitle("WELCOME");
 
@@ -226,7 +226,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new EventsListFragment();
         if (fragment != null) {
 
-            fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(null).commit();
+            fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(item.id).commit();
 
             // Highlight the selected item, update the title, and close the drawer
             //mDrawerList.setItemChecked(position, true);
