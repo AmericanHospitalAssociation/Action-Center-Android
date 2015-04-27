@@ -58,7 +58,7 @@ public class FactSheetListFragment extends Fragment {
 
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData("action-alert");
+            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().FACT_SHEET);
             mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
@@ -71,7 +71,7 @@ public class FactSheetListFragment extends Fragment {
         super.onResume();
         AHABusProvider.getInstance().register(this);
 
-        list = Utility.getInstance(mContext).getFeedData("action-alert");
+        list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().FACT_SHEET);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class FactSheetListFragment extends Fragment {
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData("action-alert");
+            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().FACT_SHEET);
             mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }

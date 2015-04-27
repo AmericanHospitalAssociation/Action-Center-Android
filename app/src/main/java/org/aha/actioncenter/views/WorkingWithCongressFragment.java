@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,10 @@ import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.service.FeedAsyncTask;
+import org.aha.actioncenter.service.PdfDownloadAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
@@ -55,6 +58,15 @@ public class WorkingWithCongressFragment extends Fragment {
         list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().WORKING_WITH_CONGRESS);
 
 
+        try {
+            new PdfDownloadAsyncTask(new URL(list.get(0).ResourceURI), mContext, getActivity()).execute();
+        }
+        catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+/*
+
         String mUrl = "http://docs.google.com/gview?embedded=true&url=" + list.get(0).ResourceURI;
 
 
@@ -85,6 +97,7 @@ public class WorkingWithCongressFragment extends Fragment {
 
         }
 
+*/
 
         return view;
     }
@@ -123,4 +136,7 @@ public class WorkingWithCongressFragment extends Fragment {
         }
     }
 
+    public void subscribeOnPDFDownload(PdfDataEvent event){
+        Log.d(TAG, "Loaded");
+    }
 }

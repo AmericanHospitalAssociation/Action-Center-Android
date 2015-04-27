@@ -24,5 +24,6 @@
     <string name="logout">Logout</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="logout_txt">Logout</string>
+    <string name="empty"/>
 
 </resources>

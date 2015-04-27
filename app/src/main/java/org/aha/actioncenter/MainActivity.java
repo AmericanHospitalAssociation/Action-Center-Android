@@ -39,6 +39,7 @@ import org.aha.actioncenter.views.HomeFragment;
 import org.aha.actioncenter.views.LetterListFragment;
 import org.aha.actioncenter.views.SpecialBulletins;
 import org.aha.actioncenter.views.TestimonyListFragment;
+import org.aha.actioncenter.views.TwitterFeedListFragment;
 import org.aha.actioncenter.views.WorkingWithCongressFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -224,6 +225,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new WorkingWithCongressFragment();
         if (item.id.equals(Utility.getInstance().EVENTS))
             fragment = new EventsListFragment();
+        if (item.id.equals(Utility.getInstance().TWITTER_FEEDS))
+            fragment = new TwitterFeedListFragment();
         if (fragment != null) {
 
             fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(item.id).commit();
@@ -270,7 +273,11 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long id) {
         Log.d(TAG, "onGroupClick");
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getGroup(groupPosition);
-        if (navigationItem.id.equals(Utility.getInstance().HOME) || navigationItem.id.equals(Utility.getInstance().EVENTS)) {
+        if (navigationItem.id.equals(Utility.getInstance().HOME) ||
+            navigationItem.id.equals(Utility.getInstance().EVENTS) ||
+            navigationItem.id.equals(Utility.getInstance().TWITTER_FEEDS)
+            )
+        {
             selectItem(navigationItem);
         }
         return false;

@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.crashlytics.android.Crashlytics;
 import com.squareup.otto.Subscribe;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import org.aha.actioncenter.events.EventsDataEvent;
 import org.aha.actioncenter.events.FeedDataEvent;
@@ -20,6 +23,8 @@ import org.json.JSONException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by markusmcgee on 4/23/15.

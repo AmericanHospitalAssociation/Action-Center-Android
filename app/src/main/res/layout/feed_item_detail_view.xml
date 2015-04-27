@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:singleLine="false"
-                    android:text="FEED ITEM"/>
+                    />
 
                 <TextView
                     android:id="@+id/resource_uri_txt"
@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:singleLine="false"
-                    android:text="FEED ITEM"/>
+                    />
 
             </LinearLayout>
 

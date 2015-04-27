@@ -4,19 +4,17 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Environment;
 
-import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.apache.commons.io.FilenameUtils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -34,7 +32,7 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
     private ProgressDialog progressDialog = null;
 
     public PdfDownloadAsyncTask(URL url, Context context, Activity activity) {
-        this(url,context);
+        this(url, context);
         this.activity = activity;
     }
 
@@ -46,7 +44,7 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if(activity != null) {
+        if (activity != null) {
             progressDialog = new ProgressDialog(activity);
             progressDialog.setTitle("American Hospital Association");
             progressDialog.setMessage("Loading Data...");
@@ -59,7 +57,7 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        if(progressDialog != null && progressDialog.isShowing())
+        if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
     }
 
@@ -67,11 +65,10 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String feed) {
         super.onPostExecute(feed);
 
-
         PdfDataEvent event = new PdfDataEvent(PdfDataEvent.DOWNLOAD_DONE);
         AHABusProvider.getInstance().post(event);
 
-        if(progressDialog != null && progressDialog.isShowing())
+        if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
 
     }
@@ -84,9 +81,34 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
 
         try {
             mConnection = (HttpURLConnection) mUrl.openConnection();
-            InputStream in = new BufferedInputStream(mConnection.getInputStream());
-            String output = readStream(in);
-            return output;
+
+            String fileName = FilenameUtils.getName(mUrl.toString());
+
+            String externalStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+
+            File outputFile = new File(externalStorage.toString(), fileName);
+
+            try {
+                outputFile.createNewFile();
+            }
+            catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+            FileOutputStream fos = new FileOutputStream(outputFile);
+            InputStream is = mConnection.getInputStream();
+            byte[] buffer = new byte[1024];
+            int len1 = 0;
+            while ((len1 = is.read(buffer)) != -1) {
+                fos.write(buffer, 0, len1);
+            }
+            fos.flush();
+            fos.close();
+            is.close();
+
+            String retVal = outputFile.getAbsolutePath();
+
+            return retVal;
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -95,16 +117,6 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
             mConnection.disconnect();
         }
         return "";
-    }
-
-    public static String readStream(InputStream in) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        BufferedReader r = new BufferedReader(new InputStreamReader(in), 1000);
-        for (String line = r.readLine(); line != null; line = r.readLine()) {
-            sb.append(line);
-        }
-        in.close();
-        return sb.toString();
     }
 
 }

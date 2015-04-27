@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:singleLine="false"
-                    android:text="FEED ITEM"/>
+                    />
 
             </LinearLayout>
 
@@ -78,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:singleLine="false"
-                    android:text="FEED ITEM"/>
+                    />
 
             </LinearLayout>
 
@@ -102,7 +102,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:singleLine="false"
-                    android:text="FEED ITEM"/>
+                    />
 
             </LinearLayout>
 
@@ -125,8 +125,7 @@
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:singleLine="false"
-                    android:text="FEED ITEM"/>
+                    android:singleLine="false"/>
 
             </LinearLayout>
         </LinearLayout>

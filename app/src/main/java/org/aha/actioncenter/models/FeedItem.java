@@ -17,4 +17,5 @@ public class FeedItem {
     public String Why = "";
     public String ActionFrom = "";
     public String ActionNeeded = "";
+    public String box_link_dir = "";
 }

@@ -40,9 +40,9 @@ public class Utility {
     public static String TESTIMONY = "testimony";
     public static String ADVISORY = "advisory";
     public static String BULLETIN = "bulletin";
-    public static String ISSUE_PAPERS = "issue-papers";
     public static String ACTION_ALERT = "action-alert";
-    public static String FACT_SHEET = "fact-sheet";
+    public static String FACT_SHEET = "issue-papers";
+    public static String TWITTER_FEEDS = "twitter-feeds";
 
     public static String EVENTS = "events";
 
@@ -143,9 +143,6 @@ public class Utility {
             else if (item.ContentType.equals(BULLETIN)) {
                 bulletin.add(item);
             }
-            else if (item.ContentType.equals(ISSUE_PAPERS)) {
-                issuePapers.add(item);
-            }
             else if (item.ContentType.equals(ACTION_ALERT)) {
                 actionAlert.add(item);
             }
@@ -170,7 +167,6 @@ public class Utility {
         saveFeedData(TESTIMONY, testimony);
         saveFeedData(ADVISORY, advisory);
         saveFeedData(BULLETIN, bulletin);
-        saveFeedData(ISSUE_PAPERS, issuePapers);
         saveFeedData(ACTION_ALERT, actionAlert);
         saveFeedData(FACT_SHEET, factSheet);
         saveFeedData(WORKING_WITH_CONGRESS, workingWithCongress);

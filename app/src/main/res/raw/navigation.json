@@ -16,6 +16,7 @@
                 {"name":"Directory", "id":"directory"}
             ]},
             {"id":"events","name":"Events"},
-            {"id":"twitter-feeds","name":"Twitter Feeds"}
+            {"id":"twitter-feeds","name":"Twitter Feeds"},
+            {"id":"aha-news","name":"AHA News"}
     ]
 }
