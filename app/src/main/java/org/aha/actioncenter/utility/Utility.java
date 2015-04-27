@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -48,6 +50,9 @@ public class Utility {
 
     public static String WORKING_WITH_CONGRESS = "working-with-congress";
     public static String CONGRESSIONAL_CALENDAR = "congressional-calendar";
+
+    public static final String MIME_TYPE_PDF = "application/pdf";
+
     private Activity mActivity;
 
     private Utility() {
@@ -295,5 +300,17 @@ public class Utility {
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
         String dataString = prefs.getString(dataName, "");
         return dataString.length() > 0;
+    }
+
+
+    public static boolean canDisplayPdf(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        Intent testIntent = new Intent(Intent.ACTION_VIEW);
+        testIntent.setType(MIME_TYPE_PDF);
+        if (packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

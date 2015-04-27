@@ -21,6 +21,7 @@ import com.twitter.sdk.android.tweetui.LoadCallback;
 import com.twitter.sdk.android.tweetui.TweetViewAdapter;
 import com.twitter.sdk.android.tweetui.TweetViewFetchAdapter;
 
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.data.ActionAlertFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
@@ -76,4 +77,8 @@ public class TwitterFeedListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

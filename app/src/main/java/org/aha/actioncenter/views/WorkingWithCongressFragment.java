@@ -1,15 +1,19 @@
 package org.aha.actioncenter.views;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -17,11 +21,11 @@ import android.widget.TableLayout;
 
 import com.squareup.otto.Subscribe;
 
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.models.FeedItem;
-import org.aha.actioncenter.service.FeedAsyncTask;
+import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.service.PdfDownloadAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -40,6 +44,8 @@ public class WorkingWithCongressFragment extends Fragment {
     private TableLayout feedTable;
     private List<FeedItem> list;
     private Context mContext = null;
+    private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
 
     @Nullable
     @Override
@@ -65,40 +71,6 @@ public class WorkingWithCongressFragment extends Fragment {
             e.printStackTrace();
         }
 
-/*
-
-        String mUrl = "http://docs.google.com/gview?embedded=true&url=" + list.get(0).ResourceURI;
-
-
-        PackageManager packageManager = getActivity().getPackageManager();
-        Intent intent = new Intent(Intent.ACTION_VIEW)
-                .setType("application/pdf");
-        List<ResolveInfo> intentList = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-
-        if (intentList.size() > 0) {
-            // Happy days a PDF reader exists
-            intent = new Intent(Intent.ACTION_VIEW)
-                    .setData(Uri.parse(list.get(0).ResourceURI));
-            startActivity(intent);
-        } else {
-            // No PDF reader, ask the user to download one first
-            // or just open it in their browser like this
-            //intent = new Intent(Intent.ACTION_VIEW)
-            //        .setData(Uri.parse(mUrl));
-            //startActivity(intent);
-
-            mWebView.getSettings().setSupportZoom(true);
-            mWebView.getSettings().setAllowFileAccess(true);
-            mWebView.getSettings().setAppCacheEnabled(true);
-            mWebView.getSettings().setBuiltInZoomControls(true);
-            mWebView.getSettings().setJavaScriptEnabled(true);
-            mWebView.loadUrl(mUrl);
-
-
-        }
-
-*/
-
         return view;
     }
 
@@ -114,29 +86,69 @@ public class WorkingWithCongressFragment extends Fragment {
     public void onPause() {
         super.onPause();
         AHABusProvider.getInstance().unregister(this);
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 
-    private void refreshFeedData() {
-        try {
-            URL url = new URL(getResources().getString(R.string.feed_url));
-            FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
-            feedAsync.execute();
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.detail_menu, menu);
     }
 
-    //Subscribe to Feed data event.  If data comes in update view.
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.close_detail_action) {
+            getFragmentManager().popBackStack();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Subscribe
-    public void subscribeOnFeedDataEvent(FeedDataEvent event) {
-        // specify an adapter (see also next example)
-        if (Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().WORKING_WITH_CONGRESS);
+    public void subscribeOnPDFDownload(PdfDataEvent event) {
+
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle("American Hospital Association");
+        progressDialog.setMessage("Opening Download ...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        if (Utility.getInstance().canDisplayPdf(mContext)) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setDataAndType(Uri.parse(event.getDataString()), "application/pdf");
+                startActivity(intent);
+                progressDialog.dismiss();
+            }
+            catch (ActivityNotFoundException e) {
+                progressDialog.dismiss();
+
+
+                new AlertDialog.Builder(getActivity()).setTitle("American Hospital Association").setMessage("PDF error.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        progressDialog.dismiss();
+                        getFragmentManager().popBackStack();
+                    }
+                }).show();
+
+            }
+        }
+        else {
+            progressDialog.dismiss();
+
+            new AlertDialog.Builder(getActivity()).setTitle("American Hospital Association").setMessage("No PDF viewer installed.  Please download pdf viewer from Google Play Store.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    progressDialog.dismiss();
+                    getFragmentManager().popBackStack();
+                }
+            }).show();
+
         }
     }
 
-    public void subscribeOnPDFDownload(PdfDataEvent event){
-        Log.d(TAG, "Loaded");
-    }
+
 }

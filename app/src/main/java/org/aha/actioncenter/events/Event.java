@@ -10,6 +10,7 @@ public class Event {
     protected String message = "DEFAULT MESSAGE";
     protected String className = "";
     protected JSONObject data = null;
+    protected String dataString = "";
 
 
     public String getMessage() {
@@ -27,8 +28,16 @@ public class Event {
         return data;
     }
 
+    public String getDataString(){
+        return dataString;
+    }
+
     public void setData(JSONObject data) {
         this.data = data;
+    }
+
+    public void setData(String val){
+        this.dataString = val;
     }
 
     public boolean dataIsNull() {

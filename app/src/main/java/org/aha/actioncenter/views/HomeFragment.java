@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
 
 /**
  * Created by markusmcgee on 4/22/15.
@@ -44,4 +46,6 @@ public class HomeFragment extends Fragment {
         AHABusProvider.getInstance().register(this);
         super.onResume();
     }
+
+
 }

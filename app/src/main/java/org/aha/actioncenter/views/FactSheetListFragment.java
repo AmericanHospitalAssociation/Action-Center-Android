@@ -13,6 +13,7 @@ import android.widget.TableLayout;
 
 import com.squareup.otto.Subscribe;
 
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.data.ActionAlertFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
@@ -70,7 +71,6 @@ public class FactSheetListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-
         list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().FACT_SHEET);
     }
 

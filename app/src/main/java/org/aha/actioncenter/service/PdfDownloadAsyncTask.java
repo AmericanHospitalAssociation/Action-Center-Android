@@ -47,7 +47,7 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
         if (activity != null) {
             progressDialog = new ProgressDialog(activity);
             progressDialog.setTitle("American Hospital Association");
-            progressDialog.setMessage("Loading Data...");
+            progressDialog.setMessage("Downloading PDF file ...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
@@ -62,10 +62,11 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String feed) {
-        super.onPostExecute(feed);
+    protected void onPostExecute(String fileLocation) {
+        super.onPostExecute(fileLocation);
 
         PdfDataEvent event = new PdfDataEvent(PdfDataEvent.DOWNLOAD_DONE);
+        event.setData(fileLocation);
         AHABusProvider.getInstance().post(event);
 
         if (progressDialog != null && progressDialog.isShowing())

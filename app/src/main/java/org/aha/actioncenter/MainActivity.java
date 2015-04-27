@@ -54,7 +54,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, View.OnClickListener {
+public class MainActivity extends ActionBarActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
@@ -105,7 +105,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
 
         LinearLayout footerLayout = (LinearLayout) view.findViewById(R.id.logout_view);
 
-        Button button = (Button)footerLayout.findViewById(R.id.logout_btn);
+        Button button = (Button) footerLayout.findViewById(R.id.logout_btn);
         button.setOnClickListener(this);
 
         // Add the footer before the setAdapter() method
@@ -148,7 +148,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
 
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = new HomeFragment();
-        fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(Utility.getInstance().HOME).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(Utility.getInstance().HOME).commit();
 
         setTitle("WELCOME");
 
@@ -229,6 +229,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new TwitterFeedListFragment();
         if (fragment != null) {
 
+            fragmentManager.addOnBackStackChangedListener(this);
             fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(item.id).commit();
 
             // Highlight the selected item, update the title, and close the drawer
@@ -274,10 +275,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         Log.d(TAG, "onGroupClick");
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getGroup(groupPosition);
         if (navigationItem.id.equals(Utility.getInstance().HOME) ||
-            navigationItem.id.equals(Utility.getInstance().EVENTS) ||
-            navigationItem.id.equals(Utility.getInstance().TWITTER_FEEDS)
-            )
-        {
+                navigationItem.id.equals(Utility.getInstance().EVENTS) ||
+                navigationItem.id.equals(Utility.getInstance().TWITTER_FEEDS)) {
             selectItem(navigationItem);
         }
         return false;
@@ -297,5 +296,50 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackStackChanged() {
+
+
+        Fragment fragment = getFragment();
+
+        if (fragment instanceof HomeFragment)
+            setTitle("Welcome");
+        if (fragment instanceof ActionAlertListFragment)
+            setTitle("Action Alert");
+        if (fragment instanceof FactSheetListFragment)
+            setTitle("Fact Sheet");
+        if (fragment instanceof SpecialBulletins)
+            setTitle("Special Bulletins");
+        if (fragment instanceof AdvisoryListFragment)
+            setTitle("Advisory");
+        if (fragment instanceof LetterListFragment)
+            setTitle("Letters");
+        if (fragment instanceof TestimonyListFragment)
+            setTitle("Testimony");
+        if (fragment instanceof AdditionalInfoListFragment)
+            setTitle("Additional Info");
+        if (fragment instanceof CongressionalCalendarFragment)
+            setTitle("Congressional Calendar");
+        if (fragment instanceof WorkingWithCongressFragment)
+            setTitle("Working with Congress");
+        if (fragment instanceof EventsListFragment)
+            setTitle("Events");
+        if (fragment instanceof TwitterFeedListFragment)
+            setTitle("Twitter Feed");
+
+
+        Log.d(TAG, "onBackStackChanged");
+    }
+
+    /**
+     * Returns the currently displayed fragment.
+     *
+     * @return Fragment or null.
+     */
+    private Fragment getFragment() {
+        Fragment fragment = getFragmentManager().findFragmentById(R.id.content_frame);
+        return fragment;
     }
 }
