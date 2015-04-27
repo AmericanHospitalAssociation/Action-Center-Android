@@ -301,7 +301,6 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     @Override
     public void onBackStackChanged() {
 
-
         Fragment fragment = getFragment();
 
         if (fragment instanceof HomeFragment)

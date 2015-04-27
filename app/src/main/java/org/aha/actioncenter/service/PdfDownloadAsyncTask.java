@@ -87,10 +87,14 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
 
             String externalStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
 
-            File outputFile = new File(externalStorage.toString(), fileName);
+            File outputFile = new File(externalStorage, fileName);
 
             try {
+                if(outputFile.exists())
+                    outputFile.delete();
+
                 outputFile.createNewFile();
+
             }
             catch (IOException e1) {
                 e1.printStackTrace();
@@ -107,7 +111,7 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
             fos.close();
             is.close();
 
-            String retVal = outputFile.getAbsolutePath();
+            String retVal = fileName;
 
             return retVal;
         }

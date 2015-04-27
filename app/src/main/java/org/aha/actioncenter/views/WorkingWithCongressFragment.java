@@ -9,7 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,15 +23,14 @@ import android.widget.TableLayout;
 
 import com.squareup.otto.Subscribe;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.models.FeedItem;
-import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.service.PdfDownloadAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -120,21 +121,24 @@ public class WorkingWithCongressFragment extends Fragment {
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.setDataAndType(Uri.parse(event.getDataString()), "application/pdf");
+                String externalStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+                intent.setDataAndType(Uri.fromFile(new File(externalStorage + "/" + event.getDataString())), "application/pdf");
                 startActivity(intent);
                 progressDialog.dismiss();
+                getFragmentManager().popBackStack();
             }
             catch (ActivityNotFoundException e) {
                 progressDialog.dismiss();
-
-
                 new AlertDialog.Builder(getActivity()).setTitle("American Hospital Association").setMessage("PDF error.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         progressDialog.dismiss();
                         getFragmentManager().popBackStack();
                     }
                 }).show();
-
+            }
+            catch (Exception e){
+                Log.d(TAG,"debug");
+                e.printStackTrace();
             }
         }
         else {
@@ -149,6 +153,4 @@ public class WorkingWithCongressFragment extends Fragment {
 
         }
     }
-
-
 }
