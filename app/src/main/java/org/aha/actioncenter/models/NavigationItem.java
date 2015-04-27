@@ -8,5 +8,6 @@ import java.util.ArrayList;
 public class NavigationItem {
     public String id = "";
     public String name="";
+    public String user="";
     public ArrayList<NavigationItem> subnav = null;
 }

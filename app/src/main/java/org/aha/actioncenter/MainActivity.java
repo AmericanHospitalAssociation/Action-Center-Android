@@ -225,8 +225,11 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new WorkingWithCongressFragment();
         if (item.id.equals(Utility.getInstance().EVENTS))
             fragment = new EventsListFragment();
-        if (item.id.equals(Utility.getInstance().TWITTER_FEEDS))
+        if (item.id.equals(Utility.getInstance().TWITTER_FEEDS)) {
+            args.putString(item.id, item.user);
             fragment = new TwitterFeedListFragment();
+            fragment.setArguments(args);
+        }
         if (fragment != null) {
 
             fragmentManager.addOnBackStackChangedListener(this);
@@ -275,8 +278,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         Log.d(TAG, "onGroupClick");
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getGroup(groupPosition);
         if (navigationItem.id.equals(Utility.getInstance().HOME) ||
-                navigationItem.id.equals(Utility.getInstance().EVENTS) ||
-                navigationItem.id.equals(Utility.getInstance().TWITTER_FEEDS)) {
+                navigationItem.id.equals(Utility.getInstance().EVENTS) ) {
             selectItem(navigationItem);
         }
         return false;
