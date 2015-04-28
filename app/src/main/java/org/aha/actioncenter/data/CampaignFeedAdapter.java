@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.models.EventItem;
-import org.aha.actioncenter.views.EventDetailInfoFragment;
+import org.aha.actioncenter.models.CampaignItem;
+import org.aha.actioncenter.views.NewsDetailInfoFragment;
 
 import java.util.List;
 
@@ -27,13 +27,13 @@ import java.util.List;
 /**
  * Provide views to RecyclerView with data from mDataSet.
  */
-public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.ViewHolder> {
-    private static final String TAG = "EventsFeedAdapter";
+public class CampaignFeedAdapter extends RecyclerView.Adapter<CampaignFeedAdapter.ViewHolder> {
+    private static final String TAG = "CampaignFeedAdapter";
 
-    private static List<EventItem> mDataSet;
+    private static List<CampaignItem> mDataSet;
     private static Activity mActivity;
 
-    public EventsFeedAdapter(Activity activity, List<EventItem> dataSet) {
+    public CampaignFeedAdapter(Activity activity, List<CampaignItem> dataSet) {
         mActivity = activity;
         mDataSet = dataSet;
     }
@@ -43,17 +43,12 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView clean_title = null;
-        protected TextView pretty_date = null;
-        //protected TextView meeting_start_time = null;
-        //rotected TextView meeting_end_time = null;
-        protected TextView meeting_location = null;
-        protected TextView link = null;
+        protected TextView title_txt = null;
+        protected TextView description_txt = null;
 
         public ViewHolder(View v) {
             super(v);
             // Define click listener for the ViewHolder's View.
-
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -64,25 +59,21 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
 
                     int position = getAdapterPosition();
 
-                    EventItem item = mDataSet.get(position);
+                    CampaignItem item = mDataSet.get(position);
 
                     args.putString("item", new Gson().toJson(item));
-                    fragment = new EventDetailInfoFragment();
+                    fragment = new NewsDetailInfoFragment();
                     fragment.setArguments(args);
 
                     // Insert the fragment by replacing any existing fragment
                     FragmentManager fragmentManager = mActivity.getFragmentManager();
 
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                    fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(null).commit();
                 }
             });
 
-            clean_title = (TextView) v.findViewById(R.id.clean_title);
-            pretty_date = (TextView) v.findViewById(R.id.pretty_date);
-            //meeting_start_time = (TextView) v.findViewById(R.id.meeting_start_time);
-            //meeting_end_time = (TextView) v.findViewById(R.id.meeting_end_time);
-            meeting_location = (TextView) v.findViewById(R.id.meeting_location);
-            link = (TextView) v.findViewById(R.id.link);
+            title_txt = (TextView) v.findViewById(R.id.title_txt);
+            description_txt = (TextView) v.findViewById(R.id.description_txt);
 
         }
     }
@@ -91,7 +82,7 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.event_item_detail_view, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.campaign_item_view, viewGroup, false);
 
         return new ViewHolder(v);
     }
@@ -102,12 +93,10 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Log.d(TAG, "Element " + position + " set.");
 
-        EventItem item = mDataSet.get(position);
+        CampaignItem item = mDataSet.get(position);
 
-        viewHolder.clean_title.setText(item.clean_title);
-        viewHolder.pretty_date.setText(item.pretty_date);
-        viewHolder.meeting_location.setText(item.meeting_location);
-        viewHolder.link.setText(item.link);
+        viewHolder.title_txt.setText(item.title);
+        viewHolder.description_txt.setText(item.description);
     }
 
 

@@ -24,14 +24,17 @@ import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.data.AHAExpandableListAdapter;
+import org.aha.actioncenter.events.CampaignDataEvent;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.models.NavigationItem;
+import org.aha.actioncenter.service.CampaignAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 import org.aha.actioncenter.views.ActionAlertListFragment;
 import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
 import org.aha.actioncenter.views.CongressionalCalendarFragment;
+import org.aha.actioncenter.views.ContactYourLegislatorsListFragment;
 import org.aha.actioncenter.views.EventsListFragment;
 import org.aha.actioncenter.views.FactSheetListFragment;
 import org.aha.actioncenter.views.HomeFragment;
@@ -49,6 +52,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -223,6 +228,18 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new EventsListFragment();
         if (item.id.equals(Utility.getInstance().NEWS))
             fragment = new NewsListFragment();
+        if (item.id.equals(Utility.getInstance().CONTACT_YOUR_LEGISLATORS)) {
+            try {
+                URL url = new URL(getResources().getString(R.string.campaign_url));
+                CampaignAsyncTask asyncTask = new CampaignAsyncTask(url, mContext, this);
+            }
+            catch (MalformedURLException e){
+                e.printStackTrace();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
         if (item.id.equals(Utility.getInstance().TWITTER_FEEDS)) {
             args.putString(item.id, item.user);
             fragment = new TwitterFeedListFragment();
@@ -347,9 +364,27 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         int count = getFragmentManager().getBackStackEntryCount();
         if (count == 0) {
             super.onBackPressed();
-        } else {
+        }
+        else {
             getFragmentManager().popBackStack();
         }
-
     }
+
+    @Subscribe
+    public void subscribeOnCampaignDataEvent(CampaignDataEvent event) {
+        try {
+            JSONArray jArray = null;
+            jArray = (JSONArray) event.getData().getJSONArray("items");
+            Utility.getInstance(getApplicationContext()).parseCampaignData(jArray);
+
+            FragmentManager fragmentManager = getFragmentManager();
+            ContactYourLegislatorsListFragment fragment = new ContactYourLegislatorsListFragment();
+            fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(Utility.getInstance().CONTACT_YOUR_LEGISLATORS).commit();
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

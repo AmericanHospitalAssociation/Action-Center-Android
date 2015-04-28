@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.FeedItem;
-import org.aha.actioncenter.views.DetailInfoFragment;
+import org.aha.actioncenter.views.ActionAlertDetailInfoFragment;
 
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class ActionAlertFeedAdapter extends RecyclerView.Adapter<ActionAlertFeed
                     FeedItem item = mDataSet.get(position);
 
                     args.putString("item", new Gson().toJson(item));
-                    fragment = new DetailInfoFragment();
+                    fragment = new ActionAlertDetailInfoFragment();
                     fragment.setArguments(args);
 
                     // Insert the fragment by replacing any existing fragment

@@ -14,6 +14,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.aha.actioncenter.models.CampaignItem;
 import org.aha.actioncenter.models.EventItem;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.models.NewsItem;
@@ -35,6 +36,7 @@ public class Utility {
     private static boolean mFeedDataLoaded = false;
     private static boolean mEventDataLoaded = false;
     private static boolean mNewsDataLoaded = false;
+    private static boolean mCampaignDataLoaded = false;
 
     public static String HOME = "home";
     public static String ACTION_CENTER = "action-center";
@@ -47,6 +49,7 @@ public class Utility {
     public static String ACTION_ALERT = "action-alert";
     public static String FACT_SHEET = "issue-papers";
     public static String NEWS = "aha-news";
+    public static String CONTACT_YOUR_LEGISLATORS = "contact-your-legislators";
     public static String TWITTER_FEEDS = "twitter-feeds";
 
     public static String EVENTS = "events";
@@ -274,10 +277,7 @@ public class Utility {
         else {
             editor.putString(dataName, "");
         }
-
         editor.apply();
-
-
     }
 
 
@@ -297,7 +297,6 @@ public class Utility {
     }
 
     public List<NewsItem> getNewsData(String dataName) {
-
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
         String dataString = prefs.getString(dataName, "");
 
@@ -306,7 +305,6 @@ public class Utility {
         Type newsItemArrayListType = new TypeToken<ArrayList<NewsItem>>(){}.getType();
 
         ArrayList<NewsItem> list = gson.fromJson(dataString, newsItemArrayListType);
-
 
         return list;
     }
@@ -326,8 +324,6 @@ public class Utility {
         }
 
         editor.apply();
-
-
     }
 
     public List<EventItem> getEventData(String dataName) {
@@ -346,6 +342,71 @@ public class Utility {
         return list;
     }
 
+
+
+    public void parseCampaignData(JSONArray jArray) {
+
+        Gson gson = null;
+        int count = jArray.length();
+
+        mCampaignDataLoaded = false;
+
+        ArrayList<CampaignItem> campaignList = new ArrayList<CampaignItem>();
+
+        for (int i = 0; i < count; i++) {
+
+            gson = new Gson();
+            CampaignItem item = null;
+            try {
+                item = gson.fromJson(jArray.get(i).toString(), CampaignItem.class);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            campaignList.add(item);
+
+        }
+
+        saveCampaignData(CONTACT_YOUR_LEGISLATORS, campaignList);
+
+        mCampaignDataLoaded = true;
+    }
+
+
+    private void saveCampaignData(String dataName, List<CampaignItem> list) {
+
+        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Gson gson = new Gson();
+
+        if (list.size() > 0) {
+            editor.putString(dataName, gson.toJson(list));
+        }
+        else {
+            editor.putString(dataName, "");
+        }
+
+        editor.apply();
+    }
+
+
+    public List<CampaignItem> getCampaignData(String dataName) {
+
+        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
+        String dataString = prefs.getString(dataName, "");
+
+        Gson gson = new Gson();
+
+        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignItem>>() {}.getType();
+
+        ArrayList<CampaignItem> list = gson.fromJson(dataString, campaignItemArrayListType);
+
+        return list;
+    }
+
+
     public boolean isFeedDataLoaded() {
         return mFeedDataLoaded;
     }
@@ -355,6 +416,10 @@ public class Utility {
     }
     public boolean isNewsDataLoaded() {
         return mNewsDataLoaded;
+    }
+
+    public boolean isCampaignDataLoaded(){
+        return mCampaignDataLoaded;
     }
 
 

@@ -15,7 +15,6 @@ import com.google.gson.Gson;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.NewsItem;
-import org.aha.actioncenter.views.DetailInfoFragment;
 import org.aha.actioncenter.views.NewsDetailInfoFragment;
 
 import java.util.List;

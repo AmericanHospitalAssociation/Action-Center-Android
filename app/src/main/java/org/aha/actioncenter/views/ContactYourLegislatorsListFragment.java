@@ -14,9 +14,9 @@ import android.widget.TableLayout;
 import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.data.ActionAlertFeedAdapter;
-import org.aha.actioncenter.events.FeedDataEvent;
-import org.aha.actioncenter.models.FeedItem;
+import org.aha.actioncenter.data.CampaignFeedAdapter;
+import org.aha.actioncenter.events.CampaignDataEvent;
+import org.aha.actioncenter.models.CampaignItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
@@ -25,10 +25,11 @@ import java.util.List;
 /**
  * Created by markusmcgee on 4/17/15.
  */
-public class FactSheetListFragment extends Fragment {
-    private static final String TAG = "FactSheetListFragment";
+public class ContactYourLegislatorsListFragment extends Fragment {
+
+    private static final String TAG = "ContactYourLegislatorsListFragment";
     private TableLayout feedTable;
-    private List<FeedItem> list;
+    private List<CampaignItem> list;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -55,8 +56,8 @@ public class FactSheetListFragment extends Fragment {
 
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().FACT_SHEET);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+            list = Utility.getInstance(mContext).getCampaignData(Utility.getInstance().CONTACT_YOUR_LEGISLATORS);
+            mAdapter = new CampaignFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
 
@@ -67,7 +68,7 @@ public class FactSheetListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().FACT_SHEET);
+        list = Utility.getInstance(mContext).getCampaignData(Utility.getInstance().CONTACT_YOUR_LEGISLATORS);
     }
 
     @Override
@@ -76,20 +77,15 @@ public class FactSheetListFragment extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //AHABusProvider.getInstance().unregister(this);
-    }
-
     //Subscribe to Feed data event.  If data comes in update view.
     @Subscribe
-    public void subscribeOnFeedDataEvent(FeedDataEvent event) {
+    public void subscribeOnCampaignDataEvent(CampaignDataEvent event) {
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().FACT_SHEET);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+        if(Utility.getInstance(mContext).isCampaignDataLoaded()) {
+            list = Utility.getInstance(mContext).getCampaignData(Utility.getInstance().CONTACT_YOUR_LEGISLATORS);
+            mAdapter = new CampaignFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
     }
+
 }

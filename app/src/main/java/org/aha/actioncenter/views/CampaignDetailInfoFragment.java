@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.models.FeedItem;
+import org.aha.actioncenter.models.CampaignItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 
 import java.lang.reflect.Type;
@@ -24,11 +24,11 @@ import java.lang.reflect.Type;
 /**
  * Created by markusmcgee on 4/17/15.
  */
-public class DetailInfoFragment extends Fragment {
+public class CampaignDetailInfoFragment extends Fragment {
 
     protected TextView title_txt = null;
-    protected TextView long_description_txt = null;
-    protected TextView resource_uri_txt = null;
+    protected TextView description_txt = null;
+    protected TextView name_txt = null;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -59,19 +59,16 @@ public class DetailInfoFragment extends Fragment {
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
-        Type feedItemType = new TypeToken<FeedItem>(){}.getType();
-        FeedItem item = new Gson().fromJson(getArguments().getString("item"), feedItemType);
+        Type campaignItemType = new TypeToken<CampaignItem>(){}.getType();
+        CampaignItem item = new Gson().fromJson(getArguments().getString("item"), campaignItemType);
 
         title_txt = (TextView) view.findViewById(R.id.title_txt);
-        long_description_txt = (TextView) view.findViewById(R.id.long_description_txt);
-        resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
+        description_txt = (TextView) view.findViewById(R.id.description_txt);
+        name_txt = (TextView) view.findViewById(R.id.name_txt);
 
-
-        title_txt.setText(item.Title);
-        long_description_txt.setText(Html.fromHtml(item.Long_Description));
-        resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
-
-
+        title_txt.setText(item.title);
+        description_txt.setText(Html.fromHtml(item.description));
+        name_txt.setText(item.name);
 
         return view;
     }

@@ -44,9 +44,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:editable="false"
                     android:text="Need Action From:"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/action_from_txt"
@@ -67,10 +66,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
                     android:text="Attention Needed:"
                     android:textStyle="bold"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/action_needed_txt"
@@ -91,10 +89,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
                     android:text="When:"
                     android:textStyle="bold"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/when_c_txt"
@@ -115,10 +112,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false"
                     android:text="Why:"
                     android:textStyle="bold"
-                    android:textSize="20dp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
                     android:id="@+id/why_txt"
