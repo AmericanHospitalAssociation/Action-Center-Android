@@ -15,6 +15,7 @@ import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.data.ActionAlertFeedAdapter;
+import org.aha.actioncenter.data.SpecialBulletinAlertFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.service.FeedAsyncTask;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * Created by markusmcgee on 4/17/15.
  */
-public class SpecialBulletins extends Fragment {
+public class SpecialBulletinListFragment extends Fragment {
     private static final String TAG = "SpecialBulletins";
     private TableLayout feedTable;
     private List<FeedItem> list;
@@ -59,7 +60,7 @@ public class SpecialBulletins extends Fragment {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().BULLETIN);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+            mAdapter = new SpecialBulletinAlertFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
 
@@ -71,7 +72,7 @@ public class SpecialBulletins extends Fragment {
         super.onResume();
         AHABusProvider.getInstance().register(this);
 
-        list = Utility.getInstance(mContext).getFeedData("action-alert");
+        list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().BULLETIN);
     }
 
     @Override
@@ -80,11 +81,6 @@ public class SpecialBulletins extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //AHABusProvider.getInstance().unregister(this);
-    }
 
     private void refreshFeedData() {
         try {

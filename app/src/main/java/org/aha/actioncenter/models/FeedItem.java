@@ -18,4 +18,5 @@ public class FeedItem {
     public String ActionFrom = "";
     public String ActionNeeded = "";
     public String box_link_dir = "";
+    public int isHidden = 1;
 }

@@ -47,7 +47,7 @@ import org.aha.actioncenter.views.FactSheetListFragment;
 import org.aha.actioncenter.views.HomeFragment;
 import org.aha.actioncenter.views.LetterListFragment;
 import org.aha.actioncenter.views.NewsListFragment;
-import org.aha.actioncenter.views.SpecialBulletins;
+import org.aha.actioncenter.views.SpecialBulletinListFragment;
 import org.aha.actioncenter.views.TestimonyListFragment;
 import org.aha.actioncenter.views.TwitterFeedListFragment;
 import org.aha.actioncenter.views.WorkingWithCongressFragment;
@@ -223,7 +223,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         if (item.id.equals(Utility.getInstance().FACT_SHEET))
             fragment = new FactSheetListFragment();
         if (item.id.equals(Utility.getInstance().BULLETIN))
-            fragment = new SpecialBulletins();
+            fragment = new SpecialBulletinListFragment();
         if (item.id.equals(Utility.getInstance().ADVISORY))
             fragment = new AdvisoryListFragment();
         if (item.id.equals(Utility.getInstance().LETTER))
@@ -339,7 +339,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             setTitle("Action Alert");
         if (fragment instanceof FactSheetListFragment)
             setTitle("Fact Sheet");
-        if (fragment instanceof SpecialBulletins)
+        if (fragment instanceof SpecialBulletinListFragment)
             setTitle("Special Bulletins");
         if (fragment instanceof AdvisoryListFragment)
             setTitle("Advisory");
