@@ -1,5 +1,6 @@
 package org.aha.actioncenter.events;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -10,6 +11,7 @@ public class Event {
     protected String message = "DEFAULT MESSAGE";
     protected String className = "";
     protected JSONObject data = null;
+    protected JSONArray dataArray = null;
     protected String dataString = "";
 
 
@@ -28,12 +30,20 @@ public class Event {
         return data;
     }
 
+    public JSONArray getDataJSONArray(){
+        return dataArray;
+    }
+
     public String getDataString(){
         return dataString;
     }
 
     public void setData(JSONObject data) {
         this.data = data;
+    }
+
+    public void setData(JSONArray data) {
+        this.dataArray = data;
     }
 
     public void setData(String val){

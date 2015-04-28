@@ -57,6 +57,7 @@ public class TwitterFeedListFragment extends ListFragment {
 
         UserTimeline userTimeline = new UserTimeline.Builder().screenName(bundle.getString(Utility.getInstance().TWITTER_FEEDS)).build();
         TweetTimelineListAdapter adapter = new TweetTimelineListAdapter(getActivity(), userTimeline);
+
         setListAdapter(adapter);
 
         //setHasOptionsMenu(true);

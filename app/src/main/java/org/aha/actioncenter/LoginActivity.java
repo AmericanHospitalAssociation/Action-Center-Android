@@ -14,8 +14,10 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import org.aha.actioncenter.events.EventsDataEvent;
 import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.service.EventsAsyncTask;
 import org.aha.actioncenter.service.FeedAsyncTask;
+import org.aha.actioncenter.service.NewsAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 import org.json.JSONArray;
@@ -62,26 +64,26 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         URL feed_url = null;
         URL events_url = null;
+        URL news_url = null;
+
         try {
+
             feed_url = new URL(getResources().getString(R.string.feed_url));
-
             FeedAsyncTask feedAsync = new FeedAsyncTask(feed_url, getApplicationContext(), this);
-            //feedAsync.execute();
             feedAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            events_url = new URL(getResources().getString(R.string.events_url));
 
-            //No object container will be listening for EventData events just yet.
+            events_url = new URL(getResources().getString(R.string.events_url));
             EventsAsyncTask eventAsync = new EventsAsyncTask(events_url, getApplicationContext(), this);
-            //eventAsync.execute();
             eventAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+            news_url = new URL(getResources().getString(R.string.news_url));
+            NewsAsyncTask newsAsyncTask = new NewsAsyncTask(news_url, getApplicationContext(), this);
+            newsAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         }
         catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
-
-
 
     }
 
@@ -97,7 +99,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             //SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
             //boolean isValidLogin = prefs.getBoolean("login", false);
 
-            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded()) {
+            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded() && Utility.getInstance().isNewsDataLoaded()) {
                 Intent intent;
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
@@ -119,7 +121,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             //SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
             //boolean isValidLogin = prefs.getBoolean("login", false);
 
-            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded()) {
+            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded() && Utility.getInstance().isNewsDataLoaded()) {
                 Intent intent;
                 intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
@@ -127,6 +129,28 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         }
         catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void subscribeOnNewsDataEvent(NewsDataEvent event) {
+        try {
+            JSONArray jArray = null;
+            jArray = event.getDataJSONArray();
+            Utility.getInstance(getApplicationContext()).parseNewsData(jArray);
+
+            //SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
+            //boolean isValidLogin = prefs.getBoolean("login", false);
+
+            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded() && Utility.getInstance().isNewsDataLoaded()) {
+                Intent intent;
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -14,6 +14,9 @@
     <!-- Data Feeds -->
     <string name="feed_url">http://ahaconnect.org/feed.php?id=app_feed_1</string>
     <string name="events_url">http://ahaconnect.org/feed.php?id=app_cal_public</string>
+    <string name="news_url">http://ahaconnect.org/ASHE_RSS/aha_news_rss_generator.php?dom_ready=json</string>
+    <string name="news_detail_url">http://54.245.255.190/p/action_center/api/v1/getAHANewsDescription?url=</string>
+
 
     <string name="menu_search">SOMETHING SHOULD GO HERE</string>
     <string name="drawer_open">drawer open</string>
@@ -25,6 +28,6 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="logout_txt">Logout</string>
     <string name="empty"/>
-    <string name="timeline_empty">Twitter Timeline Empty</string>
+    <string name="timeline_empty">Twitter Timeline Loading ...</string>
 
 </resources>

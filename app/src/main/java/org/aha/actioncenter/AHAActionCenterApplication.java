@@ -17,8 +17,8 @@ public class AHAActionCenterApplication extends Application {
     public void onCreate() {
         super.onCreate();
         //Login data returned so activate Twitter.
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.twitter_key), getResources().getString(R.string.twitter_secret));
-        Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
+        //TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.twitter_key), getResources().getString(R.string.twitter_secret));
+        //Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
 
     }
 }

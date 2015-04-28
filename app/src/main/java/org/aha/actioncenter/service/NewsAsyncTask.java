@@ -4,18 +4,16 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
-import org.aha.actioncenter.events.EventsDataEvent;
-import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,8 +23,8 @@ import java.net.URL;
 /**
  * Created by markusmcgee on 4/15/15.
  */
-public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
-    private static final String TAG = "EventsAsyncTask";
+public class NewsAsyncTask extends AsyncTask<Void, Void, String> {
+    private static final String TAG = "NewsAsyncTask";
     private URL mUrl;
     private HttpURLConnection mConnection;
     private Context mContext;
@@ -34,12 +32,12 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
 
     private ProgressDialog progressDialog = null;
 
-    public EventsAsyncTask(URL url, Context context, Activity activity) {
+    public NewsAsyncTask(URL url, Context context, Activity activity) {
         this(url, context);
         this.activity = activity;
     }
 
-    public EventsAsyncTask(URL url, Context context) {
+    public NewsAsyncTask(URL url, Context context) {
         this.mContext = context;
         this.mUrl = url;
     }
@@ -56,7 +54,7 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
             if (activity != null) {
                 progressDialog = new ProgressDialog(activity);
                 progressDialog.setTitle("American Hospital Association");
-                progressDialog.setMessage("Loading Event Data...");
+                progressDialog.setMessage("Loading News Data...");
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.show();
@@ -78,18 +76,21 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String feed) {
         super.onPostExecute(feed);
 
-        JSONObject json = null;
+        JSONArray json = null;
 
         try {
-            json = new JSONObject(feed);
+            json = new JSONArray(feed);
         }
         catch (JSONException e) {
             e.printStackTrace();
         }
 
-        EventsDataEvent event = new EventsDataEvent(EventsDataEvent.EVENTS_DATA);
-        event.setData(json);
-        AHABusProvider.getInstance().post(event);
+
+        if (json != null) {
+            NewsDataEvent event = new NewsDataEvent(NewsDataEvent.NEWS_DATA);
+            event.setData(json);
+            AHABusProvider.getInstance().post(event);
+        }
 
         if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
@@ -98,7 +99,7 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
-        if(!Utility.getInstance(mContext).isNetworkAvailable()) {
+        if (!Utility.getInstance(mContext).isNetworkAvailable()) {
             return "";
         }
 
@@ -119,8 +120,8 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
 
     public static String readStream(InputStream in) throws IOException {
         StringBuilder sb = new StringBuilder();
-        BufferedReader r = new BufferedReader(new InputStreamReader(in),1000);
-        for (String line = r.readLine(); line != null; line =r.readLine()){
+        BufferedReader r = new BufferedReader(new InputStreamReader(in), 1000);
+        for (String line = r.readLine(); line != null; line = r.readLine()) {
             sb.append(line);
         }
         in.close();

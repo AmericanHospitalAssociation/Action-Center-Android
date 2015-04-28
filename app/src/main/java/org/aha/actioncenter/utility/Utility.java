@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.aha.actioncenter.models.EventItem;
 import org.aha.actioncenter.models.FeedItem;
+import org.aha.actioncenter.models.NewsItem;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -33,6 +34,7 @@ public class Utility {
     private static Context mContext;
     private static boolean mFeedDataLoaded = false;
     private static boolean mEventDataLoaded = false;
+    private static boolean mNewsDataLoaded = false;
 
     public static String HOME = "home";
     public static String ACTION_CENTER = "action-center";
@@ -44,6 +46,7 @@ public class Utility {
     public static String BULLETIN = "bulletin";
     public static String ACTION_ALERT = "action-alert";
     public static String FACT_SHEET = "issue-papers";
+    public static String NEWS = "aha-news";
     public static String TWITTER_FEEDS = "twitter-feeds";
 
     public static String EVENTS = "events";
@@ -161,10 +164,7 @@ public class Utility {
                 workingWithCongress.add(item);
             }
 
-            Log.d(TAG, "Utility->parseFeedData");
         }
-
-        Log.d(TAG, "Utility");
 
         saveFeedData(ADDITIONAL_INFO, additionalInfo);
         saveFeedData(LETTER, letter);
@@ -202,15 +202,44 @@ public class Utility {
 
                 events.add(item);
 
-            Log.d(TAG, "Utility->parseEventData");
         }
-
-        Log.d(TAG, "Utility");
 
         saveEventData(EVENTS, events);
 
         mEventDataLoaded = true;
     }
+
+
+
+    public void parseNewsData(JSONArray jArray) {
+
+        Gson gson = null;
+        int count = jArray.length();
+
+        mNewsDataLoaded = false;
+
+        ArrayList<NewsItem> newsList = new ArrayList<NewsItem>();
+
+        for (int i = 0; i < count; i++) {
+
+            gson = new Gson();
+            NewsItem item = null;
+            try {
+                item = gson.fromJson(jArray.get(i).toString(), NewsItem.class);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            newsList.add(item);
+
+        }
+
+        saveNewsData(NEWS, newsList);
+
+        mNewsDataLoaded = true;
+    }
+
 
     private void saveFeedData(String dataName, List<FeedItem> list) {
 
@@ -248,7 +277,6 @@ public class Utility {
 
         editor.apply();
 
-        Log.d(TAG, "Utility->saveEventData");
 
     }
 
@@ -265,9 +293,41 @@ public class Utility {
 
         ArrayList<FeedItem> list = gson.fromJson(dataString, feedItemArrayListType);
 
-        Log.d(TAG, "Utility->getFeedData");
+        return list;
+    }
+
+    public List<NewsItem> getNewsData(String dataName) {
+
+        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
+        String dataString = prefs.getString(dataName, "");
+
+        Gson gson = new Gson();
+
+        Type newsItemArrayListType = new TypeToken<ArrayList<NewsItem>>(){}.getType();
+
+        ArrayList<NewsItem> list = gson.fromJson(dataString, newsItemArrayListType);
+
 
         return list;
+    }
+
+    private void saveNewsData(String dataName, List<NewsItem> list) {
+
+        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Gson gson = new Gson();
+
+        if (list.size() > 0) {
+            editor.putString(dataName, gson.toJson(list));
+        }
+        else {
+            editor.putString(dataName, "");
+        }
+
+        editor.apply();
+
+
     }
 
     public List<EventItem> getEventData(String dataName) {
@@ -282,7 +342,6 @@ public class Utility {
 
         ArrayList<EventItem> list = gson.fromJson(dataString, eventItemArrayListType);
 
-        Log.d(TAG, "Utility->getEventData");
 
         return list;
     }
@@ -293,6 +352,9 @@ public class Utility {
 
     public boolean isEventDataLoaded() {
         return mEventDataLoaded;
+    }
+    public boolean isNewsDataLoaded() {
+        return mNewsDataLoaded;
     }
 
 

@@ -26,7 +26,6 @@ import com.squareup.otto.Subscribe;
 import org.aha.actioncenter.data.AHAExpandableListAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.models.NavigationItem;
-import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 import org.aha.actioncenter.views.ActionAlertListFragment;
@@ -37,6 +36,7 @@ import org.aha.actioncenter.views.EventsListFragment;
 import org.aha.actioncenter.views.FactSheetListFragment;
 import org.aha.actioncenter.views.HomeFragment;
 import org.aha.actioncenter.views.LetterListFragment;
+import org.aha.actioncenter.views.NewsListFragment;
 import org.aha.actioncenter.views.SpecialBulletins;
 import org.aha.actioncenter.views.TestimonyListFragment;
 import org.aha.actioncenter.views.TwitterFeedListFragment;
@@ -49,8 +49,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -162,7 +160,6 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         return super.onPrepareOptionsMenu(menu);
     }
 
-
     //Subscribe to Feed data event.  This should probably listen only once then unregister it self.
     //MainActivity should only be shown once?
     @Subscribe
@@ -188,7 +185,6 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         super.onPause();
         AHABusProvider.getInstance().unregister(this);
     }
-
 
     /**
      * Swaps fragments in the main content view
@@ -225,6 +221,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new WorkingWithCongressFragment();
         if (item.id.equals(Utility.getInstance().EVENTS))
             fragment = new EventsListFragment();
+        if (item.id.equals(Utility.getInstance().NEWS))
+            fragment = new NewsListFragment();
         if (item.id.equals(Utility.getInstance().TWITTER_FEEDS)) {
             args.putString(item.id, item.user);
             fragment = new TwitterFeedListFragment();
@@ -278,7 +276,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         Log.d(TAG, "onGroupClick");
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getGroup(groupPosition);
         if (navigationItem.id.equals(Utility.getInstance().HOME) ||
-                navigationItem.id.equals(Utility.getInstance().EVENTS) ) {
+                navigationItem.id.equals(Utility.getInstance().EVENTS) ||
+                navigationItem.id.equals(Utility.getInstance().NEWS)) {
             selectItem(navigationItem);
         }
         return false;
@@ -330,7 +329,6 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         if (fragment instanceof TwitterFeedListFragment)
             setTitle("Twitter Feed");
 
-
         Log.d(TAG, "onBackStackChanged");
     }
 
@@ -342,5 +340,16 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     private Fragment getFragment() {
         Fragment fragment = getFragmentManager().findFragmentById(R.id.content_frame);
         return fragment;
+    }
+
+    @Override
+    public void onBackPressed() {
+        int count = getFragmentManager().getBackStackEntryCount();
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
     }
 }
