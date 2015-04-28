@@ -2,16 +2,9 @@ package org.aha.actioncenter.views;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,16 +14,12 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.TableLayout;
 
-import com.squareup.otto.Subscribe;
-
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.service.PdfDownloadAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -45,7 +34,6 @@ public class WorkingWithCongressFragment extends Fragment {
     private TableLayout feedTable;
     private List<FeedItem> list;
     private Context mContext = null;
-    private ProgressDialog progressDialog;
     private AlertDialog alertDialog;
 
     @Nullable
@@ -87,8 +75,7 @@ public class WorkingWithCongressFragment extends Fragment {
     public void onPause() {
         super.onPause();
         AHABusProvider.getInstance().unregister(this);
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+
     }
 
     @Override
@@ -107,50 +94,5 @@ public class WorkingWithCongressFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Subscribe
-    public void subscribeOnPDFDownload(PdfDataEvent event) {
 
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setTitle("American Hospital Association");
-        progressDialog.setMessage("Opening Download ...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
-
-        if (Utility.getInstance().canDisplayPdf(mContext)) {
-            try {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                String externalStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-                intent.setDataAndType(Uri.fromFile(new File(externalStorage + "/" + event.getDataString())), "application/pdf");
-                startActivity(intent);
-                progressDialog.dismiss();
-                getFragmentManager().popBackStack();
-            }
-            catch (ActivityNotFoundException e) {
-                progressDialog.dismiss();
-                new AlertDialog.Builder(getActivity()).setTitle("American Hospital Association").setMessage("PDF error.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        progressDialog.dismiss();
-                        getFragmentManager().popBackStack();
-                    }
-                }).show();
-            }
-            catch (Exception e){
-                Log.d(TAG,"debug");
-                e.printStackTrace();
-            }
-        }
-        else {
-            progressDialog.dismiss();
-
-            new AlertDialog.Builder(getActivity()).setTitle("American Hospital Association").setMessage("No PDF viewer installed.  Please download pdf viewer from Google Play Store.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    progressDialog.dismiss();
-                    getFragmentManager().popBackStack();
-                }
-            }).show();
-
-        }
-    }
 }

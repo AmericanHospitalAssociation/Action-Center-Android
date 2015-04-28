@@ -1,11 +1,17 @@
 package org.aha.actioncenter;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -26,6 +32,7 @@ import com.squareup.otto.Subscribe;
 import org.aha.actioncenter.data.AHAExpandableListAdapter;
 import org.aha.actioncenter.events.CampaignDataEvent;
 import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.service.CampaignAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -48,6 +55,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -69,6 +77,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     private Context mContext = null;
     private ArrayList<NavigationItem> navigationItemArrayList = null;
     private AHAExpandableListAdapter navigationAdapter = null;
+
+    private ProgressDialog progressDialog;
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
 
@@ -189,6 +199,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     protected void onPause() {
         super.onPause();
         AHABusProvider.getInstance().unregister(this);
+        if (progressDialog != null && progressDialog.isShowing())
+            progressDialog.dismiss();
     }
 
     /**
@@ -384,6 +396,53 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         }
         catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void subscribeOnPDFDownload(PdfDataEvent event) {
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("American Hospital Association");
+        progressDialog.setMessage("Opening Download ...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+
+        if (Utility.getInstance().canDisplayPdf(mContext)) {
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String externalStorage = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+                intent.setDataAndType(Uri.fromFile(new File(externalStorage + "/" + event.getDataString())), "application/pdf");
+                startActivity(intent);
+                progressDialog.dismiss();
+                getFragmentManager().popBackStack();
+            }
+            catch (ActivityNotFoundException e) {
+                progressDialog.dismiss();
+                new AlertDialog.Builder(this).setTitle("American Hospital Association").setMessage("PDF error.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        progressDialog.dismiss();
+                        getFragmentManager().popBackStack();
+                    }
+                }).show();
+            }
+            catch (Exception e){
+                Log.d(TAG,"debug");
+                e.printStackTrace();
+            }
+        }
+        else {
+            progressDialog.dismiss();
+
+            new AlertDialog.Builder(this).setTitle("American Hospital Association").setMessage("No PDF viewer installed.  Please download pdf viewer from Google Play Store.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    progressDialog.dismiss();
+                    getFragmentManager().popBackStack();
+                }
+            }).show();
+
         }
     }
 

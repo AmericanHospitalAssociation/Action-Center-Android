@@ -15,6 +15,7 @@ import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.data.ActionAlertFeedAdapter;
+import org.aha.actioncenter.data.FactSheetFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -56,7 +57,7 @@ public class FactSheetListFragment extends Fragment {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().FACT_SHEET);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+            mAdapter = new FactSheetFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
 
