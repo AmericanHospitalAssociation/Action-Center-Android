@@ -4,12 +4,14 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -17,14 +19,17 @@ import com.google.gson.reflect.TypeToken;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.FeedItem;
+import org.aha.actioncenter.service.PdfDownloadAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by markusmcgee on 4/28/15.
  */
-public class SpecialBulletinDetailInfoFragment extends Fragment {
+public class SpecialBulletinDetailInfoFragment extends Fragment implements View.OnClickListener {
     protected TextView title_txt = null;
     protected TextView long_description_txt = null;
     protected TextView resource_uri_txt = null;
@@ -61,16 +66,22 @@ public class SpecialBulletinDetailInfoFragment extends Fragment {
         Type feedItemType = new TypeToken<FeedItem>(){}.getType();
         FeedItem item = new Gson().fromJson(getArguments().getString("item"), feedItemType);
 
+        LinearLayout details_layout = (LinearLayout) view.findViewById(R.id.details_layout);
         title_txt = (TextView) view.findViewById(R.id.title_txt);
         long_description_txt = (TextView) view.findViewById(R.id.long_description_txt);
         resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
 
 
         title_txt.setText(item.Title);
-        long_description_txt.setText(Html.fromHtml(item.Long_Description));
-        resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
+        if (!item.Long_Description.equals(""))
+            long_description_txt.setText(Html.fromHtml(item.Long_Description));
+        else if (!item.Description.equals(""))
+            long_description_txt.setText(item.Description);
 
+        resource_uri_txt.setText(item.ResourceURI);
+        resource_uri_txt.setVisibility(View.INVISIBLE);
 
+        details_layout.setOnClickListener(this);
 
         return view;
     }
@@ -87,4 +98,20 @@ public class SpecialBulletinDetailInfoFragment extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
+    @Override
+    public void onClick(View view) {
+        resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
+
+        String pdfUrl = resource_uri_txt.getText().toString();
+
+        if (Patterns.WEB_URL.matcher(pdfUrl).matches()) {
+            try {
+                new PdfDownloadAsyncTask(new URL(pdfUrl), getActivity().getApplicationContext(), getActivity()).execute();
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }
