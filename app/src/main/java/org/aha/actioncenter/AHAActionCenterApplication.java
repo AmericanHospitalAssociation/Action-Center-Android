@@ -13,12 +13,16 @@ import io.fabric.sdk.android.Fabric;
  */
 public class AHAActionCenterApplication extends Application {
 
+    private boolean debug = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
         //Login data returned so activate Twitter.
-        //TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.twitter_key), getResources().getString(R.string.twitter_secret));
-        //Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
+        if(!debug) {
+            TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.twitter_key), getResources().getString(R.string.twitter_secret));
+            Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
+        }
 
     }
 }
