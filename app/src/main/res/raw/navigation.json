@@ -4,7 +4,7 @@
                 {"name":"Action Alerts", "id":"action-alert"},
                 {"name":"Fact Sheets", "id":"issue-papers"},
                 {"name":"Special Bulletins", "id":"bulletin"},
-                {"name":"Advisory", "id":"advisory"},
+                {"name":"AHA Advisories", "id":"advisory"},
                 {"name":"Letters", "id":"letter"},
                 {"name":"Testimony", "id":"testimony"},
                 {"name":"Additional Info", "id":"additional-info"}

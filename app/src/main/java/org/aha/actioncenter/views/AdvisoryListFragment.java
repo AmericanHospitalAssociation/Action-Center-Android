@@ -13,17 +13,13 @@ import android.widget.TableLayout;
 
 import com.squareup.otto.Subscribe;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.data.ActionAlertFeedAdapter;
+import org.aha.actioncenter.data.AdvisoryFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.models.FeedItem;
-import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -60,7 +56,7 @@ public class AdvisoryListFragment extends Fragment {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ADVISORY);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+            mAdapter = new AdvisoryFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
 
@@ -71,7 +67,7 @@ public class AdvisoryListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getFeedData("action-alert");
+        list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ADVISORY);
     }
 
     @Override
@@ -80,30 +76,13 @@ public class AdvisoryListFragment extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //AHABusProvider.getInstance().unregister(this);
-    }
-
-    private void refreshFeedData() {
-        try {
-            URL url = new URL(getResources().getString(R.string.feed_url));
-            FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
-            feedAsync.execute();
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
-
     //Subscribe to Feed data event.  If data comes in update view.
     @Subscribe
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ADVISORY);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+            mAdapter = new AdvisoryFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
     }

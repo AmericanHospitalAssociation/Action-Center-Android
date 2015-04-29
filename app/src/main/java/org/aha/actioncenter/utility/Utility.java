@@ -136,6 +136,7 @@ public class Utility {
                 e.printStackTrace();
             }
 
+
             if (item.ContentType.equals(ADDITIONAL_INFO)) {
                 additionalInfo.add(item);
             }
@@ -166,7 +167,6 @@ public class Utility {
             else if (item.ContentType.equals(WORKING_WITH_CONGRESS)) {
                 workingWithCongress.add(item);
             }
-
         }
 
         saveFeedData(ADDITIONAL_INFO, additionalInfo);
@@ -203,7 +203,7 @@ public class Utility {
                 e.printStackTrace();
             }
 
-                events.add(item);
+            events.add(item);
 
         }
 
@@ -211,7 +211,6 @@ public class Utility {
 
         mEventDataLoaded = true;
     }
-
 
 
     public void parseNewsData(JSONArray jArray) {
@@ -302,7 +301,8 @@ public class Utility {
 
         Gson gson = new Gson();
 
-        Type newsItemArrayListType = new TypeToken<ArrayList<NewsItem>>(){}.getType();
+        Type newsItemArrayListType = new TypeToken<ArrayList<NewsItem>>() {
+        }.getType();
 
         ArrayList<NewsItem> list = gson.fromJson(dataString, newsItemArrayListType);
 
@@ -341,7 +341,6 @@ public class Utility {
 
         return list;
     }
-
 
 
     public void parseCampaignData(JSONArray jArray) {
@@ -399,7 +398,8 @@ public class Utility {
 
         Gson gson = new Gson();
 
-        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignItem>>() {}.getType();
+        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignItem>>() {
+        }.getType();
 
         ArrayList<CampaignItem> list = gson.fromJson(dataString, campaignItemArrayListType);
 
@@ -414,11 +414,12 @@ public class Utility {
     public boolean isEventDataLoaded() {
         return mEventDataLoaded;
     }
+
     public boolean isNewsDataLoaded() {
         return mNewsDataLoaded;
     }
 
-    public boolean isCampaignDataLoaded(){
+    public boolean isCampaignDataLoaded() {
         return mCampaignDataLoaded;
     }
 
@@ -436,7 +437,8 @@ public class Utility {
         testIntent.setType(MIME_TYPE_PDF);
         if (packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0) {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
