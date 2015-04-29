@@ -17,4 +17,27 @@ public class OAM {
     public String status = "";
     public String country_code = "";
     public String zip = "";
+    public String token = "";
 }
+
+/* Example JSON
+
+{
+    "address_line": "1714 Sunshine Ln",
+    "ahaid": "8022603524",
+    "city": "Zion",
+    "first_name": "Vince",
+    "last_name": "Davis",
+    "oam_groups": [
+        "SHSMD",
+        "AHA"
+    ],
+    "org_name": null,
+    "phone": "(847) 212 - 8597",
+    "prefix": "Dr.",
+    "state": "IL",
+    "status": "found user",
+    "zip": "60099"
+ }
+
+*/
