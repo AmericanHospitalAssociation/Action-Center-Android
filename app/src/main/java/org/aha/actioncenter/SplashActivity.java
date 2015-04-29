@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
@@ -16,10 +17,10 @@ public class SplashActivity extends Activity {
         AHABusProvider.getInstance().register(this);
         setContentView(R.layout.splash_screen_view);
 
-        boolean isValidLogin = !Utility.getInstance(getApplicationContext()).getLoginData("login").ahaid.isEmpty();
+        OAMItem item = Utility.getInstance(getApplicationContext()).getLoginData("login");
 
         Intent intent;
-        if(isValidLogin){
+        if(item != null){
             intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -29,7 +30,6 @@ public class SplashActivity extends Activity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
-
     }
 
     @Override
