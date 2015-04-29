@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:hint="username"
+            android:text="vince.davis@icloud.com"
             android:inputType="textEmailAddress"/>
 
         <EditText
@@ -31,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:hint="password"
+            android:text="Welcome1"
             android:inputType="textPassword"/>
     </LinearLayout>
 

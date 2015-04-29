@@ -337,6 +337,9 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     @Override
     public void onClick(View view) {
         Intent intent;
+
+        Utility.getInstance(mContext).logoutCurrentUser();
+
         intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

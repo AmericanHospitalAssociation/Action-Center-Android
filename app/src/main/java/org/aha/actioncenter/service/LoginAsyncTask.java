@@ -84,8 +84,9 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
         }
 
+        Utility.getInstance(mContext).saveLoginData("login", json);
+
         LoginEvent event = new LoginEvent(LoginEvent.LOGIN_DATA);
-        event.setData(json);
         AHABusProvider.getInstance().post(event);
 
         if (progressDialog != null && progressDialog.isShowing())

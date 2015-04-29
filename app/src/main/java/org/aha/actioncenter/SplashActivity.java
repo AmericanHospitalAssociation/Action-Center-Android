@@ -1,12 +1,11 @@
 package org.aha.actioncenter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
 
 
 public class SplashActivity extends Activity {
@@ -17,8 +16,7 @@ public class SplashActivity extends Activity {
         AHABusProvider.getInstance().register(this);
         setContentView(R.layout.splash_screen_view);
 
-        SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
-        boolean isValidLogin = prefs.getBoolean("login", false);
+        boolean isValidLogin = !Utility.getInstance(getApplicationContext()).getLoginData("login").ahaid.isEmpty();
 
         Intent intent;
         if(isValidLogin){

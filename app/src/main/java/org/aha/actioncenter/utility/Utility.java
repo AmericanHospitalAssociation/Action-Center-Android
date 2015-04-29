@@ -18,8 +18,10 @@ import org.aha.actioncenter.models.CampaignItem;
 import org.aha.actioncenter.models.EventItem;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.models.NewsItem;
+import org.aha.actioncenter.models.OAMItem;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -266,7 +268,7 @@ public class Utility {
 
     }
 
-    private void saveEventData(String dataName, List<EventItem> list) {
+    public void saveEventData(String dataName, List<EventItem> list) {
 
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -281,6 +283,42 @@ public class Utility {
         }
         editor.apply();
     }
+
+    public void saveLoginData(String dataName, JSONObject item) {
+        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Gson gson = new Gson();
+        editor.putString(dataName, item.toString());
+
+        editor.apply();
+    }
+
+    public void saveLoginData(String dataName, OAMItem item) {
+        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Gson gson = new Gson();
+        editor.putString(dataName, gson.toJson(item));
+
+        editor.apply();
+    }
+
+    public OAMItem getLoginData(String dataName) {
+
+        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
+        String dataString = prefs.getString(dataName, "");
+
+        Gson gson = new Gson();
+
+        Type oamItemArrayListType = new TypeToken<OAMItem>() {}.getType();
+
+        OAMItem item = gson.fromJson(dataString, oamItemArrayListType);
+
+        return item;
+    }
+
+
 
 
     public List<FeedItem> getFeedData(String dataName) {
@@ -444,5 +482,13 @@ public class Utility {
         else {
             return false;
         }
+    }
+
+    public void logoutCurrentUser() {
+        SharedPreferences prefs = mContext.getSharedPreferences("login", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.remove("login");
+        editor.commit();
     }
 }
