@@ -67,12 +67,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import com.parse.Parse;
-import com.parse.ParsePush;
-import com.parse.ParseInstallation;
-import com.parse.SaveCallback;
-import java.text.ParseException;
-
 public class MainActivity extends ActionBarActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = "MainActivity";
@@ -93,9 +87,6 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Parse.initialize(this, "eCgr0cenQyGE8gAGe2i3HSR4TA9l3DwkBZWkJ5NI",   "SWJUl9v413kjadIrowI8GucGsBhEuqLYGxUMPeDM");
-        ParseInstallation.getCurrentInstallation().saveInBackground();
 
         mContext = getApplicationContext();
 
