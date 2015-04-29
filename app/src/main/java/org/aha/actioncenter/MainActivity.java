@@ -94,7 +94,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Parse.initialize(this, "eCgr0cenQyGE8gAGe2i3HSR4TA9l3DwkBZWkJ5NI",  "SWJUl9v413kjadIrowI8GucGsBhEuqLYGxUMPeDM");
+        Parse.initialize(this, "eCgr0cenQyGE8gAGe2i3HSR4TA9l3DwkBZWkJ5NI",   "SWJUl9v413kjadIrowI8GucGsBhEuqLYGxUMPeDM");
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
         mContext = getApplicationContext();
