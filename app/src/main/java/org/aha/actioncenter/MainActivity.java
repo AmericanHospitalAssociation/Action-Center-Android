@@ -8,6 +8,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.models.NavigationItem;
+import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.service.CampaignAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -242,6 +244,14 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         if (item.id.equals(Utility.getInstance().NEWS))
             fragment = new NewsListFragment();
         if (item.id.equals(Utility.getInstance().DIRECTORY)) {
+
+            SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
+            String dataString = prefs.getString("login", "");
+            Gson gson = new Gson();
+            Type oamType = new TypeToken<OAMItem>(){}.getType();
+            OAMItem omaItem = gson.fromJson(dataString, oamType);
+
+
 
         }
         if (item.id.equals(Utility.getInstance().CONTACT_YOUR_LEGISLATORS)) {
