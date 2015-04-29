@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/scrollView1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true">
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:fillViewport="true">
 
     <FrameLayout
         android:id="@+id/feed_table_row"
@@ -46,7 +46,7 @@
                     android:id="@+id/long_description_txt"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="0dip"
                     android:singleLine="false"
                     />
 

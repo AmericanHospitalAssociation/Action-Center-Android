@@ -5,15 +5,6 @@
              android:layout_height="wrap_content"
              android:gravity="center_vertical">
 
-<!--
-    clean_title = (TextView) v.findViewById(R.id.clean_title);
-    pretty_date = (TextView) v.findViewById(R.id.pretty_date);
-    meeting_start_time = (TextView) v.findViewById(R.id.meeting_start_time);
-    meeting_end_time = (TextView) v.findViewById(R.id.meeting_end_time);
-    meeting_location = (TextView) v.findViewById(R.id.meeting_location);
-    link = (TextView) v.findViewById(R.id.link);
--->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

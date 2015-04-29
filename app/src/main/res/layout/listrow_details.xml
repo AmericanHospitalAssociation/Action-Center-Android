@@ -22,15 +22,4 @@
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:textColor="#ffffff"/>
 
-    <!-- The navigation drawer -->
-    <!--
-    <ExpandableListView
-        android:id="@+id/child_left_drawer"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:background="#111"/>
-    -->
 </LinearLayout>

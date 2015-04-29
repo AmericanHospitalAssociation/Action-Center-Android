@@ -4,7 +4,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:fillViewport="true">
 
     <FrameLayout
         android:id="@+id/feed_table_row"

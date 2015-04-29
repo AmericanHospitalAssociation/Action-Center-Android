@@ -137,35 +137,37 @@ public class Utility {
             }
 
 
-            if (item.ContentType.equals(ADDITIONAL_INFO)) {
-                additionalInfo.add(item);
-            }
-            else if (item.ContentType.equals(LETTER)) {
-                letter.add(item);
-            }
-            else if (item.ContentType.equals(PRESS_RELEASE)) {
-                pressRelease.add(item);
-            }
-            else if (item.ContentType.equals(TESTIMONY)) {
-                testimony.add(item);
-            }
-            else if (item.ContentType.equals(ADVISORY)) {
-                advisory.add(item);
-            }
-            else if (item.ContentType.equals(BULLETIN)) {
-                bulletin.add(item);
-            }
-            else if (item.ContentType.equals(ACTION_ALERT)) {
-                actionAlert.add(item);
-            }
-            else if (item.ContentType.equals(FACT_SHEET)) {
-                factSheet.add(item);
-            }
-            else if (item.ContentType.equals(CONGRESSIONAL_CALENDAR)) {
-                congressionalCalendar.add(item);
-            }
-            else if (item.ContentType.equals(WORKING_WITH_CONGRESS)) {
-                workingWithCongress.add(item);
+            if(item.isHidden == 0) {
+                if (item.ContentType.equals(ADDITIONAL_INFO)) {
+                    additionalInfo.add(item);
+                }
+                else if (item.ContentType.equals(LETTER)) {
+                    letter.add(item);
+                }
+                else if (item.ContentType.equals(PRESS_RELEASE)) {
+                    pressRelease.add(item);
+                }
+                else if (item.ContentType.equals(TESTIMONY)) {
+                    testimony.add(item);
+                }
+                else if (item.ContentType.equals(ADVISORY)) {
+                    advisory.add(item);
+                }
+                else if (item.ContentType.equals(BULLETIN)) {
+                    bulletin.add(item);
+                }
+                else if (item.ContentType.equals(ACTION_ALERT)) {
+                    actionAlert.add(item);
+                }
+                else if (item.ContentType.equals(FACT_SHEET)) {
+                    factSheet.add(item);
+                }
+                else if (item.ContentType.equals(CONGRESSIONAL_CALENDAR)) {
+                    congressionalCalendar.add(item);
+                }
+                else if (item.ContentType.equals(WORKING_WITH_CONGRESS)) {
+                    workingWithCongress.add(item);
+                }
             }
         }
 
