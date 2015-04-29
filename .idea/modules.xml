@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file:///Volumes/Macintosh HD/Applications/AHA/Action-Center-Android/Action-Center-Android.iml" filepath="/Volumes/Macintosh HD/Applications/AHA/Action-Center-Android/Action-Center-Android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ActionCenter.iml" filepath="$PROJECT_DIR$/ActionCenter.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
