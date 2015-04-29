@@ -4,10 +4,10 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true"
+            android:background="#fff"
             android:fillViewport="true">
 
     <FrameLayout
-        android:id="@+id/feed_table_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
@@ -28,9 +28,8 @@
 
                 <TextView
                     android:id="@+id/title_txt"
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:singleLine="false"
                     android:textColor="#ffffffff"/>
 
@@ -52,9 +51,8 @@
 
                 <TextView
                     android:id="@+id/resource_uri_txt"
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:singleLine="false"
                     />
 

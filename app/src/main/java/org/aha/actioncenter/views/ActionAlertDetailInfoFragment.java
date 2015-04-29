@@ -69,8 +69,6 @@ public class ActionAlertDetailInfoFragment extends Fragment {
 
         title_txt.setText(item.Title);
         long_description_txt.setText(Html.fromHtml(item.Long_Description));
-        resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
-
 
 
         return view;

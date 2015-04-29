@@ -264,7 +264,6 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(item.id).commit();
 
             // Highlight the selected item, update the title, and close the drawer
-            //mDrawerList.setItemChecked(position, true);
             setTitle(item.name);
             mDrawerLayout.closeDrawer(mDrawerList);
         }
