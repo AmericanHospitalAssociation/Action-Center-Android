@@ -71,6 +71,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         Log.d(TAG, "debug");
 
+        pullAdditionalData();
+
     }
 
     @Subscribe
