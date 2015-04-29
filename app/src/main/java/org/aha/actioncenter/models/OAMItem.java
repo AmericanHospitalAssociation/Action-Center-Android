@@ -3,7 +3,7 @@ package org.aha.actioncenter.models;
 /**
  * Created by vince on 4/29/15.
  */
-public class OAM {
+public class OAMItem {
     public String address_line = "";
     public String ahaid = "";
     public String email = "";
@@ -18,6 +18,7 @@ public class OAM {
     public String country_code = "";
     public String zip = "";
     public String token = "";
+    public String userid = "";
 }
 
 /* Example JSON

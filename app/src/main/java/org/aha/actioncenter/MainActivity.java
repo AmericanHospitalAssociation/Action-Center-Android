@@ -33,6 +33,7 @@ import org.aha.actioncenter.data.AHAExpandableListAdapter;
 import org.aha.actioncenter.events.CampaignDataEvent;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.events.PdfDataEvent;
+import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.service.CampaignAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -240,15 +241,18 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new EventsListFragment();
         if (item.id.equals(Utility.getInstance().NEWS))
             fragment = new NewsListFragment();
+        if (item.id.equals(Utility.getInstance().DIRECTORY)) {
+
+        }
         if (item.id.equals(Utility.getInstance().CONTACT_YOUR_LEGISLATORS)) {
             try {
                 URL url = new URL(getResources().getString(R.string.campaign_url));
                 CampaignAsyncTask asyncTask = new CampaignAsyncTask(url, mContext, this);
             }
-            catch (MalformedURLException e){
+            catch (MalformedURLException e) {
                 e.printStackTrace();
             }
-            catch (Exception e){
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -428,8 +432,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
                     }
                 }).show();
             }
-            catch (Exception e){
-                Log.d(TAG,"debug");
+            catch (Exception e) {
+                Log.d(TAG, "debug");
                 e.printStackTrace();
             }
         }
@@ -445,5 +449,26 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
 
         }
     }
+
+
+    @Subscribe
+    public void subcribeVoterVoiceEvents(VoterVoiceDataEvent event) {
+        if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_CREATE_DATA)) {
+
+        }
+        else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_CAMPAIGN_DATA)) {
+
+        }
+        else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_POST_DATA)) {
+
+        }
+        else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_TARGETED_MESSAGE_DATA)) {
+
+        }
+        else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_MATCHES_FOR_CAMPAIGN_DATA)) {
+
+        }
+    }
+
 
 }
