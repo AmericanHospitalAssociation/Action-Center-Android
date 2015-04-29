@@ -11,13 +11,17 @@
     <string name="twitter_key">trwxm119rAqWC5KmYedIqv8Xl</string>
     <string name="twitter_secret">6wXav43Xmw2cwJ6e37kB9gGmaIMKFnBJIQ23JhJqF7kgSgfMkT</string>
 
-    <!-- Data Feeds -->
+    <!-- Data Feed URLs -->
     <string name="feed_url">http://ahaconnect.org/feed.php?id=app_feed_1</string>
     <string name="events_url">http://ahaconnect.org/feed.php?id=app_cal_public</string>
     <string name="news_url">http://ahaconnect.org/ASHE_RSS/aha_news_rss_generator.php?dom_ready=json</string>
     <string name="news_detail_url">http://54.245.255.190/p/action_center/api/v1/getAHANewsDescription?url=</string>
 
-    <!-- Voter Voice Calls -->
+
+    <!-- Login URLs -->
+    <string name="login_url">http://ahaconnect.org/apis/sso.php?email=mEmail&amp;password=mPassword&amp;db=prod</string>
+
+    <!-- Voter Voice URLs -->
     <string name="vv_create_user_url">http://54.245.255.190/p/action_center/api/v1/createUser?org=mOrg&amp;email=mEmail&amp;firstName=mFirstName&amp;address=mAddress&amp;zipcode=mZipcode&amp;country=mCountry&amp;lastName=mLastName&amp;phone=mPhone&amp;prefix=mPrefix</string>
     <string name="vv_matches_campaign_url">http://54.245.255.190/p/action_center/api/v1/getMatchedTargetsForCampaign?campaignId=mId&amp;token=mToken</string>
     <string name="vv_campaign_summary_url">http://54.245.255.190/p/action_center/api/v1/getCampaignSummaries</string>

@@ -4,16 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.squareup.otto.Subscribe;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import org.aha.actioncenter.events.EventsDataEvent;
 import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.events.LoginEvent;
 import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.service.EventsAsyncTask;
 import org.aha.actioncenter.service.FeedAsyncTask;
@@ -26,12 +26,12 @@ import org.json.JSONException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import io.fabric.sdk.android.Fabric;
-
 /**
  * Created by markusmcgee on 4/23/15.
  */
 public class LoginActivity extends Activity implements View.OnClickListener {
+
+    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,27 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        TextView username_txt;
+        TextView password_txt;
 
+        username_txt = (TextView) findViewById(R.id.username_txt);
+        password_txt = (TextView) findViewById(R.id.password_txt);
+
+        String loginUrl = getResources().getString(R.string.login_url);
+
+        Log.d(TAG, "debug");
+
+    }
+
+    @Subscribe
+    public void subscribeLoginDataEvent(LoginEvent event){
+
+
+        Log.d(TAG, "debug");
+    }
+
+
+    private void pullAdditionalData(){
         URL feed_url = null;
         URL events_url = null;
         URL news_url = null;
@@ -84,8 +104,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
     }
+
 
     //Subscribe to Feed data event.  This should probably listen only once then unregister it self.
     //MainActivity should only be shown once?
