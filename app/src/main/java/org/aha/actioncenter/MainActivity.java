@@ -93,7 +93,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         //Register bus provider to listen to events.
         AHABusProvider.getInstance().register(this);
 
-        ((AHAActionCenterApplication)getApplicationContext()).pullAdditionalData(this);
+        if (!Utility.getInstance().contentLoaded())
+            ((AHAActionCenterApplication) getApplicationContext()).pullAdditionalData(this);
 
         setContentView(R.layout.activity_main);
 
@@ -249,10 +250,9 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
             String dataString = prefs.getString("login", "");
             Gson gson = new Gson();
-            Type oamType = new TypeToken<OAMItem>(){}.getType();
+            Type oamType = new TypeToken<OAMItem>() {
+            }.getType();
             OAMItem omaItem = gson.fromJson(dataString, oamType);
-
-
 
 
         }

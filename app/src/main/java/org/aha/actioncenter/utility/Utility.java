@@ -491,4 +491,8 @@ public class Utility {
         editor.remove("login");
         editor.commit();
     }
+
+    public boolean contentLoaded() {
+        return mFeedDataLoaded && mNewsDataLoaded && mEventDataLoaded;
+    }
 }
