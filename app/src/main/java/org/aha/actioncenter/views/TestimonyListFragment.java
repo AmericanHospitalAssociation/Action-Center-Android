@@ -13,9 +13,8 @@ import android.widget.TableLayout;
 
 import com.squareup.otto.Subscribe;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.data.ActionAlertFeedAdapter;
+import org.aha.actioncenter.data.TestimonyFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.service.FeedAsyncTask;
@@ -60,7 +59,7 @@ public class TestimonyListFragment extends Fragment {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().TESTIMONY);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+            mAdapter = new TestimonyFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
 
@@ -71,7 +70,7 @@ public class TestimonyListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getFeedData("action-alert");
+        list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().TESTIMONY);
     }
 
     @Override
@@ -80,11 +79,6 @@ public class TestimonyListFragment extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //AHABusProvider.getInstance().unregister(this);
-    }
 
     private void refreshFeedData() {
         try {
@@ -103,7 +97,7 @@ public class TestimonyListFragment extends Fragment {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isFeedDataLoaded()) {
             list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().TESTIMONY);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+            mAdapter = new TestimonyFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
     }

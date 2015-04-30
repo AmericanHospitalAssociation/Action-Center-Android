@@ -93,6 +93,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         //Register bus provider to listen to events.
         AHABusProvider.getInstance().register(this);
 
+        ((AHAActionCenterApplication)getApplicationContext()).pullAdditionalData(this);
+
         setContentView(R.layout.activity_main);
 
 

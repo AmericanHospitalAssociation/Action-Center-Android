@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,10 +18,7 @@ import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.events.LoginEvent;
 import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.models.OAMItem;
-import org.aha.actioncenter.service.EventsAsyncTask;
-import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.service.LoginAsyncTask;
-import org.aha.actioncenter.service.NewsAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 import org.json.JSONArray;
@@ -99,7 +95,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         OAMItem omaItem = gson.fromJson(dataString, OAMItem.class);
 
         if(!omaItem.ahaid.isEmpty()){
-            pullAdditionalData();
+            ((AHAActionCenterApplication)getApplicationContext()).pullAdditionalData(this);
         }
         else{
             Log.d(TAG, "Login Unsuccessful");
@@ -107,31 +103,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     }
 
-
-    private void pullAdditionalData(){
-        URL feed_url = null;
-        URL events_url = null;
-        URL news_url = null;
-
-        try {
-
-            feed_url = new URL(getResources().getString(R.string.feed_url));
-            FeedAsyncTask feedAsync = new FeedAsyncTask(feed_url, getApplicationContext(), this);
-            feedAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-            events_url = new URL(getResources().getString(R.string.events_url));
-            EventsAsyncTask eventAsync = new EventsAsyncTask(events_url, getApplicationContext(), this);
-            eventAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-            news_url = new URL(getResources().getString(R.string.news_url));
-            NewsAsyncTask newsAsyncTask = new NewsAsyncTask(news_url, getApplicationContext(), this);
-            newsAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     //Subscribe to Feed data event.  This should probably listen only once then unregister it self.
