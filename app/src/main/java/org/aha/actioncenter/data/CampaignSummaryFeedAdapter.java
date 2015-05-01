@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.models.CampaignUserItem;
+import org.aha.actioncenter.events.CampaignSummaryItem;
 
 import java.util.List;
 
@@ -21,13 +21,13 @@ import java.util.List;
 /**
  * Provide views to RecyclerView with data from mDataSet.
  */
-public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdapter.ViewHolder> {
-    private static final String TAG = "DirectoryFeedAdapter";
+public class CampaignSummaryFeedAdapter extends RecyclerView.Adapter<CampaignSummaryFeedAdapter.ViewHolder> {
+    private static final String TAG = "CampaignSummaryFeedAdapter";
 
-    private static List<CampaignUserItem> mDataSet;
+    private static List<CampaignSummaryItem> mDataSet;
     private static Activity mActivity;
 
-    public DirectoryFeedAdapter(Activity activity, List<CampaignUserItem> dataSet) {
+    public CampaignSummaryFeedAdapter(Activity activity, List<CampaignSummaryItem> dataSet) {
         mActivity = activity;
         mDataSet = dataSet;
     }
@@ -37,38 +37,25 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView name_txt = null;
+        protected TextView title_txt = null;
 
         public ViewHolder(View v) {
             super(v);
             // Define click listener for the ViewHolder's View.
-
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
-
-                    /*
-                    Fragment fragment = null;
-                    Bundle args = new Bundle();
 
                     int position = getAdapterPosition();
 
-                    CampaignUserItem item = mDataSet.get(position);
+                    CampaignSummaryItem item = mDataSet.get(position);
 
-                    args.putString("item", new Gson().toJson(item));
-                    fragment = new CampaignDetailInfoFragment();
-                    fragment.setArguments(args);
-
-                    // Insert the fragment by replacing any existing fragment
-                    FragmentManager fragmentManager = mActivity.getFragmentManager();
-
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                    */
+                    Log.d(TAG, "debug");
                 }
             });
 
-            name_txt = (TextView) v.findViewById(R.id.name_txt);
+            title_txt = (TextView) v.findViewById(R.id.title_txt);
+
 
         }
     }
@@ -77,7 +64,7 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.directory_item_view, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fact_sheet_item_view, viewGroup, false);
 
         return new ViewHolder(v);
     }
@@ -86,10 +73,8 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-
-        CampaignUserItem item = mDataSet.get(position);
-
-        viewHolder.name_txt.setText(item.name);
+        CampaignSummaryItem item = mDataSet.get(position);
+        viewHolder.title_txt.setText(item.headline);
     }
 
 

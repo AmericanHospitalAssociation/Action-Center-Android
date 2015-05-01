@@ -5,11 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import org.aha.actioncenter.events.CampaignDataEvent;
+import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
-import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -22,7 +22,7 @@ import java.net.URL;
 /**
  * Created by markusmcgee on 4/15/15.
  */
-public class CampaignAsyncTask extends AsyncTask<Void, Void, String> {
+public class CampaignSummaryAsyncTask extends AsyncTask<Void, Void, String> {
     private static final String TAG = "CampaignAsyncTask";
     private URL mUrl;
     private HttpURLConnection mConnection;
@@ -31,12 +31,12 @@ public class CampaignAsyncTask extends AsyncTask<Void, Void, String> {
 
     private ProgressDialog progressDialog = null;
 
-    public CampaignAsyncTask(URL url, Context context, Activity activity) {
+    public CampaignSummaryAsyncTask(URL url, Context context, Activity activity) {
         this(url, context);
         this.activity = activity;
     }
 
-    public CampaignAsyncTask(URL url, Context context) {
+    public CampaignSummaryAsyncTask(URL url, Context context) {
         this.mContext = context;
         this.mUrl = url;
     }
@@ -75,10 +75,10 @@ public class CampaignAsyncTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String feed) {
         super.onPostExecute(feed);
 
-        JSONArray json = null;
+        JSONObject json = null;
 
         try {
-            json = new JSONArray(feed);
+            json = new JSONObject(feed);
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -86,8 +86,8 @@ public class CampaignAsyncTask extends AsyncTask<Void, Void, String> {
 
 
         if (json != null) {
-            CampaignDataEvent event = new CampaignDataEvent(CampaignDataEvent.CAMPAIGN_DATA);
-            event.setData(json);
+            VoterVoiceDataEvent event = new VoterVoiceDataEvent(VoterVoiceDataEvent.VOTER_VOICE_GET_CAMPAIGN_LIST_DATA);
+            Utility.getInstance(mContext).saveCampaignSummaryData(json);
             AHABusProvider.getInstance().post(event);
         }
 

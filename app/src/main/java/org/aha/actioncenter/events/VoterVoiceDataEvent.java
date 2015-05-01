@@ -7,6 +7,7 @@ public class VoterVoiceDataEvent extends Event {
 
     public static final String VOTER_VOICE_CREATE_DATA = "VOTER_VOICE_CREATE_DATA";
     public static final String VOTER_VOICE_GET_CAMPAIGN_DATA = "VOTER_VOICE_GET_CAMPAIGN_DATA";
+    public static final String VOTER_VOICE_GET_CAMPAIGN_LIST_DATA = "VOTER_VOICE_GET_CAMPAIGN_LIST_DATA";
     public static final String VOTER_VOICE_POST_DATA = "VOTER_VOICE_POST_DATA";
     public static final String VOTER_VOICE_PROFILE_DATA = "VOTER_VOICE_PROFILE_DATA";
     public static final String VOTER_VOICE_GET_TARGETED_MESSAGE_DATA = "VOTER_VOICE_GET_TARGETED_MESSAGE_DATA";

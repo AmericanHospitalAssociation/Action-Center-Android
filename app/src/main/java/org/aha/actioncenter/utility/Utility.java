@@ -14,6 +14,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.aha.actioncenter.events.CampaignSummaryItem;
 import org.aha.actioncenter.models.CampaignItem;
 import org.aha.actioncenter.models.CampaignUserItem;
 import org.aha.actioncenter.models.EventItem;
@@ -41,6 +42,7 @@ public class Utility {
     private static boolean mNewsDataLoaded = false;
     private static boolean mCampaignDataLoaded = false;
     private static boolean mDirectoryDataLoaded = false;
+    private static boolean mCampaignSummaryDataLoaded = false;
 
     public static String HOME = "home";
     public static String ACTION_CENTER = "action-center";
@@ -56,6 +58,7 @@ public class Utility {
     public static String CONTACT_YOUR_LEGISLATORS = "contact-your-legislators";
     public static String TWITTER_FEEDS = "twitter-feeds";
     public static String DIRECTORY = "directory";
+    public static String CAMPAIGN_SUMMARY_LIST = "campaign-summary-list";
 
     public static String EVENTS = "events";
 
@@ -454,12 +457,54 @@ public class Utility {
 
         Gson gson = new Gson();
 
-        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignItem>>() {
-        }.getType();
+        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignItem>>(){}.getType();
 
         ArrayList<CampaignItem> list = gson.fromJson(dataString, campaignItemArrayListType);
 
         return list;
+    }
+
+    public List<CampaignSummaryItem> getCampaignSummaryData() {
+
+        SharedPreferences prefs = mContext.getSharedPreferences(CAMPAIGN_SUMMARY_LIST, Context.MODE_PRIVATE);
+        String dataString = prefs.getString(CAMPAIGN_SUMMARY_LIST, "");
+
+        Type campaignSummaryItemArrayListType = new TypeToken<ArrayList<CampaignSummaryItem>>() {
+        }.getType();
+
+        JSONObject jsonobj = null;
+        ArrayList<CampaignSummaryItem> list = null;
+
+        try {
+            jsonobj = new JSONObject(dataString);
+            JSONArray jsonArray = jsonobj.getJSONArray("values");
+            list = new Gson().fromJson(jsonArray.toString(), campaignSummaryItemArrayListType);
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public void saveCampaignSummaryData(JSONObject json) {
+        Log.d(TAG, "debug");
+
+        mCampaignSummaryDataLoaded = false;
+
+        SharedPreferences prefs = mContext.getSharedPreferences(CAMPAIGN_SUMMARY_LIST, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        try {
+            editor.putString(CAMPAIGN_SUMMARY_LIST, new Gson().toJson(json.getJSONObject("response").getJSONArray("body")));
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        mCampaignSummaryDataLoaded = true;
+
+        editor.apply();
     }
 
 
@@ -477,6 +522,10 @@ public class Utility {
 
     public boolean isCampaignDataLoaded() {
         return mCampaignDataLoaded;
+    }
+
+    public boolean isCampaignSummaryDataLoaded() {
+        return mCampaignSummaryDataLoaded;
     }
 
 
@@ -578,4 +627,6 @@ public class Utility {
     public boolean isDirectoryDataLoaded() {
         return mDirectoryDataLoaded;
     }
+
+
 }

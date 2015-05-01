@@ -37,7 +37,7 @@ import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.models.OAMItem;
-import org.aha.actioncenter.service.CampaignAsyncTask;
+import org.aha.actioncenter.service.CampaignSummaryAsyncTask;
 import org.aha.actioncenter.service.VoterVoiceCreateUserAsyncTask;
 import org.aha.actioncenter.service.VoterVoiceMatchesCampaignAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -45,6 +45,7 @@ import org.aha.actioncenter.utility.Utility;
 import org.aha.actioncenter.views.ActionAlertListFragment;
 import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
+import org.aha.actioncenter.views.CampaignSummaryListFragment;
 import org.aha.actioncenter.views.CongressionalCalendarFragment;
 import org.aha.actioncenter.views.ContactYourLegislatorsListFragment;
 import org.aha.actioncenter.views.DirectoryListFragment;
@@ -216,6 +217,9 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     /**
      * Swaps fragments in the main content view
      */
+
+    //TODO: Disable multiple clicks, data request.
+    private boolean onePassClick = false;
     public void selectItem(NavigationItem item) {
         Log.d(TAG, "Navigation item selected.");
 
@@ -285,8 +289,11 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         }
         if (item.id.equals(Utility.getInstance().CONTACT_YOUR_LEGISLATORS)) {
             try {
-                URL url = new URL(getResources().getString(R.string.campaign_url));
-                CampaignAsyncTask asyncTask = new CampaignAsyncTask(url, mContext, this);
+
+                String urlString = getResources().getString(R.string.vv_campaign_summary_url);
+                URL url = new URL(urlString);
+
+                new CampaignSummaryAsyncTask(url, mContext, this).execute();
             }
             catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -535,8 +542,14 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-
             new VoterVoiceMatchesCampaignAsyncTask(url, getApplicationContext(), this).execute();
+
+        }
+        else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_CAMPAIGN_LIST_DATA)) {
+
+            Log.d(TAG, "debug");
+            Fragment fragment = new CampaignSummaryListFragment();
+            addToAppBackStack(fragment, "campaign-summary", "Campaigns");
 
 
         }
