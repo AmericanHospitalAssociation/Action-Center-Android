@@ -11,19 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.models.CampaignItem;
 import org.aha.actioncenter.utility.AHABusProvider;
-
-import java.lang.reflect.Type;
 
 /**
  * Created by markusmcgee on 4/17/15.
  */
-public class CampaignDetailInfoFragment extends Fragment {
+public class ProfileDetailInfoFragment extends Fragment {
 
     protected TextView title_txt = null;
     protected TextView description_txt = null;
@@ -58,10 +52,11 @@ public class CampaignDetailInfoFragment extends Fragment {
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
-        Type campaignItemType = new TypeToken<CampaignItem>(){}.getType();
-        CampaignItem item = new Gson().fromJson(getArguments().getString("item"), campaignItemType);
-
         /*
+        Type campaignItemType = new TypeToken<DirectoryItem>(){}.getType();
+        DirectoryItem item = new Gson().fromJson(getArguments().getString("item"), campaignItemType);
+
+
         title_txt = (TextView) view.findViewById(R.id.title_txt);
         description_txt = (TextView) view.findViewById(R.id.description_txt);
         name_txt = (TextView) view.findViewById(R.id.name_txt);
@@ -69,7 +64,6 @@ public class CampaignDetailInfoFragment extends Fragment {
         title_txt.setText(item.title);
         description_txt.setText(Html.fromHtml(item.description));
         name_txt.setText(item.name);
-
         */
 
         return view;
