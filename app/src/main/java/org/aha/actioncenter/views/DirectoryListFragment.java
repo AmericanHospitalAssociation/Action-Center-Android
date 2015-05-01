@@ -11,28 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 
-import com.squareup.otto.Subscribe;
-
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.data.EventsFeedAdapter;
-import org.aha.actioncenter.events.FeedDataEvent;
-import org.aha.actioncenter.models.EventItem;
-import org.aha.actioncenter.service.FeedAsyncTask;
+import org.aha.actioncenter.data.DirectoryFeedAdapter;
+import org.aha.actioncenter.models.CampaignUserItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 /**
  * Created by markusmcgee on 4/17/15.
  */
-public class EventsListFragment extends Fragment {
+public class DirectoryListFragment extends Fragment {
 
-    private static final String TAG = "EventsListFragment";
+    private static final String TAG = "DirectoryListFragment";
     private TableLayout feedTable;
-    private List<EventItem> list;
+    private List<CampaignUserItem> list;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -58,12 +52,11 @@ public class EventsListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isEventDataLoaded()) {
-            list = Utility.getInstance(mContext).getEventData(Utility.getInstance().EVENTS);
-            mAdapter = new EventsFeedAdapter(getActivity(), list);
+        if(Utility.getInstance(mContext).isDirectoryDataLoaded()) {
+            list = Utility.getInstance(mContext).getDirectoryData();
+            mAdapter = new DirectoryFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }
-
         return view;
     }
 
@@ -71,7 +64,7 @@ public class EventsListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getEventData("events");
+        list = Utility.getInstance(mContext).getDirectoryData();
     }
 
     @Override
@@ -80,17 +73,7 @@ public class EventsListFragment extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
-    private void refreshFeedData() {
-        try {
-            URL url = new URL(getResources().getString(R.string.events_url));
-            FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
-            feedAsync.execute();
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /*
     //Subscribe to Feed data event.  If data comes in update view.
     @Subscribe
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
@@ -101,5 +84,5 @@ public class EventsListFragment extends Fragment {
             mRecyclerView.setAdapter(mAdapter);
         }
     }
-
+    */
 }

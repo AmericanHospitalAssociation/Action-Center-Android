@@ -47,6 +47,7 @@ import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
 import org.aha.actioncenter.views.CongressionalCalendarFragment;
 import org.aha.actioncenter.views.ContactYourLegislatorsListFragment;
+import org.aha.actioncenter.views.DirectoryListFragment;
 import org.aha.actioncenter.views.EventsListFragment;
 import org.aha.actioncenter.views.FactSheetListFragment;
 import org.aha.actioncenter.views.HomeFragment;
@@ -222,9 +223,6 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         Bundle args = new Bundle();
         //fragment.setArguments(args);
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getFragmentManager();
-
         if (item.id.equals(Utility.getInstance().HOME))
             fragment = new HomeFragment();
         if (item.id.equals(Utility.getInstance().ACTION_ALERT))
@@ -260,7 +258,6 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
                 try {
 
                     String phone = PhoneNumberUtils.stripSeparators((oamItem.phone != null ? oamItem.phone : ""));
-
 
                     String urlString = getResources().getString(R.string.vv_create_user_url);
                     urlString = urlString.replace("mOrg", URLEncoder.encode((oamItem.org_name != null ? oamItem.org_name : ""), "UTF-8"));
@@ -303,14 +300,30 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new TwitterFeedListFragment();
             fragment.setArguments(args);
         }
+
+        addToFragmentBackStack(fragment, item);
+    }
+
+    private void addToFragmentBackStack(Fragment fragment, String navigationId, String navigationName){
+        addToAppBackStack(fragment, navigationId, navigationName);
+    }
+
+    private void addToFragmentBackStack(Fragment fragment, NavigationItem item ) {
+        addToAppBackStack(fragment, item.id, item.name);
+    }
+
+    private void addToAppBackStack(Fragment fragment, String navigationId, String navigationName){
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getFragmentManager();
+
         if (fragment != null) {
 
             fragmentManager.addOnBackStackChangedListener(this);
             //fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(item.id).commit();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(item.id).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(navigationId).commit();
 
             // Highlight the selected item, update the title, and close the drawer
-            setTitle(item.name);
+            setTitle(navigationName);
             mDrawerLayout.closeDrawer(mDrawerList);
         }
     }
@@ -523,7 +536,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
                 e.printStackTrace();
             }
 
-            new VoterVoiceMatchesCampaignAsyncTask(url, this).execute();
+            new VoterVoiceMatchesCampaignAsyncTask(url, getApplicationContext(), this).execute();
 
 
         }
@@ -531,6 +544,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
 
             Log.d(TAG, "debug");
 
+            Fragment fragment = new DirectoryListFragment();
+            addToFragmentBackStack(fragment, Utility.getInstance().DIRECTORY, "Directory");
 
 
         }

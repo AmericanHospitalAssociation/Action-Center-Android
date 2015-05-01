@@ -40,6 +40,7 @@ public class Utility {
     private static boolean mEventDataLoaded = false;
     private static boolean mNewsDataLoaded = false;
     private static boolean mCampaignDataLoaded = false;
+    private static boolean mDirectoryDataLoaded = false;
 
     public static String HOME = "home";
     public static String ACTION_CENTER = "action-center";
@@ -64,6 +65,7 @@ public class Utility {
     public static final String MIME_TYPE_PDF = "application/pdf";
 
     private Activity mActivity;
+
 
     private Utility() {
     }
@@ -382,6 +384,20 @@ public class Utility {
         return list;
     }
 
+    public List<CampaignUserItem> getDirectoryData() {
+
+        SharedPreferences prefs = mContext.getSharedPreferences("directory", Context.MODE_PRIVATE);
+        String dataString = prefs.getString("directory", "");
+
+        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignUserItem>>(){}.getType();
+
+        ArrayList<CampaignUserItem> list = new Gson().fromJson(dataString, campaignItemArrayListType);
+
+        return list;
+
+    }
+
+
 
     public void parseCampaignData(JSONArray jArray) {
 
@@ -497,6 +513,7 @@ public class Utility {
 
     public void saveCampaignMatches(JSONObject json) {
 
+        ArrayList<CampaignUserItem> directoryItemsArray = new ArrayList<CampaignUserItem>();
         ArrayList<CampaignUserItem> usSenatorsItemArray = new ArrayList<CampaignUserItem>();
         ArrayList<CampaignUserItem> usRepresentativeItemArray = new ArrayList<CampaignUserItem>();
 
@@ -535,31 +552,30 @@ public class Utility {
                 }
             }
 
-            prefs = mContext.getSharedPreferences("us_senators", Context.MODE_PRIVATE);
-            editor = prefs.edit();
-            if (usSenatorsItemArray.size() > 0) {
-                editor.putString("us_senators", new Gson().toJson(usSenatorsItemArray));
-            }
-            else {
-                editor.putString("us_senators", "");
-            }
-            editor.apply();
+            directoryItemsArray.addAll(usRepresentativeItemArray);
+            directoryItemsArray.addAll(usSenatorsItemArray);
 
-            prefs = mContext.getSharedPreferences("us_representatives", Context.MODE_PRIVATE);
+            prefs = mContext.getSharedPreferences("directory", Context.MODE_PRIVATE);
             editor = prefs.edit();
             if (usSenatorsItemArray.size() > 0) {
-                editor.putString("us_representatives", new Gson().toJson(usSenatorsItemArray));
+                editor.putString("directory", new Gson().toJson(directoryItemsArray));
             }
             else {
-                editor.putString("us_representatives", "");
+                editor.putString("directory", "");
             }
             editor.apply();
 
             Log.d(TAG, "debug");
+            mDirectoryDataLoaded = true;
 
         }
         catch (JSONException e) {
             e.printStackTrace();
+            mDirectoryDataLoaded = false;
         }
+    }
+
+    public boolean isDirectoryDataLoaded() {
+        return mDirectoryDataLoaded;
     }
 }

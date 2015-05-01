@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -82,7 +81,7 @@ public class VoterVoiceMatchesCampaignAsyncTask extends AsyncTask<Void, Void, St
             json = new JSONObject(feed);
 
             Utility.getInstance().saveCampaignMatches(json);
-            Log.d(TAG, "debug");
+
         }
         catch (JSONException e) {
             e.printStackTrace();
