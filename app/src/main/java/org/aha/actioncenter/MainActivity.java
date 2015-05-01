@@ -8,7 +8,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +38,8 @@ import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.service.CampaignAsyncTask;
+import org.aha.actioncenter.service.VoterVoiceCreateUserAsyncTask;
+import org.aha.actioncenter.service.VoterVoiceMatchesCampaignAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 import org.aha.actioncenter.views.ActionAlertListFragment;
@@ -62,9 +64,11 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
@@ -247,14 +251,40 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             fragment = new NewsListFragment();
         if (item.id.equals(Utility.getInstance().DIRECTORY)) {
 
-            SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
-            String dataString = prefs.getString("login", "");
-            Gson gson = new Gson();
-            Type oamType = new TypeToken<OAMItem>() {
-            }.getType();
-            OAMItem omaItem = gson.fromJson(dataString, oamType);
+            OAMItem oamItem = Utility.getInstance(mContext).getLoginData("login");
+
+            if (oamItem.prefix.isEmpty() || oamItem.phone.isEmpty()) {
+                Log.d(TAG, "debug");
+            }
+            else {
+                try {
+
+                    String phone = PhoneNumberUtils.stripSeparators((oamItem.phone != null ? oamItem.phone : ""));
 
 
+                    String urlString = getResources().getString(R.string.vv_create_user_url);
+                    urlString = urlString.replace("mOrg", URLEncoder.encode((oamItem.org_name != null ? oamItem.org_name : ""), "UTF-8"));
+                    urlString = urlString.replace("mEmail", URLEncoder.encode((oamItem.email != null ? oamItem.email : ""), "UTF-8"));
+                    urlString = urlString.replace("mFirstName", URLEncoder.encode((oamItem.first_name != null ? oamItem.first_name : ""), "UTF-8"));
+                    urlString = urlString.replace("mLastName", URLEncoder.encode((oamItem.last_name != null ? oamItem.last_name : ""), "UTF-8"));
+                    urlString = urlString.replace("mAddress", URLEncoder.encode((oamItem.address_line != null ? oamItem.address_line : ""), "UTF-8"));
+                    urlString = urlString.replace("mZipcode", URLEncoder.encode((oamItem.zip != null ? oamItem.zip : ""), "UTF-8"));
+                    urlString = urlString.replace("mCountry", URLEncoder.encode((oamItem.country != null ? oamItem.country : "us"), "UTF-8"));
+                    urlString = urlString.replace("mCity", URLEncoder.encode((oamItem.city != null ? oamItem.city : ""), "UTF-8"));
+                    urlString = urlString.replace("mPhone", phone);
+                    urlString = urlString.replace("mPrefix", URLEncoder.encode((oamItem.prefix != null ? oamItem.prefix : ""), "UTF-8"));
+
+                    Log.d(TAG, urlString);
+                    URL url = new URL(urlString);
+                    new VoterVoiceCreateUserAsyncTask(url, this).execute();
+                }
+                catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         if (item.id.equals(Utility.getInstance().CONTACT_YOUR_LEGISLATORS)) {
             try {
@@ -470,8 +500,38 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     public void subcribeVoterVoiceEvents(VoterVoiceDataEvent event) {
         if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_CREATE_DATA)) {
 
+            OAMItem oamItem = Utility.getInstance(mContext).getLoginData("login");
+
+            Log.d(TAG, "debug");
+            URL url = null;
+
+            try {
+
+                String urlString = getResources().getString(R.string.vv_matches_campaign_url);
+                urlString = urlString.replace("mId", "30763");
+                urlString = urlString.replace("mToken", URLEncoder.encode((oamItem.token != null ? oamItem.token : ""), "UTF-8"));
+
+                Log.d(TAG, urlString);
+
+                url = new URL(urlString);
+
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            new VoterVoiceMatchesCampaignAsyncTask(url, this).execute();
+
+
         }
         else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_CAMPAIGN_DATA)) {
+
+            Log.d(TAG, "debug");
+
+
 
         }
         else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_POST_DATA)) {

@@ -28,6 +28,11 @@
     <string name="vv_targeted_message_url">http://54.245.255.190/p/action_center/api/v1/getTargetedMessages?campaignId=%@</string>
     <string name="vv_get_profile_url">http://54.245.255.190/p/action_center/api/v1/getProfile?id=mId&amp;type=mType</string>
 
+    <string name="vv_get_us_profile_url">http://54.245.255.190/p/action_center/api/v1/getProfile?id=mId&amp;type=mType</string>
+
+
+
+
     <string name="campaign_url">CAMPAIGN URL GOES HERE</string>
 
     <string name="menu_search">SOMETHING SHOULD GO HERE</string>

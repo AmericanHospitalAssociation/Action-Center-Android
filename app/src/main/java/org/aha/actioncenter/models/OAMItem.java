@@ -16,6 +16,7 @@ public class OAMItem {
     public String state = "";
     public String status = "";
     public String country_code = "";
+    public String country = "";
     public String zip = "";
     public String token = "";
     public String userid = "";

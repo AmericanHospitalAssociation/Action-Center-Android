@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.aha.actioncenter.models.CampaignItem;
+import org.aha.actioncenter.models.CampaignUserItem;
 import org.aha.actioncenter.models.EventItem;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.models.NewsItem;
@@ -140,7 +141,7 @@ public class Utility {
             }
 
 
-            if(item.isHidden == 0) {
+            if (item.isHidden == 0) {
                 if (item.ContentType.equals(ADDITIONAL_INFO)) {
                     additionalInfo.add(item);
                 }
@@ -300,7 +301,6 @@ public class Utility {
 
         Gson gson = new Gson();
         editor.putString(dataName, gson.toJson(item));
-
         editor.apply();
     }
 
@@ -311,14 +311,13 @@ public class Utility {
 
         Gson gson = new Gson();
 
-        Type oamItemArrayListType = new TypeToken<OAMItem>() {}.getType();
+        Type oamItemArrayListType = new TypeToken<OAMItem>() {
+        }.getType();
 
         OAMItem item = gson.fromJson(dataString, oamItemArrayListType);
 
         return item;
     }
-
-
 
 
     public List<FeedItem> getFeedData(String dataName) {
@@ -494,5 +493,73 @@ public class Utility {
 
     public boolean contentLoaded() {
         return mFeedDataLoaded && mNewsDataLoaded && mEventDataLoaded;
+    }
+
+    public void saveCampaignMatches(JSONObject json) {
+
+        ArrayList<CampaignUserItem> usSenatorsItemArray = new ArrayList<CampaignUserItem>();
+        ArrayList<CampaignUserItem> usRepresentativeItemArray = new ArrayList<CampaignUserItem>();
+
+        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignUserItem>>(){}.getType();
+
+        SharedPreferences prefs;
+        SharedPreferences.Editor editor;
+
+        try {
+            JSONArray jArray = json.getJSONObject("response").getJSONArray("body");
+
+            int icount = 0;
+            icount = jArray.length();
+
+            for(int i = 0; i < icount ; i++){
+                JSONObject jObj = null;
+                jObj = jArray.getJSONObject(i);
+
+                if(jObj.get("groupId").equals("US Senators")){
+                    usSenatorsItemArray = new Gson().fromJson(jObj.getJSONArray("matches").toString(), campaignItemArrayListType);
+                    int jcount = usSenatorsItemArray.size();
+                    for(int j = 0; j < jcount; j++){
+                        CampaignUserItem item = usSenatorsItemArray.get(j);
+                        item.groupId = jObj.getString("groupId");
+                        usSenatorsItemArray.set(j, item);
+                    }
+                }
+                if(jObj.get("groupId").equals("US Representative")){
+                    usRepresentativeItemArray = new Gson().fromJson(jObj.getJSONArray("matches").toString(), campaignItemArrayListType);
+                    int jcount = usRepresentativeItemArray.size();
+                    for(int j = 0; j < jcount; j++){
+                        CampaignUserItem item = usRepresentativeItemArray.get(j);
+                        item.groupId = jObj.getString("groupId");
+                        usRepresentativeItemArray.set(j, item);
+                    }
+                }
+            }
+
+            prefs = mContext.getSharedPreferences("us_senators", Context.MODE_PRIVATE);
+            editor = prefs.edit();
+            if (usSenatorsItemArray.size() > 0) {
+                editor.putString("us_senators", new Gson().toJson(usSenatorsItemArray));
+            }
+            else {
+                editor.putString("us_senators", "");
+            }
+            editor.apply();
+
+            prefs = mContext.getSharedPreferences("us_representatives", Context.MODE_PRIVATE);
+            editor = prefs.edit();
+            if (usSenatorsItemArray.size() > 0) {
+                editor.putString("us_representatives", new Gson().toJson(usSenatorsItemArray));
+            }
+            else {
+                editor.putString("us_representatives", "");
+            }
+            editor.apply();
+
+            Log.d(TAG, "debug");
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
