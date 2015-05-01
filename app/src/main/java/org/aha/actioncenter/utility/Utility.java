@@ -469,16 +469,22 @@ public class Utility {
         SharedPreferences prefs = mContext.getSharedPreferences(CAMPAIGN_SUMMARY_LIST, Context.MODE_PRIVATE);
         String dataString = prefs.getString(CAMPAIGN_SUMMARY_LIST, "");
 
-        Type campaignSummaryItemArrayListType = new TypeToken<ArrayList<CampaignSummaryItem>>() {
-        }.getType();
 
         JSONObject jsonobj = null;
-        ArrayList<CampaignSummaryItem> list = null;
+        ArrayList<CampaignSummaryItem> list = new ArrayList<CampaignSummaryItem>();
 
         try {
             jsonobj = new JSONObject(dataString);
             JSONArray jsonArray = jsonobj.getJSONArray("values");
-            list = new Gson().fromJson(jsonArray.toString(), campaignSummaryItemArrayListType);
+            for(int i = 0; i < jsonArray.length(); i ++){
+                CampaignSummaryItem item = null;
+                item = new CampaignSummaryItem();
+                JSONObject jObj = jsonArray.getJSONObject(i).getJSONObject("nameValuePairs");
+                item = new Gson().fromJson(jObj.toString(), CampaignSummaryItem.class);
+                list.add(item);
+            }
+
+            Log.d(TAG, "debug");
         }
         catch (JSONException e) {
             e.printStackTrace();
