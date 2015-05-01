@@ -14,7 +14,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.aha.actioncenter.events.CampaignSummaryItem;
+import org.aha.actioncenter.models.CampaignSummaryItem;
 import org.aha.actioncenter.models.CampaignItem;
 import org.aha.actioncenter.models.CampaignUserItem;
 import org.aha.actioncenter.models.EventItem;

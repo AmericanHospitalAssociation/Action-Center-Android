@@ -1,4 +1,4 @@
-package org.aha.actioncenter.events;
+package org.aha.actioncenter.models;
 /**
  * Created by markusmcgee on 5/1/15.
  */

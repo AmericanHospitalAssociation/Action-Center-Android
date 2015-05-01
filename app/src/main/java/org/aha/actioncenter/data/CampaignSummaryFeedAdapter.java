@@ -1,6 +1,9 @@
 package org.aha.actioncenter.data;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.events.CampaignSummaryItem;
+import org.aha.actioncenter.models.CampaignSummaryItem;
+import org.aha.actioncenter.views.CampaignSummaryDetailInfoFragment;
 
 import java.util.List;
 
@@ -51,12 +57,17 @@ public class CampaignSummaryFeedAdapter extends RecyclerView.Adapter<CampaignSum
                     CampaignSummaryItem item = mDataSet.get(position);
 
                     Log.d(TAG, "debug");
+
+                    Fragment fragment = new CampaignSummaryDetailInfoFragment();
+                    Bundle args = new Bundle();
+                    args.putString("item", new Gson().toJson(item));
+                    fragment.setArguments(args);
+                    FragmentManager fragmentManager = mActivity.getFragmentManager();
+                    fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(null).commit();
+
                 }
             });
-
             title_txt = (TextView) v.findViewById(R.id.title_txt);
-
-
         }
     }
 

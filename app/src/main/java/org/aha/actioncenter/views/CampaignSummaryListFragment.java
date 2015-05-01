@@ -13,7 +13,7 @@ import android.widget.TableLayout;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.data.CampaignSummaryFeedAdapter;
-import org.aha.actioncenter.events.CampaignSummaryItem;
+import org.aha.actioncenter.models.CampaignSummaryItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
