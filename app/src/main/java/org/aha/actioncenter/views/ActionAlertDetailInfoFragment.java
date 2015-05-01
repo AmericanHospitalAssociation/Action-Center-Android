@@ -55,7 +55,7 @@ public class ActionAlertDetailInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.feed_item_detail_view, container, false);
+        View view = inflater.inflate(R.layout.campaign_summary_detail_view, container, false);
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 

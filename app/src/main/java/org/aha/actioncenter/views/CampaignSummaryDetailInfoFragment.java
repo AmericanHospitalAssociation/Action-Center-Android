@@ -10,12 +10,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.aha.actioncenter.R;
+import org.aha.actioncenter.events.TakeActionEvent;
 import org.aha.actioncenter.models.CampaignSummaryItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 
@@ -31,6 +33,7 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
     protected TextView title_txt = null;
     protected TextView long_description_txt = null;
     protected TextView resource_uri_txt = null;
+    protected Button take_action_btn = null;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -67,13 +70,19 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
         title_txt = (TextView) view.findViewById(R.id.title_txt);
         long_description_txt = (TextView) view.findViewById(R.id.long_description_txt);
         resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
-
+        take_action_btn = (Button) view.findViewById(R.id.take_action_btn);
 
         title_txt.setText(item.headline);
         long_description_txt.setText(Html.fromHtml(item.alert));
         //resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
 
-
+        take_action_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TakeActionEvent event = new TakeActionEvent(TakeActionEvent.TAKE_ACTION);
+                AHABusProvider.getInstance().post(event);
+            }
+        });
 
         return view;
     }
