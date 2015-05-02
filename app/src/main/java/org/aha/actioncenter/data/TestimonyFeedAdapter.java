@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.FeedItem;
-import org.aha.actioncenter.views.ActionAlertDetailInfoFragment;
+import org.aha.actioncenter.views.TestimonyDetailInfoFragment;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class TestimonyFeedAdapter extends RecyclerView.Adapter<TestimonyFeedAdap
                     FeedItem item = mDataSet.get(position);
 
                     args.putString("item", new Gson().toJson(item));
-                    fragment = new ActionAlertDetailInfoFragment();
+                    fragment = new TestimonyDetailInfoFragment();
                     fragment.setArguments(args);
 
                     // Insert the fragment by replacing any existing fragment
