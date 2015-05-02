@@ -1,5 +1,6 @@
 package org.aha.actioncenter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -13,7 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
@@ -73,7 +74,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class MainActivity extends ActionBarActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
+public class MainActivity extends Activity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
@@ -104,6 +105,8 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
 
         setContentView(R.layout.activity_main);
 
+        ImageView imageView = (ImageView)findViewById(android.R.id.home);
+        imageView.setPadding(10, 0, 0, 0);
 
         mTitle = mDrawerTitle = getTitle();
 
@@ -152,14 +155,14 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mTitle);
+                getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle(mDrawerTitle);
+                getActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -167,14 +170,15 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
 
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = new HomeFragment();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(Utility.getInstance().HOME).commit();
 
         setTitle("WELCOME");
+
 
     }
 
@@ -338,7 +342,7 @@ public class MainActivity extends ActionBarActivity implements ExpandableListVie
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getSupportActionBar().setTitle(mTitle);
+        getActionBar().setTitle(mTitle);
     }
 
     @Override

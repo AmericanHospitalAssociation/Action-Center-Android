@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -39,6 +40,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.login_fragment_view);
+
+        ImageView imageView = (ImageView)findViewById(android.R.id.home);
+        imageView.setPadding(10, 0, 0, 0);
+
         AHABusProvider.getInstance().register(this);
 
         Button button = (Button) findViewById(R.id.login_btn);
