@@ -3,8 +3,10 @@ package org.aha.actioncenter.views;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -12,10 +14,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.EventItem;
-import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 
 import java.lang.reflect.Type;
@@ -32,6 +32,29 @@ public class EventDetailInfoFragment extends Fragment {
     protected TextView why_txt = null;
     protected TextView long_description_txt = null;
     protected TextView resource_uri_txt = null;
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.detail_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.close_detail_action) {
+            getFragmentManager().popBackStack();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
