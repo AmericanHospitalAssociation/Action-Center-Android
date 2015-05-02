@@ -10,4 +10,5 @@ public class NavigationItem {
     public String name="";
     public String user="";
     public ArrayList<NavigationItem> subnav = null;
+    public String icon = "";
 }

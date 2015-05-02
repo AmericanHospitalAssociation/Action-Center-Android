@@ -10,6 +10,7 @@
     <Button
         android:id="@+id/logout_btn"
         style="?android:attr/borderlessButtonStyle"
+
         android:background="?android:attr/activatedBackgroundIndicator"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.aha.actioncenter.R;
@@ -21,12 +22,10 @@ public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
     private static final String TAG = "AHAExpandableListAdapter";
     private final ArrayList<NavigationItem> navigationItems;
     public LayoutInflater inflater;
-    public Activity activity;
-
-    private NavigationItem navigationItem = null;
+    public Activity mActivity;
 
     public AHAExpandableListAdapter(Activity act, ArrayList<NavigationItem> navigationItems) {
-        activity = act;
+        mActivity = act;
         this.navigationItems = navigationItems;
         inflater = act.getLayoutInflater();
     }
@@ -42,15 +41,38 @@ public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
-        navigationItem = (NavigationItem) getChild(groupPosition, childPosition);
-        TextView text = null;
+    public View getGroupView(int groupPosition, boolean isExpanded,
+                             View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_details, null);
         }
-        text = (TextView) convertView.findViewById(R.id.textView1);
-        text.setText(navigationItem.name);
+
+        NavigationItem item = (NavigationItem) getGroup(groupPosition);
+
+        CheckedTextView navigation_txt =  (CheckedTextView)convertView.findViewById(R.id.navigation_txt);
+        navigation_txt.setText(item.name);
+        navigation_txt.setChecked(isExpanded);
+
+
+        if(!item.icon.isEmpty()){
+            ImageView img = (ImageView) convertView.findViewById(R.id.drawer_item_icon);
+            img.setImageResource(mActivity.getResources().getIdentifier(item.icon, "drawable", mActivity.getPackageName()));
+        }
+
+
+        return convertView;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, final int childPosition,
+                             boolean isLastChild, View convertView, ViewGroup parent) {
+        NavigationItem item = (NavigationItem) getChild(groupPosition, childPosition);
+        TextView text = null;
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.listrow_group, null);
+        }
+        text = (TextView) convertView.findViewById(R.id.navigation_txt);
+        text.setText(item.name);
 
         return convertView;
     }
@@ -86,19 +108,6 @@ public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public long getGroupId(int groupPosition) {
         return 0;
-    }
-
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.listrow_group, null);
-        }
-
-        NavigationItem group = (NavigationItem) getGroup(groupPosition);
-        ((CheckedTextView) convertView).setText(group.name);
-        ((CheckedTextView) convertView).setChecked(isExpanded);
-        return convertView;
     }
 
     @Override

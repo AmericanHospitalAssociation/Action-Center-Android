@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
                  xmlns:tools="http://schemas.android.com/tools"
-                 android:id="@+id/textView1"
+                 android:id="@+id/navigation_txt"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  android:background="?android:attr/activatedBackgroundIndicator"
                  android:gravity="center_vertical"
                  android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                 android:paddingLeft="16dp"
                  android:paddingRight="16dp"
+                 android:paddingLeft="50dp"
                  android:text="Loading Content ..."
                  android:textAppearance="?android:attr/textAppearanceListItem"
                  android:textColor="#ffffff"/>
