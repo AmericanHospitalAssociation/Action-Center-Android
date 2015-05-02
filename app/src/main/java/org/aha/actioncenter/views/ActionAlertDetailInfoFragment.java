@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -17,9 +18,12 @@ import com.google.gson.reflect.TypeToken;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.FeedItem;
+import org.aha.actioncenter.service.PdfDownloadAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by markusmcgee on 4/17/15.
@@ -29,6 +33,7 @@ public class ActionAlertDetailInfoFragment extends Fragment {
     protected TextView title_txt = null;
     protected TextView long_description_txt = null;
     protected TextView resource_uri_txt = null;
+    protected Button read_more_btn = null;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -56,12 +61,12 @@ public class ActionAlertDetailInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.campaign_summary_detail_view, container, false);
+        View view = inflater.inflate(R.layout.action_alert_detail_view, container, false);
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
         Type feedItemType = new TypeToken<FeedItem>(){}.getType();
-        FeedItem item = new Gson().fromJson(getArguments().getString("item"), feedItemType);
+        final FeedItem item = new Gson().fromJson(getArguments().getString("item"), feedItemType);
 
         title_txt = (TextView) view.findViewById(R.id.title_txt);
         long_description_txt = (TextView) view.findViewById(R.id.long_description_txt);
@@ -71,6 +76,21 @@ public class ActionAlertDetailInfoFragment extends Fragment {
         title_txt.setText(item.Title);
         long_description_txt.setText(Html.fromHtml(item.Long_Description));
 
+        if (!item.box_link_dir.isEmpty()) {
+            read_more_btn = (Button) view.findViewById(R.id.read_more_btn);
+            read_more_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        new PdfDownloadAsyncTask(new URL(item.box_link_dir), getActivity().getApplicationContext(), getActivity()).execute();
+                    }
+                    catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            read_more_btn.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
