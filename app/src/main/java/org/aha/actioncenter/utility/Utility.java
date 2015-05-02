@@ -451,14 +451,11 @@ public class Utility {
 
 
     public List<CampaignItem> getCampaignData(String dataName) {
-
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
         String dataString = prefs.getString(dataName, "");
 
         Gson gson = new Gson();
-
         Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignItem>>(){}.getType();
-
         ArrayList<CampaignItem> list = gson.fromJson(dataString, campaignItemArrayListType);
 
         return list;
@@ -468,7 +465,6 @@ public class Utility {
 
         SharedPreferences prefs = mContext.getSharedPreferences(CAMPAIGN_SUMMARY_LIST, Context.MODE_PRIVATE);
         String dataString = prefs.getString(CAMPAIGN_SUMMARY_LIST, "");
-
 
         JSONObject jsonobj = null;
         ArrayList<CampaignSummaryItem> list = new ArrayList<CampaignSummaryItem>();

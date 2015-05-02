@@ -36,9 +36,10 @@ public class SpecialBulletinDetailInfoFragment extends Fragment implements View.
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.detail_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

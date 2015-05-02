@@ -3,32 +3,25 @@ package org.aha.actioncenter.views;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.utility.AHABusProvider;
-
-import java.lang.reflect.Type;
 
 /**
  * Created by markusmcgee on 4/17/15.
  */
-public class NewsDetailInfoFragment extends Fragment {
+public class TakeActionFragment extends Fragment {
 
-    protected TextView title_txt = null;
-    protected TextView long_description_txt = null;
-    protected TextView resource_uri_txt = null;
+    protected TextView subject_txt = null;
+    protected EditText message_txt = null;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -56,23 +49,22 @@ public class NewsDetailInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.feed_item_detail_view, container, false);
+        View view = inflater.inflate(R.layout.take_action_fragment_view, container, false);
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
-        Type feedItemType = new TypeToken<FeedItem>(){}.getType();
-        FeedItem item = new Gson().fromJson(getArguments().getString("item"), feedItemType);
-
-        title_txt = (TextView) view.findViewById(R.id.title_txt);
-        long_description_txt = (TextView) view.findViewById(R.id.long_description_txt);
-        resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
+        getActivity().setTitle("Personalize the Message");
 
 
-        title_txt.setText(item.Title);
-        long_description_txt.setText(Html.fromHtml(item.Long_Description));
-        resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
+        String mMessages = getArguments().getString("message");
+        String mSubject = getArguments().getString("subject");
+        String mGuidelines = getArguments().getString("guidelines");
 
+        subject_txt = (TextView) view.findViewById(R.id.subject_txt);
+        message_txt = (EditText) view.findViewById(R.id.message_txt);
 
+        subject_txt.setText(mSubject);
+        message_txt.setText(mMessages);
 
         return view;
     }

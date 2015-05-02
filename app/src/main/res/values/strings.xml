@@ -25,7 +25,7 @@
     <string name="vv_create_user_url">http://54.245.255.190/p/action_center/api/v1/createUser?org=mOrg&amp;email=mEmail&amp;firstName=mFirstName&amp;address=mAddress&amp;zipcode=mZipcode&amp;country=mCountry&amp;lastName=mLastName&amp;phone=mPhone&amp;prefix=mPrefix</string>
     <string name="vv_matches_campaign_url">http://54.245.255.190/p/action_center/api/v1/getMatchedTargetsForCampaign?campaignId=mId&amp;token=mToken</string>
     <string name="vv_campaign_summary_url">http://54.245.255.190/p/action_center/api/v1/getCampaignSummaries</string>
-    <string name="vv_targeted_message_url">http://54.245.255.190/p/action_center/api/v1/getTargetedMessages?campaignId=%@</string>
+    <string name="vv_targeted_message_url">http://54.245.255.190/p/action_center/api/v1/getTargetedMessages?campaignId=mCampaignId</string>
     <string name="vv_get_profile_url">http://54.245.255.190/p/action_center/api/v1/getProfile?id=mId&amp;type=mType</string>
 
     <string name="vv_get_us_profile_url">http://54.245.255.190/p/action_center/api/v1/getProfile?id=mId&amp;type=mType</string>

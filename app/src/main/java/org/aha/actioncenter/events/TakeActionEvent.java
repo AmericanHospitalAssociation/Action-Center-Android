@@ -5,6 +5,7 @@ package org.aha.actioncenter.events;
  */
 public class TakeActionEvent extends Event {
     public static final String TAKE_ACTION = "TAKE_ACTION";
+    public static final String TAKE_ACTION_DATA = "TAKE_ACTION_DATA";
 
     public TakeActionEvent(String tagName){
         this.tagName = tagName;
