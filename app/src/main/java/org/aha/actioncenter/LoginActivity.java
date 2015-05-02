@@ -2,7 +2,6 @@ package org.aha.actioncenter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,16 +13,10 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
-import org.aha.actioncenter.events.EventsDataEvent;
-import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.events.LoginEvent;
-import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.service.LoginAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
-import org.aha.actioncenter.utility.Utility;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -108,73 +101,4 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     }
 
-
-
-    //Subscribe to Feed data event.  This should probably listen only once then unregister it self.
-    //MainActivity should only be shown once?
-    @Subscribe
-    public void subscribeOnFeedDataEvent(FeedDataEvent event) {
-        try {
-            JSONArray jArray = null;
-            jArray = (JSONArray) event.getData().getJSONArray("FEED_PAYLOAD");
-            Utility.getInstance(getApplicationContext()).parseFeedData(jArray);
-
-            //SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
-            //boolean isValidLogin = prefs.getBoolean("login", false);
-
-            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded() && Utility.getInstance().isNewsDataLoaded()) {
-                Intent intent;
-                intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            }
-
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Subscribe
-    public void subscribeOnEventDataEvent(EventsDataEvent event) {
-        try {
-            JSONArray jArray = null;
-            jArray = (JSONArray) event.getData().getJSONArray("items");
-            Utility.getInstance(getApplicationContext()).parseEventData(jArray);
-
-            //SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
-            //boolean isValidLogin = prefs.getBoolean("login", false);
-
-            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded() && Utility.getInstance().isNewsDataLoaded()) {
-                Intent intent;
-                intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            }
-
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Subscribe
-    public void subscribeOnNewsDataEvent(NewsDataEvent event) {
-        try {
-            JSONArray jArray = null;
-            jArray = event.getDataJSONArray();
-            Utility.getInstance(getApplicationContext()).parseNewsData(jArray);
-
-            //SharedPreferences prefs = getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
-            //boolean isValidLogin = prefs.getBoolean("login", false);
-
-            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded() && Utility.getInstance().isNewsDataLoaded()) {
-                Intent intent;
-                intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            }
-
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

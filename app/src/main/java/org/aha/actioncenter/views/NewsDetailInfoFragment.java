@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.models.FeedItem;
+import org.aha.actioncenter.models.NewsItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 
 import java.lang.reflect.Type;
@@ -60,16 +60,16 @@ public class NewsDetailInfoFragment extends Fragment {
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
-        Type feedItemType = new TypeToken<FeedItem>(){}.getType();
-        FeedItem item = new Gson().fromJson(getArguments().getString("item"), feedItemType);
+        Type feedItemType = new TypeToken<NewsItem>(){}.getType();
+        NewsItem item = new Gson().fromJson(getArguments().getString("item"), feedItemType);
 
         title_txt = (TextView) view.findViewById(R.id.title_txt);
         long_description_txt = (TextView) view.findViewById(R.id.long_description_txt);
         resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
 
 
-        title_txt.setText(item.Title);
-        long_description_txt.setText(Html.fromHtml(item.Long_Description));
+        title_txt.setText(item.title);
+        long_description_txt.setText(Html.fromHtml(item.long_description));
         resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
 
 

@@ -11,4 +11,5 @@ public class NewsItem {
     public String  pubDate = "";
     public String  date = "";
     public String  content = "";
+    public String long_description = "";
 }

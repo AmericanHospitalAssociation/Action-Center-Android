@@ -15,7 +15,7 @@
     <string name="feed_url">http://ahaconnect.org/feed.php?id=app_feed_1</string>
     <string name="events_url">http://ahaconnect.org/feed.php?id=app_cal_public</string>
     <string name="news_url">http://ahaconnect.org/ASHE_RSS/aha_news_rss_generator.php?dom_ready=json</string>
-    <string name="news_detail_url">http://54.245.255.190/p/action_center/api/v1/getAHANewsDescription?url=</string>
+    <string name="news_detail_url">http://54.245.255.190/p/action_center/api/v1/getAHANewsDescription?url=mNewsUrl</string>
 
 
     <!-- Login URLs -->

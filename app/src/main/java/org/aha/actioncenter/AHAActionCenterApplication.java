@@ -2,17 +2,26 @@ package org.aha.actioncenter;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.crashlytics.android.Crashlytics;
 import com.parse.Parse;
 import com.parse.ParseInstallation;
+import com.squareup.otto.Subscribe;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import org.aha.actioncenter.events.EventsDataEvent;
+import org.aha.actioncenter.events.FeedDataEvent;
+import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.service.EventsAsyncTask;
 import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.service.NewsAsyncTask;
+import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,6 +39,7 @@ public class AHAActionCenterApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        AHABusProvider.getInstance().register(this);
         if(!debug) {
             TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.twitter_key), getResources().getString(R.string.twitter_secret));
             Fabric.with(this, new Crashlytics(), new Twitter(authConfig));
@@ -38,6 +48,7 @@ public class AHAActionCenterApplication extends Application {
             ParseInstallation.getCurrentInstallation().saveInBackground();
         }
     }
+
 
     public void pullAdditionalData(Activity activity){
         URL feed_url = null;
@@ -58,6 +69,70 @@ public class AHAActionCenterApplication extends Application {
             newsAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
         catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //Subscribe to Feed data event.  This should probably listen only once then unregister it self.
+    //MainActivity should only be shown once?
+    @Subscribe
+    public void subscribeOnFeedDataEvent(FeedDataEvent event) {
+        try {
+            JSONArray jArray = null;
+            jArray = (JSONArray) event.getData().getJSONArray("FEED_PAYLOAD");
+            Utility.getInstance(getApplicationContext()).parseFeedData(jArray);
+
+
+            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded() && Utility.getInstance().isNewsDataLoaded()) {
+                Intent intent;
+                intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void subscribeOnEventDataEvent(EventsDataEvent event) {
+        try {
+            JSONArray jArray = null;
+            jArray = (JSONArray) event.getData().getJSONArray("items");
+            Utility.getInstance(getApplicationContext()).parseEventData(jArray);
+
+            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded() && Utility.getInstance().isNewsDataLoaded()) {
+                Intent intent;
+                intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void subscribeOnNewsDataEvent(NewsDataEvent event) {
+        try {
+            JSONArray jArray = null;
+            jArray = event.getDataJSONArray();
+            Utility.getInstance(getApplicationContext()).parseNewsData(jArray);
+
+            if(Utility.getInstance().isFeedDataLoaded() && Utility.getInstance().isEventDataLoaded() && Utility.getInstance().isNewsDataLoaded()) {
+                Intent intent;
+                intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

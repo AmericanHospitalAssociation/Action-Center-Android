@@ -1,6 +1,7 @@
 package org.aha.actioncenter.views;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 
+import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.data.NewsFeedAdapter;
-import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.models.NewsItem;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -55,8 +56,7 @@ public class NewsListFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
+        if (Utility.getInstance(mContext).isNewsDataLoaded()) {
             list = Utility.getInstance(mContext).getNewsData(Utility.getInstance().NEWS);
             mAdapter = new NewsFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
@@ -78,28 +78,25 @@ public class NewsListFragment extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
-    /*
-    private void refreshFeedData() {
-        try {
-            URL url = new URL(getResources().getString(R.string.feed_url));
-            FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
-            feedAsync.execute();
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
-    */
-
-    //Subscribe to Feed data event.  If data comes in update view.
     @Subscribe
     public void subscribeOnNewsDataEvent(NewsDataEvent event) {
-        // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getNewsData(Utility.getInstance().NEWS);
-            mAdapter = new NewsFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+        if (event.getTagName().equals(NewsDataEvent.NEWS_LONG_DESCRIPTION_DATA)) {
+            Fragment fragment = null;
+            Bundle args = new Bundle();
+
+            NewsItem item = event.getNewsItem();
+
+            args.putString("item", new Gson().toJson(item));
+            fragment = new NewsDetailInfoFragment();
+            fragment.setArguments(args);
+
+            // Insert the fragment by replacing any existing fragment
+            FragmentManager fragmentManager = getActivity().getFragmentManager();
+
+            fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(null).commit();
         }
     }
+
+
 
 }

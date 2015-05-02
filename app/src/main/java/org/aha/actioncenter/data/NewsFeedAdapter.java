@@ -5,18 +5,22 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.R;
+import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.models.NewsItem;
+import org.aha.actioncenter.service.NewsLongDescriptionAsyncTask;
 import org.aha.actioncenter.views.NewsDetailInfoFragment;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 
@@ -55,23 +59,22 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
-
-                    Fragment fragment = null;
-                    Bundle args = new Bundle();
 
                     int position = getAdapterPosition();
 
                     NewsItem item = mDataSet.get(position);
 
-                    args.putString("item", new Gson().toJson(item));
-                    fragment = new NewsDetailInfoFragment();
-                    fragment.setArguments(args);
+                    try {
+                        String urlString = mActivity.getString(R.string.news_detail_url);
+                        urlString = urlString.replace("mNewsUrl", item.link);
 
-                    // Insert the fragment by replacing any existing fragment
-                    FragmentManager fragmentManager = mActivity.getFragmentManager();
+                        URL url = new URL(urlString);
+                        new NewsLongDescriptionAsyncTask(url, mActivity.getApplicationContext(),mActivity, item).execute();
+                    }
+                    catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
 
-                    fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(null).commit();
                 }
             });
 
@@ -82,6 +85,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
 
         }
     }
+
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -96,7 +100,6 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Log.d(TAG, "Element " + position + " set.");
 
         NewsItem item = mDataSet.get(position);
 
