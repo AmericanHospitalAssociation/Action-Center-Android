@@ -58,7 +58,7 @@ public class FactSheetFeedAdapter extends RecyclerView.Adapter<FactSheetFeedAdap
                     FeedItem item = mDataSet.get(position);
 
                     try {
-                        new PdfDownloadAsyncTask(new URL(item.ResourceURI), mContext, mActivity).execute();
+                        new PdfDownloadAsyncTask(new URL(item.box_link_dir), mContext, mActivity).execute();
                     }
                     catch (MalformedURLException e) {
                         e.printStackTrace();
