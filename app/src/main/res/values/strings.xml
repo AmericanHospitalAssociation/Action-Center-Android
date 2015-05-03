@@ -33,7 +33,9 @@
     <string name="contact_us_url">http://54.245.255.190/p/action_center/api/v1/sendEmail?message=mMessage&amp;from=mFrom</string>
 
 
-
+    <string name="forgot_password_url">http://www.aha.org/oam/forgot-password.dhtml?ahasite=AHA&amp;goto=http://www.aha.org/oam-aha/oam/welcome.html</string>
+    <string name="need_help_url">http://www.aha.org/oam-aha/oam/contact_us.html</string>
+    <string name="create_account_url">https://ams.aha.org/EWEB/DynamicPage.aspx?Site=AHA&amp;webcode=Register&amp;action=add&amp;nostore=1&amp;AHABU=AHA&amp;RedirectURL=http%3A%2F%2Fwww.aha.org%3A80%2Fhospital-members%2Fadvocacy-issues%2Faction%2Findex.shtml</string>
 
 
     <string name="campaign_url">CAMPAIGN URL GOES HERE</string>
@@ -49,5 +51,7 @@
     <string name="logout_txt">Logout</string>
     <string name="empty"/>
     <string name="timeline_empty">Twitter AHA Timeline Loading ...</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="need_help">Need Help?</string>
 
 </resources>

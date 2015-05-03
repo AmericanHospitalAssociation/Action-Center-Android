@@ -54,6 +54,20 @@
             android:layout_height="wrap_content"
             android:text="@string/forgot_password_btn"/>
 
+        <Button
+            android:id="@+id/create_account_btn"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_an_account"/>
+
+        <Button
+            android:id="@+id/need_help_btn"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/need_help"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -66,7 +80,8 @@
             android:id="@+id/register_btn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="register"/>
+            android:text="register"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
