@@ -45,8 +45,7 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
 
         protected TextView clean_title = null;
         protected TextView pretty_date = null;
-        protected TextView meeting_location = null;
-        protected TextView link = null;
+        protected TextView meeting_time = null;
 
         public ViewHolder(View v) {
             super(v);
@@ -77,8 +76,8 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
 
             clean_title = (TextView) v.findViewById(R.id.clean_title);
             pretty_date = (TextView) v.findViewById(R.id.pretty_date);
-            meeting_location = (TextView) v.findViewById(R.id.meeting_location);
-            link = (TextView) v.findViewById(R.id.link);
+            meeting_time = (TextView) v.findViewById(R.id.meeting_time);
+
 
         }
     }
@@ -87,7 +86,7 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.event_item_detail_view, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.calendar_item_view, viewGroup, false);
 
         return new ViewHolder(v);
     }
@@ -101,8 +100,7 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
 
         viewHolder.clean_title.setText(item.clean_title);
         viewHolder.pretty_date.setText(item.pretty_date);
-        viewHolder.meeting_location.setText(item.meeting_location);
-        viewHolder.link.setText(item.link);
+        viewHolder.meeting_time.setText(item.meeting_start_time + " - " + item.meeting_end_time);
     }
 
 

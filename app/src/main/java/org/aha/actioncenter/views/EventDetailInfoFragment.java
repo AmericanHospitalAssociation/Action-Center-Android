@@ -3,6 +3,7 @@ package org.aha.actioncenter.views;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,12 +27,33 @@ import java.lang.reflect.Type;
 public class EventDetailInfoFragment extends Fragment {
 
     protected TextView title_txt = null;
-    protected TextView action_from_txt = null;
-    protected TextView action_needed_txt = null;
-    protected TextView when_c_txt = null;
-    protected TextView why_txt = null;
-    protected TextView long_description_txt = null;
-    protected TextView resource_uri_txt = null;
+    protected TextView description_txt = null;
+    protected TextView address_street_txt = null;
+    protected TextView address_location_txt = null;
+
+    /*
+    public String clean_title = "";
+    public String pretty_date = "";
+    public String unix_date = "";
+    public String meeting_start_time = "";
+    public String meeting_end_time = "";
+    public String meeting_location = "";
+    public String link = "";
+    public String guid = "";
+    public String desc = "";
+    public String location_stateprovince = "";
+    public String location_city = "";
+    public String location_street = "";
+    public String location_name = "";
+    public String location_zippostal = "";
+    public String location_country = "";
+    public String location_guidelines = "";
+    public String location_contact = "";
+    public String location_phone = "";
+    public String location_map_url = "";
+    public String location_weather_url = "";
+    */
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -59,22 +81,22 @@ public class EventDetailInfoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.event_item_detail_view, container, false);
+        View view = inflater.inflate(R.layout.calendar_item_detail_view, container, false);
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
         Type eventItemType = new TypeToken<EventItem>(){}.getType();
         EventItem item = new Gson().fromJson(getArguments().getString("item"), eventItemType);
 
-        TextView  clean_title = (TextView) view.findViewById(R.id.clean_title);
-        TextView pretty_date = (TextView) view.findViewById(R.id.pretty_date);
-        TextView meeting_location = (TextView) view.findViewById(R.id.meeting_location);
-        TextView link = (TextView) view.findViewById(R.id.link);
+        title_txt = (TextView) view.findViewById(R.id.title_txt);
+        address_street_txt = (TextView) view.findViewById(R.id.address_street_txt);
+        address_location_txt = (TextView) view.findViewById(R.id.address_location_txt);
+        description_txt = (TextView) view.findViewById(R.id.description_txt);
 
-        clean_title.setText(item.clean_title);
-        pretty_date.setText(item.pretty_date);
-        meeting_location.setText(item.meeting_location);
-        link.setText(item.link);
+        title_txt.setText(item.clean_title);
+        address_street_txt.setText(item.location_street);
+        address_location_txt.setText(item.meeting_location);
+        description_txt.setText(Html.fromHtml(item.desc));
 
         return view;
     }
