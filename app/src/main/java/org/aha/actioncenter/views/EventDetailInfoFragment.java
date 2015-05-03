@@ -31,30 +31,6 @@ public class EventDetailInfoFragment extends Fragment {
     protected TextView address_street_txt = null;
     protected TextView address_location_txt = null;
 
-    /*
-    public String clean_title = "";
-    public String pretty_date = "";
-    public String unix_date = "";
-    public String meeting_start_time = "";
-    public String meeting_end_time = "";
-    public String meeting_location = "";
-    public String link = "";
-    public String guid = "";
-    public String desc = "";
-    public String location_stateprovince = "";
-    public String location_city = "";
-    public String location_street = "";
-    public String location_name = "";
-    public String location_zippostal = "";
-    public String location_country = "";
-    public String location_guidelines = "";
-    public String location_contact = "";
-    public String location_phone = "";
-    public String location_map_url = "";
-    public String location_weather_url = "";
-    */
-
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();

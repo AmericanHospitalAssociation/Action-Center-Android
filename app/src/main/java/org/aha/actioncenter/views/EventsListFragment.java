@@ -17,12 +17,9 @@ import org.aha.actioncenter.R;
 import org.aha.actioncenter.data.EventsFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.models.EventItem;
-import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -78,17 +75,6 @@ public class EventsListFragment extends Fragment {
     public void onPause() {
         super.onPause();
         AHABusProvider.getInstance().unregister(this);
-    }
-
-    private void refreshFeedData() {
-        try {
-            URL url = new URL(getResources().getString(R.string.events_url));
-            FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
-            feedAsync.execute();
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
     }
 
     //Subscribe to Feed data event.  If data comes in update view.

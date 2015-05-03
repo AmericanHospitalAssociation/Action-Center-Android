@@ -4,8 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,17 +13,13 @@ import android.widget.TableLayout;
 
 import com.squareup.otto.Subscribe;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.data.ActionAlertFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.models.FeedItem;
-import org.aha.actioncenter.service.FeedAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -83,22 +77,6 @@ public class ActionAlertListFragment extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //AHABusProvider.getInstance().unregister(this);
-    }
-
-    private void refreshFeedData() {
-        try {
-            URL url = new URL(getResources().getString(R.string.feed_url));
-            FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
-            feedAsync.execute();
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
 
     //Subscribe to Feed data event.  If data comes in update view.
     @Subscribe

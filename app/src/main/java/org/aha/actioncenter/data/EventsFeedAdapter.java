@@ -69,8 +69,7 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
 
                     // Insert the fragment by replacing any existing fragment
                     FragmentManager fragmentManager = mActivity.getFragmentManager();
-
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                    fragmentManager.beginTransaction().add(R.id.content_frame, fragment).commit();
                 }
             });
 
