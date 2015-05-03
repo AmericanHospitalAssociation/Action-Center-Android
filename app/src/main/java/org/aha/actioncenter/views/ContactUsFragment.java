@@ -90,6 +90,8 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
                             public void onClick(DialogInterface dialog, int which) {
                                 // continue with delete
                                 dialog.dismiss();
+                                getFragmentManager().popBackStack();
+
                             }
                         })
                         .show();
