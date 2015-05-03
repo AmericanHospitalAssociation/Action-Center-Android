@@ -55,6 +55,7 @@ public class Utility {
     public static String ACTION_ALERT = "action-alert";
     public static String FACT_SHEET = "issue-papers";
     public static String NEWS = "aha-news";
+    public static String CONTACT_US = "contact-us";
     public static String CONTACT_YOUR_LEGISLATORS = "contact-your-legislators";
     public static String TWITTER_FEEDS = "twitter-feeds";
     public static String DIRECTORY = "directory";

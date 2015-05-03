@@ -48,6 +48,7 @@ import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
 import org.aha.actioncenter.views.CampaignSummaryListFragment;
 import org.aha.actioncenter.views.CongressionalCalendarFragment;
+import org.aha.actioncenter.views.ContactUsFragment;
 import org.aha.actioncenter.views.ContactYourLegislatorsListFragment;
 import org.aha.actioncenter.views.DirectoryListFragment;
 import org.aha.actioncenter.views.EventsListFragment;
@@ -255,6 +256,8 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
             fragment = new EventsListFragment();
         if (item.id.equals(Utility.getInstance().NEWS))
             fragment = new NewsListFragment();
+        if (item.id.equals(Utility.getInstance().CONTACT_US))
+            fragment = new ContactUsFragment();
         if (item.id.equals(Utility.getInstance().DIRECTORY)) {
 
             OAMItem oamItem = Utility.getInstance(mContext).getLoginData("login");
@@ -376,7 +379,8 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getGroup(groupPosition);
         if (navigationItem.id.equals(Utility.getInstance().HOME) ||
                 navigationItem.id.equals(Utility.getInstance().EVENTS) ||
-                navigationItem.id.equals(Utility.getInstance().NEWS)) {
+                navigationItem.id.equals(Utility.getInstance().NEWS) ||
+                navigationItem.id.equals(Utility.getInstance().CONTACT_US)) {
             selectItem(navigationItem);
         }
         return false;

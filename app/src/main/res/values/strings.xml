@@ -30,6 +30,9 @@
 
     <string name="vv_get_us_profile_url">http://54.245.255.190/p/action_center/api/v1/getProfile?id=mId&amp;type=mType</string>
 
+    <string name="contact_us_url">http://54.245.255.190/p/action_center/api/v1/sendEmail?message=mMessage&amp;from=mFrom</string>
+
+
 
 
 
