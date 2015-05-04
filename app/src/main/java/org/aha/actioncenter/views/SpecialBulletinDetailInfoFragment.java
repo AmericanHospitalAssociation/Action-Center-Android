@@ -79,14 +79,14 @@ public class SpecialBulletinDetailInfoFragment extends Fragment{
         else if (!item.Description.equals(""))
             long_description_txt.setText(item.Description);
 
-        if (!item.ResourceURI.isEmpty()) {
+        if (!item.ResourceURI.isEmpty() || !item.box_link_dir.isEmpty()) {
             read_more_btn = (Button) view.findViewById(R.id.read_more_btn);
             read_more_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(Utility.getInstance().isNetworkAvailable(getActivity())) {
                         try {
-                            new PdfDownloadAsyncTask(new URL(item.ResourceURI), getActivity().getApplicationContext(), getActivity()).execute();
+                            new PdfDownloadAsyncTask(new URL(item.ResourceURI.isEmpty() ? item.box_link_dir : item.ResourceURI), getActivity().getApplicationContext(), getActivity()).execute();
                         }
                         catch (MalformedURLException e) {
                             e.printStackTrace();
