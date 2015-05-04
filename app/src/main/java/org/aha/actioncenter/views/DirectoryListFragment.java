@@ -52,10 +52,12 @@ public class DirectoryListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isDirectoryDataLoaded()) {
-            list = Utility.getInstance(mContext).getDirectoryData();
-            mAdapter = new DirectoryFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+        if(Utility.getInstance(mContext).hasData(Utility.DIRECTORY)) {
+            if (Utility.getInstance(mContext).isDirectoryDataLoaded()) {
+                list = Utility.getInstance(mContext).getDirectoryData();
+                mAdapter = new DirectoryFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
         return view;
     }

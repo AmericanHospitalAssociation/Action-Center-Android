@@ -54,10 +54,13 @@ public class LetterListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().LETTER);
-            mAdapter = new LetterFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+        if(Utility.getInstance(mContext).hasData(Utility.LETTER)) {
+
+            if(Utility.getInstance(mContext).isFeedDataLoaded()) {
+                list = Utility.getInstance(mContext).getFeedData(Utility.LETTER);
+                mAdapter = new LetterFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
 
         return view;
@@ -67,7 +70,7 @@ public class LetterListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().LETTER);
+        list = Utility.getInstance(mContext).getFeedData(Utility.LETTER);
     }
 
     @Override
@@ -81,7 +84,7 @@ public class LetterListFragment extends Fragment {
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().LETTER);
+            list = Utility.getInstance(mContext).getFeedData(Utility.LETTER);
             mAdapter = new LetterFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }

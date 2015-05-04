@@ -51,10 +51,13 @@ public class CampaignSummaryListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isCampaignSummaryDataLoaded()) {
-            list = Utility.getInstance(mContext).getCampaignSummaryData();
-            mAdapter = new CampaignSummaryFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+
+        if(Utility.getInstance(mContext).hasData(Utility.CAMPAIGN)) {
+            if (Utility.getInstance(mContext).isCampaignSummaryDataLoaded()) {
+                list = Utility.getInstance(mContext).getCampaignSummaryData();
+                mAdapter = new CampaignSummaryFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
 
         return view;
@@ -64,7 +67,7 @@ public class CampaignSummaryListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getCampaignSummaryData();
+        //list = Utility.getInstance(mContext).getCampaignSummaryData();
     }
 
     @Override

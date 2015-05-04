@@ -54,10 +54,12 @@ public class AdditionalInfoListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ADDITIONAL_INFO);
-            mAdapter = new AdditionalInfoFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+        if(Utility.getInstance(mContext).hasData(Utility.ADDITIONAL_INFO)) {
+            if (Utility.getInstance(mContext).isFeedDataLoaded()) {
+                list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ADDITIONAL_INFO);
+                mAdapter = new AdditionalInfoFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
 
         return view;
@@ -67,7 +69,7 @@ public class AdditionalInfoListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ADDITIONAL_INFO);
+        //list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ADDITIONAL_INFO);
     }
 
     @Override

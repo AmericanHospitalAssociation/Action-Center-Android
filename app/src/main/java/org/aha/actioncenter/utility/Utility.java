@@ -60,6 +60,7 @@ public class Utility {
     public static String TWITTER_FEEDS = "twitter-feeds";
     public static String DIRECTORY = "directory";
     public static String CAMPAIGN_SUMMARY_LIST = "campaign-summary-list";
+    public static String CAMPAIGN = "campaign";
 
     public static String EVENTS = "events";
 
@@ -83,7 +84,7 @@ public class Utility {
         return INSTANCE;
     }
 
-    public boolean isLoggedIn(Activity activity){
+    public boolean isLoggedIn(Activity activity) {
         SharedPreferences prefs = activity.getSharedPreferences("login", Context.MODE_PRIVATE);
         String dataString = prefs.getString("login", "");
         Gson gson = new Gson();
@@ -408,14 +409,14 @@ public class Utility {
         SharedPreferences prefs = mContext.getSharedPreferences("directory", Context.MODE_PRIVATE);
         String dataString = prefs.getString("directory", "");
 
-        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignUserItem>>(){}.getType();
+        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignUserItem>>() {
+        }.getType();
 
         ArrayList<CampaignUserItem> list = new Gson().fromJson(dataString, campaignItemArrayListType);
 
         return list;
 
     }
-
 
 
     public void parseCampaignData(JSONArray jArray) {
@@ -471,7 +472,8 @@ public class Utility {
         String dataString = prefs.getString(dataName, "");
 
         Gson gson = new Gson();
-        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignItem>>(){}.getType();
+        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignItem>>() {
+        }.getType();
         ArrayList<CampaignItem> list = gson.fromJson(dataString, campaignItemArrayListType);
 
         return list;
@@ -488,7 +490,7 @@ public class Utility {
         try {
             jsonobj = new JSONObject(dataString);
             JSONArray jsonArray = jsonobj.getJSONArray("values");
-            for(int i = 0; i < jsonArray.length(); i ++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 CampaignSummaryItem item = null;
                 item = new CampaignSummaryItem();
                 JSONObject jObj = jsonArray.getJSONObject(i).getJSONObject("nameValuePairs");
@@ -550,7 +552,22 @@ public class Utility {
     public boolean hasData(String dataName) {
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
         String dataString = prefs.getString(dataName, "");
-        return dataString.length() > 0;
+        if(dataString.length() > 0){
+            if(dataName.equals(ACTION_ALERT))
+                mFeedDataLoaded = true;
+            if(dataName.equals(NEWS))
+                mNewsDataLoaded = true;
+            if(dataName.equals(CAMPAIGN_SUMMARY_LIST))
+                mCampaignSummaryDataLoaded = true;
+            if(dataName.equals(EVENTS))
+                mEventDataLoaded = true;
+
+            return true;
+        }
+        else {
+            return false;
+        }
+
     }
 
 
@@ -584,7 +601,8 @@ public class Utility {
         ArrayList<CampaignUserItem> usSenatorsItemArray = new ArrayList<CampaignUserItem>();
         ArrayList<CampaignUserItem> usRepresentativeItemArray = new ArrayList<CampaignUserItem>();
 
-        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignUserItem>>(){}.getType();
+        Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignUserItem>>() {
+        }.getType();
 
         SharedPreferences prefs;
         SharedPreferences.Editor editor;
@@ -595,23 +613,23 @@ public class Utility {
             int icount = 0;
             icount = jArray.length();
 
-            for(int i = 0; i < icount ; i++){
+            for (int i = 0; i < icount; i++) {
                 JSONObject jObj = null;
                 jObj = jArray.getJSONObject(i);
 
-                if(jObj.get("groupId").equals("US Senators")){
+                if (jObj.get("groupId").equals("US Senators")) {
                     usSenatorsItemArray = new Gson().fromJson(jObj.getJSONArray("matches").toString(), campaignItemArrayListType);
                     int jcount = usSenatorsItemArray.size();
-                    for(int j = 0; j < jcount; j++){
+                    for (int j = 0; j < jcount; j++) {
                         CampaignUserItem item = usSenatorsItemArray.get(j);
                         item.groupId = jObj.getString("groupId");
                         usSenatorsItemArray.set(j, item);
                     }
                 }
-                if(jObj.get("groupId").equals("US Representative")){
+                if (jObj.get("groupId").equals("US Representative")) {
                     usRepresentativeItemArray = new Gson().fromJson(jObj.getJSONArray("matches").toString(), campaignItemArrayListType);
                     int jcount = usRepresentativeItemArray.size();
-                    for(int j = 0; j < jcount; j++){
+                    for (int j = 0; j < jcount; j++) {
                         CampaignUserItem item = usRepresentativeItemArray.get(j);
                         item.groupId = jObj.getString("groupId");
                         usRepresentativeItemArray.set(j, item);

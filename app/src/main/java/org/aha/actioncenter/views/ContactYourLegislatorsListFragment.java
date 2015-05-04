@@ -55,10 +55,12 @@ public class ContactYourLegislatorsListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getCampaignData(Utility.getInstance().CONTACT_YOUR_LEGISLATORS);
-            mAdapter = new CampaignFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+        if(Utility.getInstance(mContext).hasData(Utility.CONTACT_YOUR_LEGISLATORS)) {
+            if (Utility.getInstance(mContext).isFeedDataLoaded()) {
+                list = Utility.getInstance(mContext).getCampaignData(Utility.getInstance().CONTACT_YOUR_LEGISLATORS);
+                mAdapter = new CampaignFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
 
         return view;
@@ -68,7 +70,7 @@ public class ContactYourLegislatorsListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getCampaignData(Utility.getInstance().CONTACT_YOUR_LEGISLATORS);
+        //list = Utility.getInstance(mContext).getCampaignData(Utility.getInstance().CONTACT_YOUR_LEGISLATORS);
     }
 
     @Override

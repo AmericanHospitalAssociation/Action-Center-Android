@@ -57,10 +57,12 @@ public class TestimonyListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().TESTIMONY);
-            mAdapter = new TestimonyFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+        if(Utility.getInstance(mContext).hasData(Utility.TESTIMONY)) {
+            if (Utility.getInstance(mContext).isFeedDataLoaded()) {
+                list = Utility.getInstance(mContext).getFeedData(Utility.TESTIMONY);
+                mAdapter = new TestimonyFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
 
         return view;
@@ -70,7 +72,7 @@ public class TestimonyListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().TESTIMONY);
+        list = Utility.getInstance(mContext).getFeedData(Utility.TESTIMONY);
     }
 
     @Override

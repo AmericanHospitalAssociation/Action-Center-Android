@@ -55,10 +55,12 @@ public class FactSheetListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().FACT_SHEET);
-            mAdapter = new FactSheetFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+        if(Utility.getInstance(mContext).hasData(Utility.FACT_SHEET)) {
+            if(Utility.getInstance(mContext).isFeedDataLoaded()) {
+                list = Utility.getInstance(mContext).getFeedData(Utility.FACT_SHEET);
+                mAdapter = new FactSheetFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
 
         return view;
@@ -68,7 +70,7 @@ public class FactSheetListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().FACT_SHEET);
+        list = Utility.getInstance(mContext).getFeedData(Utility.FACT_SHEET);
     }
 
     @Override

@@ -58,10 +58,13 @@ public class SpecialBulletinListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().BULLETIN);
-            mAdapter = new SpecialBulletinAlertFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+
+        if(Utility.getInstance(mContext).hasData(Utility.BULLETIN)) {
+            if (Utility.getInstance(mContext).isFeedDataLoaded()) {
+                list = Utility.getInstance(mContext).getFeedData(Utility.BULLETIN);
+                mAdapter = new SpecialBulletinAlertFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
 
         return view;
@@ -72,7 +75,7 @@ public class SpecialBulletinListFragment extends Fragment {
         super.onResume();
         AHABusProvider.getInstance().register(this);
 
-        list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().BULLETIN);
+        list = Utility.getInstance(mContext).getFeedData(Utility.BULLETIN);
     }
 
     @Override

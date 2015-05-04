@@ -55,10 +55,12 @@ public class EventsListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isEventDataLoaded()) {
-            list = Utility.getInstance(mContext).getEventData(Utility.getInstance().EVENTS);
-            mAdapter = new EventsFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+        if(Utility.getInstance(mContext).hasData(Utility.EVENTS)) {
+            if (Utility.getInstance(mContext).isEventDataLoaded()) {
+                list = Utility.getInstance(mContext).getEventData(Utility.EVENTS);
+                mAdapter = new EventsFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
 
         return view;
@@ -68,7 +70,7 @@ public class EventsListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getEventData("events");
+        list = Utility.getInstance(mContext).getEventData(Utility.EVENTS);
     }
 
     @Override
@@ -82,7 +84,7 @@ public class EventsListFragment extends Fragment {
     public void subscribeOnFeedDataEvent(FeedDataEvent event) {
         // specify an adapter (see also next example)
         if(Utility.getInstance(mContext).isEventDataLoaded()) {
-            list = Utility.getInstance(mContext).getEventData(Utility.getInstance().EVENTS);
+            list = Utility.getInstance(mContext).getEventData(Utility.EVENTS);
             mAdapter = new EventsFeedAdapter(getActivity(), list);
             mRecyclerView.setAdapter(mAdapter);
         }

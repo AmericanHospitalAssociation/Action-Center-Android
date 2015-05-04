@@ -55,10 +55,12 @@ public class ActionAlertListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isFeedDataLoaded()) {
-            list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ACTION_ALERT);
-            mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+        if(Utility.getInstance(mContext).hasData(Utility.ACTION_ALERT)) {
+            if (Utility.getInstance(mContext).isFeedDataLoaded()) {
+                list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ACTION_ALERT);
+                mAdapter = new ActionAlertFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
 
         return view;
@@ -68,7 +70,8 @@ public class ActionAlertListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getFeedData("action-alert");
+        //list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().ACTION_ALERT);
+
     }
 
     @Override

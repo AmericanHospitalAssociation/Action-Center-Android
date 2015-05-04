@@ -56,10 +56,12 @@ public class NewsListFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        if (Utility.getInstance(mContext).isNewsDataLoaded()) {
-            list = Utility.getInstance(mContext).getNewsData(Utility.getInstance().NEWS);
-            mAdapter = new NewsFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
+        if(Utility.getInstance(mContext).hasData(Utility.NEWS)) {
+            if (Utility.getInstance(mContext).isNewsDataLoaded()) {
+                list = Utility.getInstance(mContext).getNewsData(Utility.NEWS);
+                mAdapter = new NewsFeedAdapter(getActivity(), list);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
 
         return view;
@@ -69,7 +71,7 @@ public class NewsListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        list = Utility.getInstance(mContext).getNewsData("aha-news");
+        list = Utility.getInstance(mContext).getNewsData(Utility.NEWS);
     }
 
     @Override
