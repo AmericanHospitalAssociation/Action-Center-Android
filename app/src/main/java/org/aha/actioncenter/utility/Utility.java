@@ -552,14 +552,21 @@ public class Utility {
     public boolean hasData(String dataName) {
         SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
         String dataString = prefs.getString(dataName, "");
-        if(dataString.length() > 0){
-            if(dataName.equals(ACTION_ALERT))
+        if (dataString.length() > 0) {
+            if (dataName.equals(ACTION_ALERT) ||
+                    dataName.equals(FACT_SHEET) ||
+                    dataName.equals(ADDITIONAL_INFO) ||
+                    dataName.equals(LETTER) ||
+                    dataName.equals(TESTIMONY) ||
+                    dataName.equals(PRESS_RELEASE) ||
+                    dataName.equals(ADVISORY) ||
+                    dataName.equals(BULLETIN))
                 mFeedDataLoaded = true;
-            if(dataName.equals(NEWS))
+            if (dataName.equals(NEWS))
                 mNewsDataLoaded = true;
-            if(dataName.equals(CAMPAIGN_SUMMARY_LIST))
+            if (dataName.equals(CAMPAIGN_SUMMARY_LIST))
                 mCampaignSummaryDataLoaded = true;
-            if(dataName.equals(EVENTS))
+            if (dataName.equals(EVENTS))
                 mEventDataLoaded = true;
 
             return true;
