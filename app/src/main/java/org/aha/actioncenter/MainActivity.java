@@ -284,7 +284,9 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
 
                     Log.d(TAG, urlString);
                     URL url = new URL(urlString);
-                    new VoterVoiceCreateUserAsyncTask(url,getApplicationContext(), this).execute();
+                    if(Utility.getInstance().isNetworkAvailable(this)) {
+                        new VoterVoiceCreateUserAsyncTask(url, getApplicationContext(), this).execute();
+                    }
                 }
                 catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -299,8 +301,9 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
 
                 String urlString = getResources().getString(R.string.vv_campaign_summary_url);
                 URL url = new URL(urlString);
-
-                new CampaignSummaryAsyncTask(url, mContext, this).execute();
+                if(Utility.getInstance().isNetworkAvailable(this)) {
+                    new CampaignSummaryAsyncTask(url, mContext, this).execute();
+                }
             }
             catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -555,7 +558,10 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
             catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            new VoterVoiceMatchesCampaignAsyncTask(url, getApplicationContext(), this).execute();
+
+            if(Utility.getInstance().isNetworkAvailable(this)) {
+                new VoterVoiceMatchesCampaignAsyncTask(url, getApplicationContext(), this).execute();
+            }
 
         }
         else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_CAMPAIGN_LIST_DATA)) {

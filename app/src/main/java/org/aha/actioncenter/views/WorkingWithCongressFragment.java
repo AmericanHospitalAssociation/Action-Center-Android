@@ -52,12 +52,13 @@ public class WorkingWithCongressFragment extends Fragment {
 
         list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().WORKING_WITH_CONGRESS);
 
-
-        try {
-            new PdfDownloadAsyncTask(new URL(list.get(0).ResourceURI), mContext, getActivity()).execute();
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
+        if(Utility.getInstance().isNetworkAvailable(getActivity())) {
+            try {
+                new PdfDownloadAsyncTask(new URL(list.get(0).ResourceURI), mContext, getActivity()).execute();
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
 
         return view;

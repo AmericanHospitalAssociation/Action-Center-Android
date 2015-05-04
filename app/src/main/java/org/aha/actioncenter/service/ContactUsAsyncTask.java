@@ -45,7 +45,7 @@ public class ContactUsAsyncTask extends AsyncTask<Void, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        if (!Utility.getInstance(mContext).isNetworkAvailable(activity)) {
+        if (!Utility.getInstance(mContext).isNetworkAvailable()) {
             cancel(true);
         }
 

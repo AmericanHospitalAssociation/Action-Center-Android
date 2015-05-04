@@ -25,6 +25,7 @@ import org.aha.actioncenter.events.TakeActionEvent;
 import org.aha.actioncenter.models.CampaignSummaryItem;
 import org.aha.actioncenter.service.TakeActionAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -94,7 +95,9 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
                     String urlString = getResources().getString(R.string.vv_targeted_message_url);
                     urlString = urlString.replace("mCampaignId", item.id);
                     URL url = new URL(urlString);
-                    new TakeActionAsyncTask(url,getActivity().getApplicationContext(), getActivity()).execute();
+                    if(Utility.getInstance().isNetworkAvailable(getActivity())) {
+                        new TakeActionAsyncTask(url, getActivity().getApplicationContext(), getActivity()).execute();
+                    }
                 }
                 catch (MalformedURLException e) {
                     e.printStackTrace();

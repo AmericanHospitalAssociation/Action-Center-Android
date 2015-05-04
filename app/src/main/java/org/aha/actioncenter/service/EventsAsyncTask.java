@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.aha.actioncenter.events.EventsDataEvent;
-import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 import org.json.JSONException;
@@ -15,7 +13,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,7 +45,7 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        if (!Utility.getInstance(mContext).isNetworkAvailable(activity)) {
+        if (!Utility.getInstance(mContext).isNetworkAvailable()) {
             cancel(true);
         }
 

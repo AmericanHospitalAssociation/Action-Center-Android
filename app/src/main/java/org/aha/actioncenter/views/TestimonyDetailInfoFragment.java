@@ -20,6 +20,7 @@ import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.service.PdfDownloadAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
 
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
@@ -81,11 +82,13 @@ public class TestimonyDetailInfoFragment extends Fragment {
             read_more_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    try {
-                        new PdfDownloadAsyncTask(new URL(item.box_link_dir), getActivity().getApplicationContext(), getActivity()).execute();
-                    }
-                    catch (MalformedURLException e) {
-                        e.printStackTrace();
+                    if(Utility.getInstance().isNetworkAvailable(getActivity())) {
+                        try {
+                            new PdfDownloadAsyncTask(new URL(item.box_link_dir), getActivity().getApplicationContext(), getActivity()).execute();
+                        }
+                        catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });

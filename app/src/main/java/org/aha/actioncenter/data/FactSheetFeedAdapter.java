@@ -12,6 +12,7 @@ import android.widget.TextView;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.service.PdfDownloadAsyncTask;
+import org.aha.actioncenter.utility.Utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,11 +58,13 @@ public class FactSheetFeedAdapter extends RecyclerView.Adapter<FactSheetFeedAdap
 
                     FeedItem item = mDataSet.get(position);
 
-                    try {
-                        new PdfDownloadAsyncTask(new URL(item.box_link_dir), mContext, mActivity).execute();
-                    }
-                    catch (MalformedURLException e) {
-                        e.printStackTrace();
+                    if(Utility.getInstance().isNetworkAvailable(mActivity)) {
+                        try {
+                            new PdfDownloadAsyncTask(new URL(item.box_link_dir), mContext, mActivity).execute();
+                        }
+                        catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
                     }
 
 

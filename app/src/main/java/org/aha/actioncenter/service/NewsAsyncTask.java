@@ -10,7 +10,6 @@ import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -46,7 +45,7 @@ public class NewsAsyncTask extends AsyncTask<Void, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        if (!Utility.getInstance(mContext).isNetworkAvailable(activity)) {
+        if (!Utility.getInstance(mContext).isNetworkAvailable()) {
             cancel(true);
         }
 

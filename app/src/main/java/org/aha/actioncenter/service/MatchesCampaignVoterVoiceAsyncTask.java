@@ -45,7 +45,7 @@ public class MatchesCampaignVoterVoiceAsyncTask extends AsyncTask<Void, Void, St
     protected void onPreExecute() {
         super.onPreExecute();
 
-        if (!Utility.getInstance(mContext).isNetworkAvailable(activity)) {
+        if (!Utility.getInstance(mContext).isNetworkAvailable()) {
             cancel(true);
         }
 

@@ -1,23 +1,16 @@
 package org.aha.actioncenter.data;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.squareup.otto.Subscribe;
-
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.models.NewsItem;
 import org.aha.actioncenter.service.NewsLongDescriptionAsyncTask;
-import org.aha.actioncenter.views.NewsDetailInfoFragment;
+import org.aha.actioncenter.utility.Utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -69,7 +62,9 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedAdapter.ViewHo
                         urlString = urlString.replace("mNewsUrl", item.link);
 
                         URL url = new URL(urlString);
-                        new NewsLongDescriptionAsyncTask(url, mActivity.getApplicationContext(),mActivity, item).execute();
+                        if(Utility.getInstance().isNetworkAvailable(mActivity)) {
+                            new NewsLongDescriptionAsyncTask(url, mActivity.getApplicationContext(), mActivity, item).execute();
+                        }
                     }
                     catch (MalformedURLException e) {
                         e.printStackTrace();

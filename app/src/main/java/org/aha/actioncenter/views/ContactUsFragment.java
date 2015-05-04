@@ -60,7 +60,9 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
             urlString = urlString.replace("mFrom", item.email);
 
             URL url = new URL(urlString);
-            new ContactUsAsyncTask(url, mContext, getActivity()).execute();
+            if(Utility.getInstance().isNetworkAvailable(getActivity())) {
+                new ContactUsAsyncTask(url, mContext, getActivity()).execute();
+            }
 
         }
         catch (UnsupportedEncodingException e) {

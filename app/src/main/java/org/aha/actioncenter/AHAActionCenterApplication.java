@@ -56,17 +56,19 @@ public class AHAActionCenterApplication extends Application {
         URL news_url = null;
 
         try {
-            feed_url = new URL(getResources().getString(R.string.feed_url));
-            FeedAsyncTask feedAsync = new FeedAsyncTask(feed_url, getApplicationContext(), activity);
-            feedAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            if(Utility.getInstance().isNetworkAvailable(activity)) {
+                feed_url = new URL(getResources().getString(R.string.feed_url));
+                FeedAsyncTask feedAsync = new FeedAsyncTask(feed_url, getApplicationContext(), activity);
+                feedAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-            events_url = new URL(getResources().getString(R.string.events_url));
-            EventsAsyncTask eventAsync = new EventsAsyncTask(events_url, getApplicationContext(), activity);
-            eventAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                events_url = new URL(getResources().getString(R.string.events_url));
+                EventsAsyncTask eventAsync = new EventsAsyncTask(events_url, getApplicationContext(), activity);
+                eventAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-            news_url = new URL(getResources().getString(R.string.news_url));
-            NewsAsyncTask newsAsyncTask = new NewsAsyncTask(news_url, getApplicationContext(), activity);
-            newsAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                news_url = new URL(getResources().getString(R.string.news_url));
+                NewsAsyncTask newsAsyncTask = new NewsAsyncTask(news_url, getApplicationContext(), activity);
+                newsAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
         }
         catch (MalformedURLException e) {
             e.printStackTrace();
@@ -136,7 +138,4 @@ public class AHAActionCenterApplication extends Application {
             e.printStackTrace();
         }
     }
-
-
-
 }

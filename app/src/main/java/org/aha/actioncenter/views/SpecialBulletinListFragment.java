@@ -86,13 +86,15 @@ public class SpecialBulletinListFragment extends Fragment {
 
 
     private void refreshFeedData() {
-        try {
-            URL url = new URL(getResources().getString(R.string.feed_url));
-            FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
-            feedAsync.execute();
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
+        if(Utility.getInstance().isNetworkAvailable(getActivity())) {
+            try {
+                URL url = new URL(getResources().getString(R.string.feed_url));
+                FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
+                feedAsync.execute();
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

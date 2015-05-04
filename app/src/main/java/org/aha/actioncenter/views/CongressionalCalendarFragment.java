@@ -4,8 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +14,6 @@ import android.widget.TableLayout;
 import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.data.ActionAlertFeedAdapter;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.service.FeedAsyncTask;
@@ -80,13 +77,15 @@ public class CongressionalCalendarFragment extends Fragment {
     }
 
     private void refreshFeedData() {
-        try {
-            URL url = new URL(getResources().getString(R.string.feed_url));
-            FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
-            feedAsync.execute();
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
+        if(Utility.getInstance().isNetworkAvailable(getActivity())) {
+            try {
+                URL url = new URL(getResources().getString(R.string.feed_url));
+                FeedAsyncTask feedAsync = new FeedAsyncTask(url, mContext);
+                feedAsync.execute();
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
