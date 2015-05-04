@@ -4,13 +4,13 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,10 +29,10 @@ import java.net.URL;
 /**
  * Created by markusmcgee on 4/28/15.
  */
-public class SpecialBulletinDetailInfoFragment extends Fragment implements View.OnClickListener {
+public class SpecialBulletinDetailInfoFragment extends Fragment{
     protected TextView title_txt = null;
     protected TextView long_description_txt = null;
-    protected TextView resource_uri_txt = null;
+    protected Button read_more_btn = null;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -60,18 +60,17 @@ public class SpecialBulletinDetailInfoFragment extends Fragment implements View.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.feed_item_detail_view, container, false);
+        View view = inflater.inflate(R.layout.special_bulletin_item_detail_view, container, false);
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
         Type feedItemType = new TypeToken<FeedItem>(){}.getType();
-        FeedItem item = new Gson().fromJson(getArguments().getString("item"), feedItemType);
+        final FeedItem item = new Gson().fromJson(getArguments().getString("item"), feedItemType);
 
         LinearLayout details_layout = (LinearLayout) view.findViewById(R.id.details_layout);
         title_txt = (TextView) view.findViewById(R.id.title_txt);
         long_description_txt = (TextView) view.findViewById(R.id.long_description_txt);
-        resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
-
+        read_more_btn = (Button) view.findViewById(R.id.read_more_btn);
 
         title_txt.setText(item.Title);
         if (!item.Long_Description.equals(""))
@@ -79,10 +78,21 @@ public class SpecialBulletinDetailInfoFragment extends Fragment implements View.
         else if (!item.Description.equals(""))
             long_description_txt.setText(item.Description);
 
-        resource_uri_txt.setText(item.ResourceURI);
-        resource_uri_txt.setVisibility(View.INVISIBLE);
-
-        details_layout.setOnClickListener(this);
+        if (!item.ResourceURI.isEmpty()) {
+            read_more_btn = (Button) view.findViewById(R.id.read_more_btn);
+            read_more_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        new PdfDownloadAsyncTask(new URL(item.ResourceURI), getActivity().getApplicationContext(), getActivity()).execute();
+                    }
+                    catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            read_more_btn.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -97,22 +107,5 @@ public class SpecialBulletinDetailInfoFragment extends Fragment implements View.
     public void onPause() {
         super.onPause();
         AHABusProvider.getInstance().unregister(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        resource_uri_txt = (TextView) view.findViewById(R.id.resource_uri_txt);
-
-        String pdfUrl = resource_uri_txt.getText().toString();
-
-        if (Patterns.WEB_URL.matcher(pdfUrl).matches()) {
-            try {
-                new PdfDownloadAsyncTask(new URL(pdfUrl), getActivity().getApplicationContext(), getActivity()).execute();
-            }
-            catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 }
