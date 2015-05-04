@@ -44,6 +44,11 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
+        if (!Utility.getInstance(mContext).isNetworkAvailable(activity)) {
+            cancel(true);
+        }
+
         if (activity != null) {
             progressDialog = new ProgressDialog(activity);
             progressDialog.setTitle("American Hospital Association");
