@@ -310,9 +310,14 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
             }
         }
         if (item.id.equals(Utility.getInstance().TWITTER_FEEDS)) {
-            args.putString(item.id, item.user);
-            fragment = new TwitterFeedListFragment();
-            fragment.setArguments(args);
+            if(Utility.getInstance().isNetworkAvailable(this)) {
+                args.putString(item.id, item.user);
+                fragment = new TwitterFeedListFragment();
+                fragment.setArguments(args);
+            }
+            else{
+                return;
+            }
         }
 
         addToFragmentBackStack(fragment, item);
