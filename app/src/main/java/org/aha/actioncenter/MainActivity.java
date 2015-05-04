@@ -284,7 +284,7 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
 
                     Log.d(TAG, urlString);
                     URL url = new URL(urlString);
-                    new VoterVoiceCreateUserAsyncTask(url, this).execute();
+                    new VoterVoiceCreateUserAsyncTask(url,getApplicationContext(), this).execute();
                 }
                 catch (MalformedURLException e) {
                     e.printStackTrace();
