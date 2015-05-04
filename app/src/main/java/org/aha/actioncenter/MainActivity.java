@@ -260,7 +260,7 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
             fragment = new ContactUsFragment();
         if (item.id.equals(Utility.getInstance().DIRECTORY)) {
 
-            OAMItem oamItem = Utility.getInstance(mContext).getLoginData("login");
+            OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
 
             if (oamItem.prefix.isEmpty() || oamItem.phone.isEmpty()) {
                 Log.d(TAG, "debug");
@@ -528,7 +528,7 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
     public void subcribeVoterVoiceEvents(VoterVoiceDataEvent event) {
         if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_CREATE_DATA)) {
 
-            OAMItem oamItem = Utility.getInstance(mContext).getLoginData("login");
+            OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
 
             Log.d(TAG, "debug");
             URL url = null;

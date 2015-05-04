@@ -45,7 +45,7 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        OAMItem item = Utility.getInstance(mContext).getLoginData("login");
+        OAMItem item = Utility.getInstance(mContext).getLoginData();
 
         StringBuilder message = new StringBuilder();
         message.append(message_txt.getText());

@@ -80,7 +80,7 @@ public class VoterVoiceCreateUserAsyncTask extends AsyncTask<Void, Void, String>
 
         try {
             json = new JSONObject(feed);
-            OAMItem oamItem = Utility.getInstance(mContext).getLoginData("login");
+            OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
             oamItem.token = json.getJSONObject("response").getJSONObject("body").getString("userToken");
             oamItem.userid = json.getJSONObject("response").getJSONObject("body").getString("userId");
             Utility.getInstance(mContext).saveLoginData("login", oamItem);

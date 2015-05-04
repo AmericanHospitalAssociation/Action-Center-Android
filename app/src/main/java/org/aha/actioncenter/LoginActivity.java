@@ -2,10 +2,8 @@ package org.aha.actioncenter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,13 +12,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.events.LoginEvent;
 import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.service.LoginAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -108,20 +106,21 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-
         String loginUrl = getResources().getString(R.string.login_url);
         loginUrl = loginUrl.replace("mEmail", username_txt.getText().toString());
         loginUrl = loginUrl.replace("mPassword", password_txt.getText().toString());
 
         Log.d(TAG, loginUrl);
 
-        try {
-            URL url = new URL(loginUrl);
-            new LoginAsyncTask(url, getApplicationContext(), this).execute();
-        }
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-            showErrorDialog();
+        if(Utility.getInstance().isNetworkAvailable(this)) {
+            try {
+                URL url = new URL(loginUrl);
+                new LoginAsyncTask(url, getApplicationContext(), this).execute();
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+                showErrorDialog();
+            }
         }
 
         Log.d(TAG, "debug");
@@ -131,11 +130,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Subscribe
     public void subscribeLoginDataEvent(LoginEvent event) {
 
-        SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
-        String dataString = prefs.getString("login", "");
-        Gson gson = new Gson();
-        OAMItem omaItem = gson.fromJson(dataString, OAMItem.class);
-
+        OAMItem omaItem = Utility.getInstance(getApplicationContext()).getLoginData();
         if (!omaItem.ahaid.isEmpty()) {
             ((AHAActionCenterApplication) getApplicationContext()).pullAdditionalData(this);
         }

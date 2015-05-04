@@ -28,7 +28,7 @@ public class SplashActivity extends Activity {
     protected void onResume() {
         super.onResume();
         AHABusProvider.getInstance().register(this);
-        OAMItem item = Utility.getInstance(getApplicationContext()).getLoginData("login");
+        OAMItem item = Utility.getInstance(getApplicationContext()).getLoginData();
 
         Intent intent;
         if(item != null){

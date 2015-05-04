@@ -14,8 +14,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.aha.actioncenter.models.CampaignSummaryItem;
 import org.aha.actioncenter.models.CampaignItem;
+import org.aha.actioncenter.models.CampaignSummaryItem;
 import org.aha.actioncenter.models.CampaignUserItem;
 import org.aha.actioncenter.models.EventItem;
 import org.aha.actioncenter.models.FeedItem;
@@ -83,13 +83,28 @@ public class Utility {
         return INSTANCE;
     }
 
+    public boolean isLoggedIn(Activity activity){
+        SharedPreferences prefs = activity.getSharedPreferences("login", Context.MODE_PRIVATE);
+        String dataString = prefs.getString("login", "");
+        Gson gson = new Gson();
+        OAMItem omaItem = gson.fromJson(dataString, OAMItem.class);
+
+        if (!omaItem.ahaid.isEmpty()) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     public boolean isNetworkAvailable(Activity activity) {
         mActivity = activity;
         boolean mIsNetworkAvailable = false;
         mIsNetworkAvailable = isNetworkAvailable();
         if (!mIsNetworkAvailable) {
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-            builder.setTitle("My Title");
+            builder.setTitle("No Internet");
+            builder.setMessage("Please check your internet connection and try again.");
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     //TODO
@@ -310,10 +325,10 @@ public class Utility {
         editor.apply();
     }
 
-    public OAMItem getLoginData(String dataName) {
+    public OAMItem getLoginData() {
 
-        SharedPreferences prefs = mContext.getSharedPreferences(dataName, Context.MODE_PRIVATE);
-        String dataString = prefs.getString(dataName, "");
+        SharedPreferences prefs = mContext.getSharedPreferences("login", Context.MODE_PRIVATE);
+        String dataString = prefs.getString("login", "");
 
         Gson gson = new Gson();
 
