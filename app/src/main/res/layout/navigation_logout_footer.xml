@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/logout_txt"
+        android:textSize="16sp"
         android:textColor="#fff"/>
 
 </LinearLayout>

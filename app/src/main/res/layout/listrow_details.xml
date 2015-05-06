@@ -25,7 +25,9 @@
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:textSize="16sp"
         android:text="Loading Content ..."
+
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:textColor="@color/aha_blue"/>
 
