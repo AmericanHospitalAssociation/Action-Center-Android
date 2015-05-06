@@ -483,6 +483,7 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
     @Override
     public void onBackPressed() {
         int count = getFragmentManager().getBackStackEntryCount();
+        mDrawerLayout.closeDrawers();
         if (count == 0) {
             super.onBackPressed();
         }
