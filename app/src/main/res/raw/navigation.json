@@ -15,7 +15,7 @@
                 {"name":"Congressional Calendar", "id":"congressional-calendar"},
                 {"name":"Directory", "id":"directory"}
             ]},
-            {"id":"events","name":"Calendar", icon="ic_action_calendar  "},
+            {"id":"events","name":"Calendar", icon="ic_action_calendar"},
             {"id":"twitter-feeds","name":"Twitter Feeds", icon="ic_twitter_logo", "subnav":[
                 {"name":"@ahaadvocacy","user":"ahaadvocacy", "id":"twitter-feeds"},
                 {"name":"@ahahospitals","user":"ahahospitals", "id":"twitter-feeds"}
