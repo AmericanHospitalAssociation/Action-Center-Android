@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -90,6 +91,8 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
     private AHAExpandableListAdapter navigationAdapter = null;
 
     private ProgressDialog progressDialog;
+
+    private View mClickedChild = null;
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
 
@@ -402,15 +405,26 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
                 navigationItem.id.equals(Utility.getInstance().NEWS) ||
                 navigationItem.id.equals(Utility.getInstance().CONTACT_US)) {
             selectItem(navigationItem);
+
         }
         return false;
     }
+
 
     @Override
     public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long id) {
         Log.d(TAG, "onChildClick");
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getChild(groupPosition, childPosition);
         selectItem(navigationItem);
+
+        if(mClickedChild != null){
+            mClickedChild.setBackgroundColor(Color.TRANSPARENT);
+            mClickedChild.invalidate();
+        }
+        mClickedChild = view;
+        view.setBackgroundColor(getResources().getColor(R.color.aha_darker_grey));
+
+
         return false;
     }
 

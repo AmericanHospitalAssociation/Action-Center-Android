@@ -10,6 +10,7 @@
         android:id="@+id/logout_btn"
         android:drawableLeft="@drawable/ic_action_light_logout"
         android:drawablePadding="10dp"
+        android:paddingLeft="16dp"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
