@@ -94,16 +94,12 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
 
             File outputFile = new File(externalStorage, fileName);
 
-            try {
-                if(outputFile.exists())
-                    outputFile.delete();
-
-                outputFile.createNewFile();
-
+            if (outputFile.exists()) {
+                return fileName;
             }
-            catch (IOException e1) {
-                e1.printStackTrace();
-            }
+
+            outputFile.createNewFile();
+
 
             FileOutputStream fos = new FileOutputStream(outputFile);
             InputStream is = mConnection.getInputStream();
