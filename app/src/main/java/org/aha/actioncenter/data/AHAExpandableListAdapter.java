@@ -41,20 +41,30 @@ public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_details, null);
         }
 
+        convertView.setBackgroundColor(mActivity.getResources().getColor(R.color.aha_dark_grey));
+
+        /*
+        if(isExpanded){
+            convertView.setBackgroundColor(mActivity.getApplicationContext().getResources().getColor(android.R.color.darker_gray));
+        }
+        else{
+            convertView.setBackgroundColor(mActivity.getApplicationContext().getResources().getColor(android.R.color.background_light));
+        }
+        */
+
         NavigationItem item = (NavigationItem) getGroup(groupPosition);
 
-        CheckedTextView navigation_txt =  (CheckedTextView)convertView.findViewById(R.id.navigation_txt);
+        CheckedTextView navigation_txt = (CheckedTextView) convertView.findViewById(R.id.navigation_txt);
         navigation_txt.setText(item.name);
         navigation_txt.setChecked(isExpanded);
 
 
-        if(!item.icon.isEmpty()){
+        if (!item.icon.isEmpty()) {
             ImageView img = (ImageView) convertView.findViewById(R.id.drawer_item_icon);
             img.setImageResource(mActivity.getResources().getIdentifier(item.icon, "drawable", mActivity.getPackageName()));
         }
@@ -64,13 +74,15 @@ public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         NavigationItem item = (NavigationItem) getChild(groupPosition, childPosition);
         TextView text = null;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_group, null);
         }
+
+        convertView.setBackgroundColor(mActivity.getResources().getColor(R.color.aha_grey));
+
         text = (TextView) convertView.findViewById(R.id.navigation_txt);
         text.setText(item.name);
 
@@ -79,7 +91,7 @@ public class AHAExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if(navigationItems.get(groupPosition).subnav == null)
+        if (navigationItems.get(groupPosition).subnav == null)
             return 0;
 
         return navigationItems.get(groupPosition).subnav.size();

@@ -391,6 +391,8 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @Override
     public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long id) {
         Log.d(TAG, "onGroupClick");

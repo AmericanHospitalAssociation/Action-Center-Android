@@ -4,21 +4,16 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:paddingLeft="16dp"
-              android:paddingRight="16dp">
+              android:background="@color/aha_grey">
 
     <Button
         android:id="@+id/logout_btn"
-        style="?android:attr/borderlessButtonStyle"
-
-        android:background="?android:attr/activatedBackgroundIndicator"
+        android:drawableLeft="@drawable/ic_action_light_logout"
+        android:drawablePadding="10dp"
         android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:textAppearance="?android:attr/textAppearanceListItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/logout_txt"
-        android:textColor="#fff"
-        />
+        android:textColor="#fff"/>
 
 </LinearLayout>

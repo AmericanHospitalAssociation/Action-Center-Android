@@ -27,6 +27,6 @@
         android:paddingRight="16dp"
         android:text="Loading Content ..."
         android:textAppearance="?android:attr/textAppearanceListItem"
-        android:textColor="#ffffff"/>
+        android:textColor="@color/aha_blue"/>
 
 </LinearLayout>

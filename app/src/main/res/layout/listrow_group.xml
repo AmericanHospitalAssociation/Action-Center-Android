@@ -7,8 +7,7 @@
                  android:background="?android:attr/activatedBackgroundIndicator"
                  android:gravity="center_vertical"
                  android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                 android:paddingRight="16dp"
-                 android:paddingLeft="50dp"
+                 android:paddingRight="32dp"
                  android:text="Loading Content ..."
                  android:textAppearance="?android:attr/textAppearanceListItem"
-                 android:textColor="#ffffff"/>
+                 android:textColor="@color/aha_blue"/>

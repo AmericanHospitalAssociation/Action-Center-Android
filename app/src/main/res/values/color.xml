@@ -3,4 +3,6 @@
     <color name="aha_blue">#003087</color>
     <color name="aha_red">#9d2235</color>
     <color name="aha_grey">#a1a1a1</color>
+    <color name="aha_dark_grey">#888888</color>
+    <color name="aha_darker_grey">#7b7b7b</color>
 </resources>
