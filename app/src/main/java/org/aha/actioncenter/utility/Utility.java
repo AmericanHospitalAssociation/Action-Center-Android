@@ -144,7 +144,6 @@ public class Utility {
         ArrayList<FeedItem> testimony = new ArrayList<FeedItem>();
         ArrayList<FeedItem> advisory = new ArrayList<FeedItem>();
         ArrayList<FeedItem> bulletin = new ArrayList<FeedItem>();
-        ArrayList<FeedItem> issuePapers = new ArrayList<FeedItem>();
         ArrayList<FeedItem> actionAlert = new ArrayList<FeedItem>();
         ArrayList<FeedItem> factSheet = new ArrayList<FeedItem>();
 
@@ -574,7 +573,24 @@ public class Utility {
         else {
             return false;
         }
+    }
 
+    public FeedItem getCongressionalCalendar() {
+        SharedPreferences prefs = mContext.getSharedPreferences(CONGRESSIONAL_CALENDAR, Context.MODE_PRIVATE);
+        String dataString = prefs.getString(CONGRESSIONAL_CALENDAR, "");
+
+        Gson gson = new Gson();
+
+        Type feedItemArrayListType = new TypeToken<ArrayList<FeedItem>>() {
+        }.getType();
+
+        ArrayList<FeedItem> itemArray = gson.fromJson(dataString, feedItemArrayListType);
+
+        FeedItem item = new FeedItem();
+        if (itemArray.size() > 0)
+            item = itemArray.get(0);
+
+        return item;
     }
 
 

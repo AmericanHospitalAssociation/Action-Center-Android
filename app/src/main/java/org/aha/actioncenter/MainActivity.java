@@ -36,9 +36,11 @@ import org.aha.actioncenter.events.CampaignDataEvent;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.events.VoterVoiceDataEvent;
+import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.service.CampaignSummaryAsyncTask;
+import org.aha.actioncenter.service.PdfDownloadAsyncTask;
 import org.aha.actioncenter.service.VoterVoiceCreateUserAsyncTask;
 import org.aha.actioncenter.service.VoterVoiceMatchesCampaignAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -47,7 +49,6 @@ import org.aha.actioncenter.views.ActionAlertListFragment;
 import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
 import org.aha.actioncenter.views.CampaignSummaryListFragment;
-import org.aha.actioncenter.views.CongressionalCalendarFragment;
 import org.aha.actioncenter.views.ContactUsFragment;
 import org.aha.actioncenter.views.ContactYourLegislatorsListFragment;
 import org.aha.actioncenter.views.DirectoryListFragment;
@@ -248,8 +249,6 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
             fragment = new TestimonyListFragment();
         if (item.id.equals(Utility.getInstance().ADDITIONAL_INFO))
             fragment = new AdditionalInfoListFragment();
-        if (item.id.equals(Utility.getInstance().CONGRESSIONAL_CALENDAR))
-            fragment = new CongressionalCalendarFragment();
         if (item.id.equals(Utility.getInstance().WORKING_WITH_CONGRESS))
             fragment = new WorkingWithCongressFragment();
         if (item.id.equals(Utility.getInstance().EVENTS))
@@ -258,6 +257,17 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
             fragment = new NewsListFragment();
         if (item.id.equals(Utility.getInstance().CONTACT_US))
             fragment = new ContactUsFragment();
+        if (item.id.equals(Utility.getInstance().CONGRESSIONAL_CALENDAR)){
+            FeedItem feedItem = Utility.getInstance(mContext).getCongressionalCalendar();
+            if(Utility.getInstance().isNetworkAvailable(this)) {
+                try {
+                    new PdfDownloadAsyncTask(new URL(feedItem.ResourceURI.isEmpty() ? feedItem.box_link_dir : feedItem.ResourceURI), getApplicationContext(), this).execute();
+                }
+                catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         if (item.id.equals(Utility.getInstance().DIRECTORY)) {
 
             OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
@@ -434,8 +444,6 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
             setTitle("Testimony");
         if (fragment instanceof AdditionalInfoListFragment)
             setTitle("Additional Info");
-        if (fragment instanceof CongressionalCalendarFragment)
-            setTitle("Congressional Calendar");
         if (fragment instanceof WorkingWithCongressFragment)
             setTitle("Working with Congress");
         if (fragment instanceof EventsListFragment)
