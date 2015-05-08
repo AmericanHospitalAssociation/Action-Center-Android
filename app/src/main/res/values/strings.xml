@@ -53,5 +53,13 @@
     <string name="timeline_empty">Twitter AHA Timeline Loading ...</string>
     <string name="create_an_account">Create an Account</string>
     <string name="need_help">Need Help?</string>
+    <string name="update_info_txt">This form is used to gather info that is required to get your legislators and to take action on a campaign.</string>
+
+    <string-array name="salutation_array">
+        <item>Mr.</item>
+        <item>Dr.</item>
+        <item>Ms.</item>
+        <item>Mrs.</item>
+    </string-array>
 
 </resources>

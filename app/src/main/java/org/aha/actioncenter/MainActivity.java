@@ -276,7 +276,19 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
             OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
 
             if (oamItem.prefix.isEmpty() || oamItem.phone.isEmpty()) {
-                Log.d(TAG, "debug");
+
+                new AlertDialog.Builder(this)
+                        .setTitle("Additional Info Needed")
+                        .setMessage("To enable matching you to your legislators, additional info is needed. Would you like to enter the needed info?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                                Log.d(TAG, "debug");
+
+                            }
+                        }).create().show();
+
             }
             else {
                 try {
@@ -484,10 +496,20 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
     public void onBackPressed() {
         int count = getFragmentManager().getBackStackEntryCount();
         mDrawerLayout.closeDrawers();
-        if (count == 0) {
-            super.onBackPressed();
+        if (count <= 1 ) {
+            //super.onBackPressed();
+            new AlertDialog.Builder(this)
+                    .setTitle("Exit app?")
+                    .setMessage("Are you sure you want to exit?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            MainActivity.super.onBackPressed();
+                        }
+                    }).create().show();
         }
-        else {
+        else if(count > 1) {
             getFragmentManager().popBackStack();
         }
     }

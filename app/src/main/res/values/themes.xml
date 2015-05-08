@@ -13,8 +13,8 @@
            parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/aha_blue</item>
         <item name="android:icon">@android:color/transparent</item>
-
     </style>
+
     <style name="AHAButton">
         <item name="android:background">@color/aha_red</item>
         <item name="android:textColor">@android:color/white</item>
