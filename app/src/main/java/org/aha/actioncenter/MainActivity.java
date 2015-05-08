@@ -57,6 +57,7 @@ import org.aha.actioncenter.views.EventsListFragment;
 import org.aha.actioncenter.views.FactSheetListFragment;
 import org.aha.actioncenter.views.HomeFragment;
 import org.aha.actioncenter.views.LetterListFragment;
+import org.aha.actioncenter.views.MissingInfoFragment;
 import org.aha.actioncenter.views.NewsListFragment;
 import org.aha.actioncenter.views.SpecialBulletinListFragment;
 import org.aha.actioncenter.views.TestimonyListFragment;
@@ -275,7 +276,7 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
 
             OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
 
-            if (oamItem.prefix.isEmpty() || oamItem.phone.isEmpty()) {
+            if (oamItem.prefix == null || oamItem.phone == null) {
 
                 new AlertDialog.Builder(this)
                         .setTitle("Additional Info Needed")
@@ -283,6 +284,9 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
                         .setNegativeButton(android.R.string.no, null)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
+
+                                Fragment fragment = new MissingInfoFragment();
+                                addToFragmentBackStack(fragment, "update-user", "Update User Information");
 
                                 Log.d(TAG, "debug");
 
@@ -637,6 +641,32 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
         else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_MATCHES_FOR_CAMPAIGN_DATA)) {
 
         }
+    }
+
+    public void showProgressDialog(String title, String message){
+        if(progressDialog != null && !progressDialog.isShowing()) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle(title);
+            progressDialog.setMessage(message);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+        }
+    }
+
+    public void closeProgressDialog(){
+        if(progressDialog != null)
+            progressDialog.dismiss();
+
+        progressDialog = null;
+    }
+
+    public boolean isProgressDialogShowing(){
+        boolean isShowing = false;
+        if(progressDialog != null)
+                isShowing = progressDialog.isShowing();
+
+        return isShowing;
     }
 
 

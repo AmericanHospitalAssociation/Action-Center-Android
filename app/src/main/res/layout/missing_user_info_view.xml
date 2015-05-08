@@ -3,56 +3,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-    <TextView
-        android:id="@+id/header"
-        android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:background="@color/aha_red"
-        android:text="Update Info"
-        android:gravity="center_horizontal"/>
-
     <LinearLayout
-        android:layout_below="@id/header"
         android:id="@+id/prefix"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <CheckedTextView
+            android:id="@+id/mr_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
+            android:drawableRight="?android:attr/listChoiceIndicatorSingle"
             android:text="Mr."/>
 
         <CheckedTextView
+            android:id="@+id/dr_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
+            android:drawableRight="?android:attr/listChoiceIndicatorSingle"
             android:text="Dr."/>
 
         <CheckedTextView
+            android:id="@+id/ms_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
+            android:drawableRight="?android:attr/listChoiceIndicatorSingle"
             android:text="Ms."/>
 
         <CheckedTextView
+            android:id="@+id/mrs_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
+            android:drawableRight="?android:attr/listChoiceIndicatorSingle"
             android:text="Mrs."/>
 
         <EditText
@@ -76,5 +70,19 @@
         android:paddingLeft="16dp"
         android:textColor="@color/aha_blue"
         android:text="@string/update_info_txt"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/send_btn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Save"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
