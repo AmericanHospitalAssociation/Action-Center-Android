@@ -66,7 +66,7 @@ public class SpecialBulletinAlertFeedAdapter extends RecyclerView.Adapter<Specia
                     // Insert the fragment by replacing any existing fragment
                     FragmentManager fragmentManager = mActivity.getFragmentManager();
 
-                    fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(null).commit();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
                 }
             });
 

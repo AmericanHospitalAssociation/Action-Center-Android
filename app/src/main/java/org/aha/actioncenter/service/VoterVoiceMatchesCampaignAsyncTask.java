@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -51,23 +52,15 @@ public class VoterVoiceMatchesCampaignAsyncTask extends AsyncTask<Void, Void, St
 
         if (!isCancelled()) {
             if (activity != null) {
-                progressDialog = new ProgressDialog(activity);
-                progressDialog.setTitle("American Hospital Association");
-                progressDialog.setMessage("Create Directory User ...");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.show();
+                ((MainActivity)activity).showProgressDialog("American Hospital Association", "Create Directory User ...");
             }
         }
     }
 
     @Override
     protected void onCancelled() {
+        ((MainActivity)activity).closeProgressDialog();
         super.onCancelled();
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-
-        progressDialog = null;
     }
 
 
@@ -90,8 +83,7 @@ public class VoterVoiceMatchesCampaignAsyncTask extends AsyncTask<Void, Void, St
         VoterVoiceDataEvent event = new VoterVoiceDataEvent(VoterVoiceDataEvent.VOTER_VOICE_GET_CAMPAIGN_DATA);
         AHABusProvider.getInstance().post(event);
 
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+        ((MainActivity)activity).closeProgressDialog();
 
     }
 

@@ -527,7 +527,7 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
 
             FragmentManager fragmentManager = getFragmentManager();
             ContactYourLegislatorsListFragment fragment = new ContactYourLegislatorsListFragment();
-            fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(Utility.getInstance().CONTACT_YOUR_LEGISLATORS).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(Utility.getInstance().CONTACT_YOUR_LEGISLATORS).commit();
 
         }
         catch (JSONException e) {

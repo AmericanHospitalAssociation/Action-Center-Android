@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.models.NewsItem;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -58,23 +59,15 @@ public class NewsLongDescriptionAsyncTask extends AsyncTask<Void, Void, String> 
 
         if (!isCancelled()) {
             if (activity != null) {
-                progressDialog = new ProgressDialog(activity);
-                progressDialog.setTitle("American Hospital Association");
-                progressDialog.setMessage("Loading News Long Description...");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.show();
+                ((MainActivity)activity).showProgressDialog("American Hospital Association", "Loading News Long Description...");
             }
         }
     }
 
     @Override
     protected void onCancelled() {
+        ((MainActivity)activity).closeProgressDialog();
         super.onCancelled();
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-
-        progressDialog = null;
     }
 
 
@@ -98,8 +91,7 @@ public class NewsLongDescriptionAsyncTask extends AsyncTask<Void, Void, String> 
             e.printStackTrace();
         }
 
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
+        ((MainActivity)activity).closeProgressDialog();
 
     }
 

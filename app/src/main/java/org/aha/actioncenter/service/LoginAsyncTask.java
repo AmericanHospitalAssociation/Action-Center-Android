@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.events.LoginEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -51,23 +52,15 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, String> {
 
         if (!isCancelled()) {
             if (activity != null) {
-                progressDialog = new ProgressDialog(activity);
-                progressDialog.setTitle("American Hospital Association");
-                progressDialog.setMessage("Login Event Data...");
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.show();
+                ((MainActivity)activity).showProgressDialog("American Hospital Association", "Login Event Data...");
             }
         }
     }
 
     @Override
     protected void onCancelled() {
+        ((MainActivity)activity).closeProgressDialog();
         super.onCancelled();
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-
-        progressDialog = null;
     }
 
 
@@ -89,9 +82,7 @@ public class LoginAsyncTask extends AsyncTask<Void, Void, String> {
         LoginEvent event = new LoginEvent(LoginEvent.LOGIN_DATA);
         AHABusProvider.getInstance().post(event);
 
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-
+        ((MainActivity)activity).closeProgressDialog();
     }
 
     @Override

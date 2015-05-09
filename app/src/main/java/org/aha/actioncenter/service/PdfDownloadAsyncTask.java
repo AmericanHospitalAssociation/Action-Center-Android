@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -50,20 +51,14 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
         }
 
         if (activity != null) {
-            progressDialog = new ProgressDialog(activity);
-            progressDialog.setTitle("American Hospital Association");
-            progressDialog.setMessage("Downloading PDF file ...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+            ((MainActivity)activity).showProgressDialog("American Hospital Association", "Downloading PDF file ...");
         }
     }
 
     @Override
     protected void onCancelled() {
+        ((MainActivity)activity).closeProgressDialog();
         super.onCancelled();
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
     }
 
     @Override
@@ -74,9 +69,7 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
         event.setData(fileLocation);
         AHABusProvider.getInstance().post(event);
 
-        if (progressDialog != null && progressDialog.isShowing())
-            progressDialog.dismiss();
-
+        ((MainActivity)activity).closeProgressDialog();
     }
 
     @Override

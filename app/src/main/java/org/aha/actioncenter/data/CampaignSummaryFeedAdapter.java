@@ -60,7 +60,7 @@ public class CampaignSummaryFeedAdapter extends RecyclerView.Adapter<CampaignSum
                     args.putString("item", new Gson().toJson(item));
                     fragment.setArguments(args);
                     FragmentManager fragmentManager = mActivity.getFragmentManager();
-                    fragmentManager.beginTransaction().add(R.id.content_frame, fragment).addToBackStack(null).commit();
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
 
                 }
             });
