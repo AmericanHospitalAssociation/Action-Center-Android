@@ -48,7 +48,6 @@ import org.aha.actioncenter.utility.Utility;
 import org.aha.actioncenter.views.ActionAlertListFragment;
 import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
-import org.aha.actioncenter.views.BaseActivity;
 import org.aha.actioncenter.views.CampaignSummaryListFragment;
 import org.aha.actioncenter.views.ContactUsFragment;
 import org.aha.actioncenter.views.ContactYourLegislatorsListFragment;

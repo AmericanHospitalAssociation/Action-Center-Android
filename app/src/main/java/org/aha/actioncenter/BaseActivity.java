@@ -1,4 +1,4 @@
-package org.aha.actioncenter.views;
+package org.aha.actioncenter;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 public abstract class BaseActivity extends Activity {
 
     public ProgressDialog progressDialog;
+    private static int pDialogCounter = 0;
 
     @Override
     protected void onPause() {
@@ -22,7 +23,11 @@ public abstract class BaseActivity extends Activity {
     }
 
     public void showProgressDialog(String title, String message){
-        if(progressDialog != null && !progressDialog.isShowing()) {
+        if(progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.setMessage(message);
+        }
+        else {
+
             progressDialog = new ProgressDialog(this);
             progressDialog.setTitle(title);
             progressDialog.setMessage(message);
@@ -30,13 +35,15 @@ public abstract class BaseActivity extends Activity {
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
         }
+        pDialogCounter++;
+
     }
 
     public void closeProgressDialog(){
-        if(progressDialog != null)
+        if(progressDialog != null && --pDialogCounter == 0) {
             progressDialog.dismiss();
-
-        progressDialog = null;
+            progressDialog = null;
+        }
     }
 
     public boolean isProgressDialogShowing(){

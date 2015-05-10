@@ -18,7 +18,6 @@ import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.service.LoginAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
-import org.aha.actioncenter.views.BaseActivity;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -142,12 +141,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void showErrorDialog() {
-        new AlertDialog.Builder(this).setTitle("Invalid Login Credentials").setMessage("The Email Address or Password you entered is incorrect. Please verify your credentials and try again.").setIcon(android.R.drawable.ic_dialog_alert).setCancelable(false).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // continue with delete
-                dialog.dismiss();
-            }
-        }).show();
+        new AlertDialog.Builder(this).setTitle("Invalid Login Credentials")
+                .setMessage("The Email Address or Password you entered is incorrect. Please verify your credentials and try again.")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
 }

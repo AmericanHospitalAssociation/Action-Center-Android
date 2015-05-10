@@ -9,7 +9,7 @@ import android.os.Environment;
 import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
-import org.aha.actioncenter.views.BaseActivity;
+import org.aha.actioncenter.BaseActivity;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;

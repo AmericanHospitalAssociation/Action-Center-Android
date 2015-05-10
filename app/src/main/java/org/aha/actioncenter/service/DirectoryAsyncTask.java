@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import org.aha.actioncenter.events.CampaignDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
-import org.aha.actioncenter.views.BaseActivity;
+import org.aha.actioncenter.BaseActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 

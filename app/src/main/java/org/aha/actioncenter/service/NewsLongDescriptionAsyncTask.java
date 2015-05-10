@@ -10,7 +10,7 @@ import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.models.NewsItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
-import org.aha.actioncenter.views.BaseActivity;
+import org.aha.actioncenter.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
