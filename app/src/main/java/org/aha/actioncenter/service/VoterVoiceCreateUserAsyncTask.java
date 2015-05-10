@@ -74,6 +74,15 @@ public class VoterVoiceCreateUserAsyncTask extends AsyncTask<Void, Void, String>
         try {
             json = new JSONObject(feed);
             OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
+
+            if(json.getJSONObject("response").getInt("status") != 200){
+                ((BaseActivity)activity).closeProgressDialog();
+                ((BaseActivity)activity).showErrorDialog("Voter Voice Error", json.getJSONObject("response").getString("body"));
+                OAMItem item = Utility.getInstance(mContext).getLoginData();
+                item.phone = "";
+                Utility.getInstance(mContext).saveLoginData("login", item);
+                return;
+            }
             oamItem.token = json.getJSONObject("response").getJSONObject("body").getString("userToken");
             oamItem.userid = json.getJSONObject("response").getJSONObject("body").getString("userId");
             Utility.getInstance(mContext).saveLoginData("login", oamItem);
@@ -81,6 +90,8 @@ public class VoterVoiceCreateUserAsyncTask extends AsyncTask<Void, Void, String>
         catch (JSONException e) {
             e.printStackTrace();
         }
+
+
 
         VoterVoiceDataEvent event = new VoterVoiceDataEvent(VoterVoiceDataEvent.VOTER_VOICE_CREATE_DATA);
         AHABusProvider.getInstance().post(event);

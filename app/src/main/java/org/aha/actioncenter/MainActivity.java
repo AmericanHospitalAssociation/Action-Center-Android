@@ -92,6 +92,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
 
     private View mClickedChild = null;
+    private NavigationItem currentNavigationItem = null;
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
 
@@ -228,6 +229,10 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
     //TODO: Disable multiple clicks, data request.
     private boolean onePassClick = false;
+
+    public void selectItem(){
+        selectItem(currentNavigationItem);
+    }
 
     public void selectItem(NavigationItem item) {
         Log.d(TAG, "Navigation item selected.");
@@ -410,6 +415,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
     public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long id) {
         Log.d(TAG, "onGroupClick");
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getGroup(groupPosition);
+        currentNavigationItem = navigationItem;
         if (navigationItem.id.equals(Utility.getInstance().HOME) ||
                 navigationItem.id.equals(Utility.getInstance().EVENTS) ||
                 navigationItem.id.equals(Utility.getInstance().NEWS) ||
@@ -425,6 +431,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
     public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long id) {
         Log.d(TAG, "onChildClick");
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getChild(groupPosition, childPosition);
+        currentNavigationItem = navigationItem;
         selectItem(navigationItem);
 
         if (mClickedChild != null) {

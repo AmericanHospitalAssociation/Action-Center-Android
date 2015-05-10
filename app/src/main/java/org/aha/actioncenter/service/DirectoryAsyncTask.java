@@ -77,6 +77,7 @@ public class DirectoryAsyncTask extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
         }
 
+        
 
         if (json != null) {
             CampaignDataEvent event = new CampaignDataEvent(CampaignDataEvent.CAMPAIGN_DATA);

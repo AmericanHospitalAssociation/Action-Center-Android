@@ -1,7 +1,9 @@
 package org.aha.actioncenter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 
 /**
  * Created by markusmcgee on 5/10/15.
@@ -20,6 +22,18 @@ public abstract class BaseActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    public void showErrorDialog(String title, String message) {
+        new AlertDialog.Builder(this).setTitle(title)
+                .setMessage(message)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
     public void showProgressDialog(String title, String message){
@@ -53,5 +67,6 @@ public abstract class BaseActivity extends Activity {
 
         return isShowing;
     }
+
 
 }
