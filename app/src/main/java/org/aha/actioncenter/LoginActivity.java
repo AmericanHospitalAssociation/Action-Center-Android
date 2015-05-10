@@ -1,6 +1,5 @@
 package org.aha.actioncenter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +18,7 @@ import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.service.LoginAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
+import org.aha.actioncenter.views.BaseActivity;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,7 +26,7 @@ import java.net.URL;
 /**
  * Created by markusmcgee on 4/23/15.
  */
-public class LoginActivity extends Activity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginActivity";
 
@@ -91,15 +91,15 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onPause() {
-        super.onPause();
         AHABusProvider.getInstance().unregister(this);
+        super.onPause();
 
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
         AHABusProvider.getInstance().register(this);
+        super.onResume();
 
     }
 

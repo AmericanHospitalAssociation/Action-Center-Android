@@ -5,10 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.events.EventsDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
+import org.aha.actioncenter.views.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,14 +52,14 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((MainActivity)activity).showProgressDialog("American Hospital Association","Loading Event Data...");
+                ((BaseActivity)activity).showProgressDialog("American Hospital Association","Loading Event Data...");
             }
         }
     }
 
     @Override
     protected void onCancelled() {
-        ((MainActivity)activity).closeProgressDialog();
+        ((BaseActivity)activity).closeProgressDialog();
         super.onCancelled();
     }
 
@@ -81,7 +81,7 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
         event.setData(json);
         AHABusProvider.getInstance().post(event);
 
-        ((MainActivity)activity).closeProgressDialog();
+        ((BaseActivity)activity).closeProgressDialog();
 
     }
 

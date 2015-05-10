@@ -1,6 +1,5 @@
 package org.aha.actioncenter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -49,6 +48,7 @@ import org.aha.actioncenter.utility.Utility;
 import org.aha.actioncenter.views.ActionAlertListFragment;
 import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
+import org.aha.actioncenter.views.BaseActivity;
 import org.aha.actioncenter.views.CampaignSummaryListFragment;
 import org.aha.actioncenter.views.ContactUsFragment;
 import org.aha.actioncenter.views.ContactYourLegislatorsListFragment;
@@ -78,7 +78,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class MainActivity extends Activity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
+public class MainActivity extends BaseActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
 
     private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
@@ -91,7 +91,6 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
     private ArrayList<NavigationItem> navigationItemArrayList = null;
     private AHAExpandableListAdapter navigationAdapter = null;
 
-    private ProgressDialog progressDialog;
 
     private View mClickedChild = null;
 
@@ -212,16 +211,16 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
 
     @Override
     protected void onResume() {
-        super.onResume();
         AHABusProvider.getInstance().register(this);
+        super.onResume();
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         AHABusProvider.getInstance().unregister(this);
         if (progressDialog != null && progressDialog.isShowing())
             progressDialog.dismiss();
+        super.onPause();
     }
 
     /**
@@ -642,32 +641,5 @@ public class MainActivity extends Activity implements ExpandableListView.OnGroup
 
         }
     }
-
-    public void showProgressDialog(String title, String message){
-        if(progressDialog != null && !progressDialog.isShowing()) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle(title);
-            progressDialog.setMessage(message);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
-        }
-    }
-
-    public void closeProgressDialog(){
-        if(progressDialog != null)
-            progressDialog.dismiss();
-
-        progressDialog = null;
-    }
-
-    public boolean isProgressDialogShowing(){
-        boolean isShowing = false;
-        if(progressDialog != null)
-                isShowing = progressDialog.isShowing();
-
-        return isShowing;
-    }
-
 
 }

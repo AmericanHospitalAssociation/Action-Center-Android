@@ -5,10 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.events.TakeActionEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
+import org.aha.actioncenter.views.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,14 +53,14 @@ public class TakeActionAsyncTask extends AsyncTask<Void, Void, String> {
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((MainActivity)activity).showProgressDialog("American Hospital Association", "Loading Take Action Data...");
+                ((BaseActivity)activity).showProgressDialog("American Hospital Association", "Loading Take Action Data...");
             }
         }
     }
 
     @Override
     protected void onCancelled() {
-        ((MainActivity)activity).closeProgressDialog();
+        ((BaseActivity)activity).closeProgressDialog();
         super.onCancelled();
     }
 
@@ -83,7 +83,7 @@ public class TakeActionAsyncTask extends AsyncTask<Void, Void, String> {
         }
         AHABusProvider.getInstance().post(event);
 
-        ((MainActivity)activity).closeProgressDialog();
+        ((BaseActivity)activity).closeProgressDialog();
     }
 
     @Override

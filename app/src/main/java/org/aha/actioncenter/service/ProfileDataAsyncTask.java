@@ -5,10 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
+import org.aha.actioncenter.views.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,14 +52,14 @@ public class ProfileDataAsyncTask extends AsyncTask<Void, Void, String> {
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((MainActivity)activity).showProgressDialog("American Hospital Association", "Getting Profile Data ...");
+                ((BaseActivity)activity).showProgressDialog("American Hospital Association", "Getting Profile Data ...");
             }
         }
     }
 
     @Override
     protected void onCancelled() {
-        ((MainActivity)activity).closeProgressDialog();
+        ((BaseActivity)activity).closeProgressDialog();
         super.onCancelled();
     }
 
@@ -83,7 +83,7 @@ public class ProfileDataAsyncTask extends AsyncTask<Void, Void, String> {
         VoterVoiceDataEvent event = new VoterVoiceDataEvent(VoterVoiceDataEvent.VOTER_VOICE_PROFILE_DATA);
         AHABusProvider.getInstance().post(event);
 
-        ((MainActivity)activity).closeProgressDialog();
+        ((BaseActivity)activity).closeProgressDialog();
 
     }
 
