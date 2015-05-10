@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
         setContentView(R.layout.activity_main);
 
-        ImageView imageView = (ImageView)findViewById(android.R.id.home);
+        ImageView imageView = (ImageView) findViewById(android.R.id.home);
         imageView.setPadding(10, 0, 0, 0);
 
         mTitle = mDrawerTitle = getTitle();
@@ -229,6 +229,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
     //TODO: Disable multiple clicks, data request.
     private boolean onePassClick = false;
+
     public void selectItem(NavigationItem item) {
         Log.d(TAG, "Navigation item selected.");
 
@@ -260,9 +261,9 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             fragment = new NewsListFragment();
         if (item.id.equals(Utility.getInstance().CONTACT_US))
             fragment = new ContactUsFragment();
-        if (item.id.equals(Utility.getInstance().CONGRESSIONAL_CALENDAR)){
+        if (item.id.equals(Utility.getInstance().CONGRESSIONAL_CALENDAR)) {
             FeedItem feedItem = Utility.getInstance(mContext).getCongressionalCalendar();
-            if(Utility.getInstance().isNetworkAvailable(this)) {
+            if (Utility.getInstance().isNetworkAvailable(this)) {
                 try {
                     new PdfDownloadAsyncTask(new URL(feedItem.ResourceURI.isEmpty() ? feedItem.box_link_dir : feedItem.ResourceURI), getApplicationContext(), this).execute();
                 }
@@ -277,20 +278,16 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
             if (oamItem.prefix == null || oamItem.phone == null) {
 
-                new AlertDialog.Builder(this)
-                        .setTitle("Additional Info Needed")
-                        .setMessage("To enable matching you to your legislators, additional info is needed. Would you like to enter the needed info?")
-                        .setNegativeButton(android.R.string.no, null)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
+                new AlertDialog.Builder(this).setTitle("Additional Info Needed").setMessage("To enable matching you to your legislators, additional info is needed. Would you like to enter the needed info?").setNegativeButton(android.R.string.no, null).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
 
-                                Fragment fragment = new MissingInfoFragment();
-                                addToFragmentBackStack(fragment, "update-user", "Update User Information");
+                        Fragment fragment = new MissingInfoFragment();
+                        addToFragmentBackStack(fragment, "update-user", "Update User Information");
 
-                                Log.d(TAG, "debug");
+                        Log.d(TAG, "debug");
 
-                            }
-                        }).create().show();
+                    }
+                }).create().show();
 
             }
             else {
@@ -312,7 +309,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
                     Log.d(TAG, urlString);
                     URL url = new URL(urlString);
-                    if(Utility.getInstance().isNetworkAvailable(this)) {
+                    if (Utility.getInstance().isNetworkAvailable(this)) {
                         new VoterVoiceCreateUserAsyncTask(url, getApplicationContext(), this).execute();
                     }
                 }
@@ -329,7 +326,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
                 String urlString = getResources().getString(R.string.vv_campaign_summary_url);
                 URL url = new URL(urlString);
-                if(Utility.getInstance().isNetworkAvailable(this)) {
+                if (Utility.getInstance().isNetworkAvailable(this)) {
                     new CampaignSummaryAsyncTask(url, mContext, this).execute();
                 }
             }
@@ -341,12 +338,12 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             }
         }
         if (item.id.equals(Utility.getInstance().TWITTER_FEEDS)) {
-            if(Utility.getInstance().isNetworkAvailable(this)) {
+            if (Utility.getInstance().isNetworkAvailable(this)) {
                 args.putString(item.id, item.user);
                 fragment = new TwitterFeedListFragment();
                 fragment.setArguments(args);
             }
-            else{
+            else {
                 return;
             }
         }
@@ -354,15 +351,15 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         addToFragmentBackStack(fragment, item);
     }
 
-    private void addToFragmentBackStack(Fragment fragment, String navigationId, String navigationName){
+    private void addToFragmentBackStack(Fragment fragment, String navigationId, String navigationName) {
         addToAppBackStack(fragment, navigationId, navigationName);
     }
 
-    private void addToFragmentBackStack(Fragment fragment, NavigationItem item ) {
+    private void addToFragmentBackStack(Fragment fragment, NavigationItem item) {
         addToAppBackStack(fragment, item.id, item.name);
     }
 
-    private void addToAppBackStack(Fragment fragment, String navigationId, String navigationName){
+    private void addToAppBackStack(Fragment fragment, String navigationId, String navigationName) {
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
 
@@ -410,7 +407,6 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
     }
 
 
-
     @Override
     public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long id) {
         Log.d(TAG, "onGroupClick");
@@ -432,7 +428,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getChild(groupPosition, childPosition);
         selectItem(navigationItem);
 
-        if(mClickedChild != null){
+        if (mClickedChild != null) {
             mClickedChild.setBackgroundColor(Color.TRANSPARENT);
             mClickedChild.invalidate();
         }
@@ -499,20 +495,16 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
     public void onBackPressed() {
         int count = getFragmentManager().getBackStackEntryCount();
         mDrawerLayout.closeDrawers();
-        if (count <= 1 ) {
+        if (count <= 1) {
             //super.onBackPressed();
-            new AlertDialog.Builder(this)
-                    .setTitle("Exit app?")
-                    .setMessage("Are you sure you want to exit?")
-                    .setNegativeButton(android.R.string.no, null)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(this).setTitle("Exit app?").setMessage("Are you sure you want to exit?").setNegativeButton(android.R.string.no, null).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            MainActivity.super.onBackPressed();
-                        }
-                    }).create().show();
+                public void onClick(DialogInterface arg0, int arg1) {
+                    MainActivity.super.onBackPressed();
+                }
+            }).create().show();
         }
-        else if(count > 1) {
+        else if (count > 1) {
             getFragmentManager().popBackStack();
         }
     }
@@ -558,7 +550,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 progressDialog.dismiss();
                 new AlertDialog.Builder(this).setTitle("American Hospital Association").setMessage("PDF error.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        progressDialog.dismiss();
+                        dialog.dismiss();
                         getFragmentManager().popBackStack();
                     }
                 }).show();
@@ -571,12 +563,14 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         else {
             progressDialog.dismiss();
 
-            new AlertDialog.Builder(this).setTitle("American Hospital Association").setMessage("No PDF viewer installed.  Please download pdf viewer from Google Play Store.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    progressDialog.dismiss();
-                    getFragmentManager().popBackStack();
-                }
-            }).show();
+            new AlertDialog.Builder(this).setTitle("American Hospital Association")
+                    .setMessage("No PDF viewer installed.  Please download pdf viewer from Google Play Store.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            getFragmentManager().popBackStack();
+                        }
+                    }).show();
 
         }
     }
@@ -609,7 +603,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 e.printStackTrace();
             }
 
-            if(Utility.getInstance().isNetworkAvailable(this)) {
+            if (Utility.getInstance().isNetworkAvailable(this)) {
                 new VoterVoiceMatchesCampaignAsyncTask(url, getApplicationContext(), this).execute();
             }
 
