@@ -3,7 +3,6 @@ package org.aha.actioncenter;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -535,12 +534,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
     @Subscribe
     public void subscribeOnPDFDownload(PdfDataEvent event) {
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("American Hospital Association");
-        progressDialog.setMessage("Opening Download ...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
+        showProgressDialog("American Hospital Association","Opening Download ...");
 
         if (Utility.getInstance().canDisplayPdf(mContext)) {
             try {
@@ -584,6 +578,9 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
     @Subscribe
     public void subcribeVoterVoiceEvents(VoterVoiceDataEvent event) {
+
+        closeProgressDialog();
+
         if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_CREATE_DATA)) {
 
             OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
