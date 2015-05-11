@@ -33,7 +33,7 @@ import io.fabric.sdk.android.Fabric;
  */
 public class AHAActionCenterApplication extends Application {
 
-    private boolean debug = true;
+    private boolean debug = false;
 
     @Override
     public void onCreate() {
