@@ -544,14 +544,14 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 intent.setDataAndType(Uri.fromFile(new File(externalStorage + "/" + event.getDataString())), "application/pdf");
                 startActivity(intent);
                 progressDialog.dismiss();
-                getFragmentManager().popBackStack();
+                //getFragmentManager().popBackStack();
             }
             catch (ActivityNotFoundException e) {
                 progressDialog.dismiss();
                 new AlertDialog.Builder(this).setTitle("American Hospital Association").setMessage("PDF error.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        getFragmentManager().popBackStack();
+                        //getFragmentManager().popBackStack();
                     }
                 }).show();
             }
@@ -568,7 +568,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            getFragmentManager().popBackStack();
+                            //getFragmentManager().popBackStack();
                         }
                     }).show();
 
