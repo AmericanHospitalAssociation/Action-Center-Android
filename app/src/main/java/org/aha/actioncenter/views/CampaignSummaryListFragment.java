@@ -52,7 +52,7 @@ public class CampaignSummaryListFragment extends Fragment {
 
         // specify an adapter (see also next example)
 
-        if(Utility.getInstance(mContext).hasData(Utility.CAMPAIGN)) {
+        if(Utility.getInstance(mContext).hasData(Utility.CAMPAIGN_SUMMARY_LIST)) {
             if (Utility.getInstance(mContext).isCampaignSummaryDataLoaded()) {
                 list = Utility.getInstance(mContext).getCampaignSummaryData();
                 mAdapter = new CampaignSummaryFeedAdapter(getActivity(), list);
