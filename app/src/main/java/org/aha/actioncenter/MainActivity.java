@@ -44,19 +44,25 @@ import org.aha.actioncenter.service.VoterVoiceCreateUserAsyncTask;
 import org.aha.actioncenter.service.VoterVoiceMatchesCampaignAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
+import org.aha.actioncenter.views.ActionAlertDetailInfoFragment;
 import org.aha.actioncenter.views.ActionAlertListFragment;
 import org.aha.actioncenter.views.AdditionalInfoListFragment;
+import org.aha.actioncenter.views.AdvisoryDetailInfoFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
 import org.aha.actioncenter.views.CampaignSummaryListFragment;
 import org.aha.actioncenter.views.ContactUsFragment;
 import org.aha.actioncenter.views.ContactYourLegislatorsListFragment;
 import org.aha.actioncenter.views.DirectoryListFragment;
+import org.aha.actioncenter.views.EventDetailInfoFragment;
 import org.aha.actioncenter.views.EventsListFragment;
 import org.aha.actioncenter.views.FactSheetListFragment;
 import org.aha.actioncenter.views.HomeFragment;
+import org.aha.actioncenter.views.LetterDetailInfoFragment;
 import org.aha.actioncenter.views.LetterListFragment;
 import org.aha.actioncenter.views.MissingInfoFragment;
+import org.aha.actioncenter.views.NewsDetailInfoFragment;
 import org.aha.actioncenter.views.NewsListFragment;
+import org.aha.actioncenter.views.SpecialBulletinDetailInfoFragment;
 import org.aha.actioncenter.views.SpecialBulletinListFragment;
 import org.aha.actioncenter.views.TakeActionFragment;
 import org.aha.actioncenter.views.TestimonyDetailInfoFragment;
@@ -481,15 +487,25 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             setTitle("Welcome");
         if (fragment instanceof ActionAlertListFragment)
             setTitle("Action Alert");
+        if (fragment instanceof ActionAlertDetailInfoFragment)
+            setTitle("Action Alert");
         if (fragment instanceof FactSheetListFragment)
             setTitle("Fact Sheet");
         if (fragment instanceof SpecialBulletinListFragment)
             setTitle("Special Bulletins");
+        if (fragment instanceof SpecialBulletinDetailInfoFragment)
+            setTitle("Special Bulletins");
         if (fragment instanceof AdvisoryListFragment)
+            setTitle("Advisory");
+        if (fragment instanceof AdvisoryDetailInfoFragment)
             setTitle("Advisory");
         if (fragment instanceof LetterListFragment)
             setTitle("Letters");
+        if (fragment instanceof LetterDetailInfoFragment)
+            setTitle("Letters");
         if (fragment instanceof TestimonyListFragment)
+            setTitle("Testimony");
+        if (fragment instanceof TestimonyDetailInfoFragment)
             setTitle("Testimony");
         if (fragment instanceof AdditionalInfoListFragment)
             setTitle("Additional Info");
@@ -497,20 +513,21 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             setTitle("Working with Congress");
         if (fragment instanceof EventsListFragment)
             setTitle("Events");
+        if (fragment instanceof EventDetailInfoFragment)
+            setTitle("Events");
         if (fragment instanceof TwitterFeedListFragment)
             setTitle("Twitter Feed");
         if(fragment instanceof DirectoryListFragment)
             setTitle("Directory");
         if(fragment instanceof NewsListFragment)
             setTitle("AHA News");
+        if(fragment instanceof NewsDetailInfoFragment)
+            setTitle("AHA News");
         if(fragment instanceof TakeActionFragment)
             setTitle("Take Action");
         if(fragment instanceof MissingInfoFragment)
             setTitle("Update User Information");
-        if(fragment instanceof TestimonyListFragment)
-            setTitle("Testimony");
-        if(fragment instanceof TestimonyDetailInfoFragment)
-            setTitle("Testimony");
+        
 
         Log.d(TAG, "onBackStackChanged");
     }
