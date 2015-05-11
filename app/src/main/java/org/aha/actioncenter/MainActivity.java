@@ -75,6 +75,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements ExpandableListView.OnGroupClickListener, ExpandableListView.OnChildClickListener, View.OnClickListener, FragmentManager.OnBackStackChangedListener {
 
@@ -256,8 +257,20 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             fragment = new TestimonyListFragment();
         if (item.id.equals(Utility.getInstance().ADDITIONAL_INFO))
             fragment = new AdditionalInfoListFragment();
-        if (item.id.equals(Utility.getInstance().WORKING_WITH_CONGRESS))
-            fragment = new WorkingWithCongressFragment();
+        if (item.id.equals(Utility.getInstance().WORKING_WITH_CONGRESS)) {
+            //fragment = new WorkingWithCongressFragment();
+            List<FeedItem> list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().WORKING_WITH_CONGRESS);
+
+            if(Utility.getInstance().isNetworkAvailable(this)) {
+                try {
+                    new PdfDownloadAsyncTask(new URL(list.get(0).ResourceURI.isEmpty() ? list.get(0).box_link_dir : list.get(0).ResourceURI), getApplicationContext(), this).execute();
+                }
+                catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
         if (item.id.equals(Utility.getInstance().EVENTS))
             fragment = new EventsListFragment();
         if (item.id.equals(Utility.getInstance().NEWS))
