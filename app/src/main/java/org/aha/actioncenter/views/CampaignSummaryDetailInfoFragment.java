@@ -106,14 +106,10 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
                             ((MainActivity)getActivity()).addToFragmentBackStack(fragment, "update-user", "Update User Information");
 
                             Log.d(TAG, "debug");
-
                         }
                     }).create().show();
-
                     return;
-
                 }
-
 
                 try {
                     String urlString = getResources().getString(R.string.vv_targeted_message_url);
