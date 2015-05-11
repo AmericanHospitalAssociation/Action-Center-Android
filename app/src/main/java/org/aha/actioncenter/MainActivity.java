@@ -241,8 +241,10 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         Bundle args = new Bundle();
         //fragment.setArguments(args);
 
-        if (item.id.equals(Utility.getInstance().HOME))
+        if (item.id.equals(Utility.getInstance().HOME)) {
             fragment = new HomeFragment();
+            getFragmentManager(). popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
         if (item.id.equals(Utility.getInstance().ACTION_ALERT))
             fragment = new ActionAlertListFragment();
         if (item.id.equals(Utility.getInstance().FACT_SHEET))
