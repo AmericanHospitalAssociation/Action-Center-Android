@@ -69,7 +69,6 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
         event.setData(fileLocation);
         AHABusProvider.getInstance().post(event);
 
-        ((BaseActivity)activity).closeProgressDialog();
     }
 
     @Override
