@@ -5,6 +5,7 @@
            parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/AHAActionBar</item>
         <item name="android:buttonStyle">@style/AHAButton</item>
+        <item name="android:windowDisablePreview">true</item>
 
     </style>
 

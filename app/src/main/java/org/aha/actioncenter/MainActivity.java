@@ -515,12 +515,15 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         mDrawerLayout.closeDrawers();
         if (count <= 1) {
             //super.onBackPressed();
-            new AlertDialog.Builder(this).setTitle("Exit app?").setMessage("Are you sure you want to exit?").setNegativeButton(android.R.string.no, null).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            new AlertDialog.Builder(this).setTitle("Exit app?").setMessage("Are you sure you want to exit?").
+                    setNegativeButton(android.R.string.no, null).
+                    setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                public void onClick(DialogInterface arg0, int arg1) {
-                    MainActivity.super.onBackPressed();
-                }
-            }).create().show();
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            MainActivity.this.finish();
+                        }
+
+                    }).create().show();
         }
         else if (count > 1) {
             getFragmentManager().popBackStack();
