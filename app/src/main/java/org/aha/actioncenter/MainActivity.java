@@ -49,6 +49,7 @@ import org.aha.actioncenter.views.ActionAlertListFragment;
 import org.aha.actioncenter.views.AdditionalInfoListFragment;
 import org.aha.actioncenter.views.AdvisoryDetailInfoFragment;
 import org.aha.actioncenter.views.AdvisoryListFragment;
+import org.aha.actioncenter.views.CampaignDetailInfoFragment;
 import org.aha.actioncenter.views.CampaignSummaryListFragment;
 import org.aha.actioncenter.views.ContactUsFragment;
 import org.aha.actioncenter.views.ContactYourLegislatorsListFragment;
@@ -527,7 +528,11 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             setTitle("Take Action");
         if(fragment instanceof MissingInfoFragment)
             setTitle("Update User Information");
-        
+        if(fragment instanceof CampaignDetailInfoFragment)
+            setTitle("Campaigns");
+        if(fragment instanceof CampaignSummaryListFragment)
+            setTitle("Campaigns");
+
 
         Log.d(TAG, "onBackStackChanged");
     }
