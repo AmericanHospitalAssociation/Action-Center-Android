@@ -1,7 +1,9 @@
 package org.aha.actioncenter.views;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
@@ -20,9 +22,11 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Subscribe;
 
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.TakeActionEvent;
 import org.aha.actioncenter.models.CampaignSummaryItem;
+import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.service.TakeActionAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -91,6 +95,26 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
         take_action_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                OAMItem oamItem = Utility.getInstance(getActivity().getApplicationContext()).getLoginData();
+                if (oamItem.prefix == null || oamItem.phone == null) {
+
+                    new AlertDialog.Builder(getActivity()).setTitle("Additional Info Needed").setMessage("To enable matching you to your legislators, additional info is needed. Would you like to enter the needed info?").setNegativeButton(android.R.string.no, null).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            Fragment fragment = new MissingInfoFragment();
+                            ((MainActivity)getActivity()).addToFragmentBackStack(fragment, "update-user", "Update User Information");
+
+                            Log.d(TAG, "debug");
+
+                        }
+                    }).create().show();
+
+                    return;
+
+                }
+
+
                 try {
                     String urlString = getResources().getString(R.string.vv_targeted_message_url);
                     urlString = urlString.replace("mCampaignId", item.id);

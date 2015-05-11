@@ -367,15 +367,15 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         addToFragmentBackStack(fragment, item);
     }
 
-    private void addToFragmentBackStack(Fragment fragment, String navigationId, String navigationName) {
+    public void addToFragmentBackStack(Fragment fragment, String navigationId, String navigationName) {
         addToAppBackStack(fragment, navigationId, navigationName);
     }
 
-    private void addToFragmentBackStack(Fragment fragment, NavigationItem item) {
+    public void addToFragmentBackStack(Fragment fragment, NavigationItem item) {
         addToAppBackStack(fragment, item.id, item.name);
     }
 
-    private void addToAppBackStack(Fragment fragment, String navigationId, String navigationName) {
+    public void addToAppBackStack(Fragment fragment, String navigationId, String navigationName) {
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getFragmentManager();
 
