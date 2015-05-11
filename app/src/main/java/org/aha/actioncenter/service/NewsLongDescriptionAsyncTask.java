@@ -1,16 +1,14 @@
 package org.aha.actioncenter.service;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
-
+import org.aha.actioncenter.BaseActivity;
 import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.models.NewsItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
-import org.aha.actioncenter.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,8 +30,6 @@ public class NewsLongDescriptionAsyncTask extends AsyncTask<Void, Void, String> 
     private Context mContext;
     private Activity activity;
     private NewsItem item;
-
-    private ProgressDialog progressDialog = null;
 
     public NewsLongDescriptionAsyncTask(URL url, Context context, Activity activity) {
         this(url, context);

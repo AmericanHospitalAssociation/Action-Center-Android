@@ -1,7 +1,6 @@
 package org.aha.actioncenter.service;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -29,8 +28,6 @@ public class CampaignSummaryAsyncTask extends AsyncTask<Void, Void, String> {
     private HttpURLConnection mConnection;
     private Context mContext;
     private Activity activity;
-
-    private ProgressDialog progressDialog = null;
 
     public CampaignSummaryAsyncTask(URL url, Context context, Activity activity) {
         this(url, context);

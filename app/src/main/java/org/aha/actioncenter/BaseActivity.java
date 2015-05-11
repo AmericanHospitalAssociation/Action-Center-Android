@@ -41,22 +41,26 @@ public abstract class BaseActivity extends Activity {
             progressDialog.setMessage(message);
         }
         else {
-
+            if(progressDialog!= null && progressDialog.isShowing()){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
             progressDialog = new ProgressDialog(this);
             progressDialog.setTitle(title);
             progressDialog.setMessage(message);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.show();
+            pDialogCounter++;
         }
-        pDialogCounter++;
-
     }
 
     public void closeProgressDialog(){
-        if(progressDialog != null && --pDialogCounter == 0) {
+        pDialogCounter--;
+        if(progressDialog != null && pDialogCounter <= 0) {
             progressDialog.dismiss();
             progressDialog = null;
+            pDialogCounter = 0;
         }
     }
 

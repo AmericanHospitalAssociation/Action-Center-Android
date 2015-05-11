@@ -1,14 +1,13 @@
 package org.aha.actioncenter.service;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import org.aha.actioncenter.BaseActivity;
 import org.aha.actioncenter.events.TakeActionEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
-import org.aha.actioncenter.BaseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,8 +29,6 @@ public class TakeActionAsyncTask extends AsyncTask<Void, Void, String> {
     private HttpURLConnection mConnection;
     private Context mContext;
     private Activity activity;
-
-    private ProgressDialog progressDialog = null;
 
     public TakeActionAsyncTask(URL url, Context context, Activity activity) {
         this(url, context);

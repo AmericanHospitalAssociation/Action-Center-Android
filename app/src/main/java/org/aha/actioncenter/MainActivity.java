@@ -58,6 +58,8 @@ import org.aha.actioncenter.views.LetterListFragment;
 import org.aha.actioncenter.views.MissingInfoFragment;
 import org.aha.actioncenter.views.NewsListFragment;
 import org.aha.actioncenter.views.SpecialBulletinListFragment;
+import org.aha.actioncenter.views.TakeActionFragment;
+import org.aha.actioncenter.views.TestimonyDetailInfoFragment;
 import org.aha.actioncenter.views.TestimonyListFragment;
 import org.aha.actioncenter.views.TwitterFeedListFragment;
 import org.aha.actioncenter.views.WorkingWithCongressFragment;
@@ -319,7 +321,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                     urlString = urlString.replace("mFirstName", URLEncoder.encode((oamItem.first_name != null ? oamItem.first_name : ""), "UTF-8"));
                     urlString = urlString.replace("mLastName", URLEncoder.encode((oamItem.last_name != null ? oamItem.last_name : ""), "UTF-8"));
                     urlString = urlString.replace("mAddress", URLEncoder.encode((oamItem.address_line != null ? oamItem.address_line : ""), "UTF-8"));
-                    urlString = urlString.replace("mZipcode", URLEncoder.encode((oamItem.zip != null ? oamItem.zip : ""), "UTF-8"));
+                    urlString = urlString.replace("mZipcode", URLEncoder.encode((oamItem.zip != null ? oamItem.zip.substring(0, 5) : ""), "UTF-8"));
                     urlString = urlString.replace("mCountry", URLEncoder.encode((oamItem.country != null ? oamItem.country : "us"), "UTF-8"));
                     urlString = urlString.replace("mCity", URLEncoder.encode((oamItem.city != null ? oamItem.city : ""), "UTF-8"));
                     urlString = urlString.replace("mPhone", phone);
@@ -497,6 +499,18 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             setTitle("Events");
         if (fragment instanceof TwitterFeedListFragment)
             setTitle("Twitter Feed");
+        if(fragment instanceof DirectoryListFragment)
+            setTitle("Directory");
+        if(fragment instanceof NewsListFragment)
+            setTitle("AHA News");
+        if(fragment instanceof TakeActionFragment)
+            setTitle("Take Action");
+        if(fragment instanceof MissingInfoFragment)
+            setTitle("Update User Information");
+        if(fragment instanceof TestimonyListFragment)
+            setTitle("Testimony");
+        if(fragment instanceof TestimonyDetailInfoFragment)
+            setTitle("Testimony");
 
         Log.d(TAG, "onBackStackChanged");
     }
