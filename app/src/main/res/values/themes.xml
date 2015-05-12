@@ -23,4 +23,8 @@
         <item name="android:gravity">center</item>
         <item name="android:padding">@dimen/abc_button_padding_vertical_material</item>
     </style>
+
+    <style name="splashScreenTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/aha_logo_with_r</item>
+    </style>
 </resources>
