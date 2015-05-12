@@ -69,7 +69,6 @@ import org.aha.actioncenter.views.TakeActionFragment;
 import org.aha.actioncenter.views.TestimonyDetailInfoFragment;
 import org.aha.actioncenter.views.TestimonyListFragment;
 import org.aha.actioncenter.views.TwitterFeedListFragment;
-import org.aha.actioncenter.views.WorkingWithCongressFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -269,7 +268,6 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         if (item.id.equals(Utility.getInstance().ADDITIONAL_INFO))
             fragment = new AdditionalInfoListFragment();
         if (item.id.equals(Utility.getInstance().WORKING_WITH_CONGRESS)) {
-            //fragment = new WorkingWithCongressFragment();
             List<FeedItem> list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().WORKING_WITH_CONGRESS);
 
             if(Utility.getInstance().isNetworkAvailable(this)) {
@@ -510,8 +508,6 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             setTitle("Testimony");
         if (fragment instanceof AdditionalInfoListFragment)
             setTitle("Additional Info");
-        if (fragment instanceof WorkingWithCongressFragment)
-            setTitle("Working with Congress");
         if (fragment instanceof EventsListFragment)
             setTitle("Events");
         if (fragment instanceof EventDetailInfoFragment)

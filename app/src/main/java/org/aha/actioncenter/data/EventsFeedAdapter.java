@@ -71,6 +71,8 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
                     FragmentManager fragmentManager = mActivity.getFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
 
+
+
                 }
             });
 
@@ -101,6 +103,9 @@ public class EventsFeedAdapter extends RecyclerView.Adapter<EventsFeedAdapter.Vi
         viewHolder.clean_title.setText(item.clean_title);
         viewHolder.pretty_date.setText(item.pretty_date);
         viewHolder.meeting_time.setText(item.meeting_start_time + " - " + item.meeting_end_time);
+
+
+
     }
 
 

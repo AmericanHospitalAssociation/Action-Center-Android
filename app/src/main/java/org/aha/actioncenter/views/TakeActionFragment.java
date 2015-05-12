@@ -9,9 +9,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.utility.AHABusProvider;
 
@@ -22,6 +24,7 @@ public class TakeActionFragment extends Fragment {
 
     protected TextView subject_txt = null;
     protected EditText message_txt = null;
+    protected Button send_btn = null;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -53,7 +56,7 @@ public class TakeActionFragment extends Fragment {
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
-        getActivity().setTitle("Personalize the Message");
+        ((MainActivity)getActivity()).setTitle("Personalize the Message");
 
 
         String mMessages = getArguments().getString("message");
@@ -65,6 +68,18 @@ public class TakeActionFragment extends Fragment {
 
         subject_txt.setText(mSubject);
         message_txt.setText(mMessages);
+
+
+        send_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+
+            }
+        });
+
 
         return view;
     }

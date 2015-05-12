@@ -37,6 +37,7 @@
     <string name="need_help_url">http://www.aha.org/oam-aha/oam/contact_us.html</string>
     <string name="create_account_url">https://ams.aha.org/EWEB/DynamicPage.aspx?Site=AHA&amp;webcode=Register&amp;action=add&amp;nostore=1&amp;AHABU=AHA&amp;RedirectURL=http%3A%2F%2Fwww.aha.org%3A80%2Fhospital-members%2Fadvocacy-issues%2Faction%2Findex.shtml</string>
 
+    <string name="take_action_url">http://54.245.255.190/p/action_center/api/v1/postResponse?token=mToken&amp;subject=mSubject&amp;body=mBody"&amp;userId=mUserId&amp;signature=mSignature&amp;messageId=mMessageId&amp;email=mEmail&amp;address=mAddress&amp;zipcode=mZipcode&amp;country=US&amp;campaignId=mCampaignId"</string>
 
     <string name="campaign_url">CAMPAIGN URL GOES HERE</string>
 
@@ -44,13 +45,12 @@
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer close</string>
 
-
     <string name="forgot_password_btn">Forgot password? Please click here.</string>
     <string name="logout">Logout</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="logout_txt">Logout</string>
     <string name="empty"/>
-    <string name="timeline_empty">Twitter AHA Timeline Loading ...</string>
+    <string name="timeline_empty">Twitter AHA Timeline Loading &#8230;</string>
     <string name="create_an_account">Create an Account</string>
     <string name="need_help">Need Help?</string>
     <string name="update_info_txt">This form is used to gather info that is required to get your legislators and to take action on a campaign.</string>

@@ -108,7 +108,7 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
                             Log.d(TAG, "debug");
                         }
                     }).create().show();
-                    return;
+                    //return;
                 }
 
                 try {

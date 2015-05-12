@@ -72,6 +72,10 @@ public class ActionAlertFeedAdapter extends RecyclerView.Adapter<ActionAlertFeed
                     FragmentManager fragmentManager = mActivity.getFragmentManager();
 
                     fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(null).commit();
+
+
+
+
                 }
             });
 
