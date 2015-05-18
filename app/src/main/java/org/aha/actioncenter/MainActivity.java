@@ -188,7 +188,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
         FragmentManager fragmentManager = getFragmentManager();
         Fragment fragment = new HomeFragment();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(Utility.getInstance().HOME).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(Utility.HOME).commit();
 
         setTitle("WELCOME");
 
@@ -236,7 +236,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
      */
 
     //TODO: Disable multiple clicks, data request.
-    private boolean onePassClick = false;
+    //private boolean onePassClick = false;
 
     public void selectItem(){
         selectItem(currentNavigationItem);
@@ -249,26 +249,26 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         Bundle args = new Bundle();
         //fragment.setArguments(args);
 
-        if (item.id.equals(Utility.getInstance().HOME)) {
+        if (item.id.equals(Utility.HOME)) {
             fragment = new HomeFragment();
             getFragmentManager(). popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
-        if (item.id.equals(Utility.getInstance().ACTION_ALERT))
+        if (item.id.equals(Utility.ACTION_ALERT))
             fragment = new ActionAlertListFragment();
-        if (item.id.equals(Utility.getInstance().FACT_SHEET))
+        if (item.id.equals(Utility.FACT_SHEET))
             fragment = new FactSheetListFragment();
-        if (item.id.equals(Utility.getInstance().BULLETIN))
+        if (item.id.equals(Utility.BULLETIN))
             fragment = new SpecialBulletinListFragment();
-        if (item.id.equals(Utility.getInstance().ADVISORY))
+        if (item.id.equals(Utility.ADVISORY))
             fragment = new AdvisoryListFragment();
-        if (item.id.equals(Utility.getInstance().LETTER))
+        if (item.id.equals(Utility.LETTER))
             fragment = new LetterListFragment();
-        if (item.id.equals(Utility.getInstance().TESTIMONY))
+        if (item.id.equals(Utility.TESTIMONY))
             fragment = new TestimonyListFragment();
-        if (item.id.equals(Utility.getInstance().ADDITIONAL_INFO))
+        if (item.id.equals(Utility.ADDITIONAL_INFO))
             fragment = new AdditionalInfoListFragment();
-        if (item.id.equals(Utility.getInstance().WORKING_WITH_CONGRESS)) {
-            List<FeedItem> list = Utility.getInstance(mContext).getFeedData(Utility.getInstance().WORKING_WITH_CONGRESS);
+        if (item.id.equals(Utility.WORKING_WITH_CONGRESS)) {
+            List<FeedItem> list = Utility.getInstance(mContext).getFeedData(Utility.WORKING_WITH_CONGRESS);
 
             if(Utility.getInstance().isNetworkAvailable(this)) {
                 try {
@@ -280,13 +280,13 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             }
 
         }
-        if (item.id.equals(Utility.getInstance().EVENTS))
+        if (item.id.equals(Utility.EVENTS))
             fragment = new EventsListFragment();
-        if (item.id.equals(Utility.getInstance().NEWS))
+        if (item.id.equals(Utility.NEWS))
             fragment = new NewsListFragment();
-        if (item.id.equals(Utility.getInstance().CONTACT_US))
+        if (item.id.equals(Utility.CONTACT_US))
             fragment = new ContactUsFragment();
-        if (item.id.equals(Utility.getInstance().CONGRESSIONAL_CALENDAR)) {
+        if (item.id.equals(Utility.CONGRESSIONAL_CALENDAR)) {
             FeedItem feedItem = Utility.getInstance(mContext).getCongressionalCalendar();
             if (Utility.getInstance().isNetworkAvailable(this)) {
                 try {
@@ -297,7 +297,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 }
             }
         }
-        if (item.id.equals(Utility.getInstance().DIRECTORY)) {
+        if (item.id.equals(Utility.DIRECTORY)) {
 
             OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
 
@@ -346,7 +346,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 }
             }
         }
-        if (item.id.equals(Utility.getInstance().CONTACT_YOUR_LEGISLATORS)) {
+        if (item.id.equals(Utility.CONTACT_YOUR_LEGISLATORS)) {
             try {
 
                 String urlString = getResources().getString(R.string.vv_campaign_summary_url);
@@ -362,7 +362,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 e.printStackTrace();
             }
         }
-        if (item.id.equals(Utility.getInstance().TWITTER_FEEDS)) {
+        if (item.id.equals(Utility.TWITTER_FEEDS)) {
             if (Utility.getInstance().isNetworkAvailable(this)) {
                 args.putString(item.id, item.user);
                 fragment = new TwitterFeedListFragment();
@@ -437,10 +437,10 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         Log.d(TAG, "onGroupClick");
         NavigationItem navigationItem = (NavigationItem) navigationAdapter.getGroup(groupPosition);
         currentNavigationItem = navigationItem;
-        if (navigationItem.id.equals(Utility.getInstance().HOME) ||
-                navigationItem.id.equals(Utility.getInstance().EVENTS) ||
-                navigationItem.id.equals(Utility.getInstance().NEWS) ||
-                navigationItem.id.equals(Utility.getInstance().CONTACT_US)) {
+        if (navigationItem.id.equals(Utility.HOME) ||
+                navigationItem.id.equals(Utility.EVENTS) ||
+                navigationItem.id.equals(Utility.NEWS) ||
+                navigationItem.id.equals(Utility.CONTACT_US)) {
             selectItem(navigationItem);
 
         }
@@ -573,7 +573,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
             FragmentManager fragmentManager = getFragmentManager();
             ContactYourLegislatorsListFragment fragment = new ContactYourLegislatorsListFragment();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(Utility.getInstance().CONTACT_YOUR_LEGISLATORS).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(Utility.CONTACT_YOUR_LEGISLATORS).commit();
 
         }
         catch (JSONException e) {
@@ -586,7 +586,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
         showProgressDialog("American Hospital Association","Opening Download ...");
 
-        if (Utility.getInstance().canDisplayPdf(mContext)) {
+        if (Utility.canDisplayPdf(mContext)) {
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -674,7 +674,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             Log.d(TAG, "debug");
 
             Fragment fragment = new DirectoryListFragment();
-            addToFragmentBackStack(fragment, Utility.getInstance().DIRECTORY, "Directory");
+            addToFragmentBackStack(fragment, Utility.DIRECTORY, "Directory");
 
 
         }

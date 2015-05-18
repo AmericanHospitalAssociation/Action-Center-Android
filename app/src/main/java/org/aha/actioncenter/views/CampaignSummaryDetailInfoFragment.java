@@ -49,6 +49,7 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
     protected TextView long_description_txt = null;
     protected TextView resource_uri_txt = null;
     protected Button take_action_btn = null;
+    private static CampaignSummaryItem item = null;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -81,7 +82,7 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
         AHABusProvider.getInstance().register(this);
 
         Type campaignSummaryItemType = new TypeToken<CampaignSummaryItem>(){}.getType();
-        final CampaignSummaryItem item = new Gson().fromJson(getArguments().getString("item"), campaignSummaryItemType);
+        item = new Gson().fromJson(getArguments().getString("item"), campaignSummaryItemType);
 
         title_txt = (TextView) view.findViewById(R.id.title_txt);
         long_description_txt = (TextView) view.findViewById(R.id.long_description_txt);

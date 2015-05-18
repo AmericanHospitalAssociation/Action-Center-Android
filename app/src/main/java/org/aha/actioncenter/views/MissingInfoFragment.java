@@ -17,7 +17,6 @@ import android.widget.RadioButton;
 
 import com.google.gson.reflect.TypeToken;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -109,7 +108,7 @@ public class MissingInfoFragment extends Fragment implements View.OnClickListene
 
                 Utility.getInstance(getActivity().getApplicationContext()).saveLoginData("login", oamItem);
                 getFragmentManager().popBackStack();
-                ((MainActivity)getActivity()).selectItem();
+                //((MainActivity)getActivity()).selectItem();
 
             }
         });
