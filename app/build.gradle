@@ -23,8 +23,8 @@ android {
         applicationId "org.aha.actioncenter"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 19
-        versionName "1.0.18"
+        versionCode 21
+        versionName "1.0.20"
     }
     buildTypes {
         release {

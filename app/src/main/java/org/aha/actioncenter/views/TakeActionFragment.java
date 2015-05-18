@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
@@ -22,6 +23,7 @@ import org.aha.actioncenter.utility.AHABusProvider;
  */
 public class TakeActionFragment extends Fragment {
 
+    private static final String TAG = "TakeActionFragment";
     protected TextView subject_txt = null;
     protected EditText message_txt = null;
     protected Button send_btn = null;
@@ -65,6 +67,7 @@ public class TakeActionFragment extends Fragment {
 
         subject_txt = (TextView) view.findViewById(R.id.subject_txt);
         message_txt = (EditText) view.findViewById(R.id.message_txt);
+        send_btn = (Button) view.findViewById(R.id.send_btn);
 
         subject_txt.setText(mSubject);
         message_txt.setText(mMessages);
@@ -73,10 +76,7 @@ public class TakeActionFragment extends Fragment {
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
-
+                Toast.makeText(getActivity().getApplicationContext(),"Take Action Send Click", Toast.LENGTH_SHORT);
             }
         });
 

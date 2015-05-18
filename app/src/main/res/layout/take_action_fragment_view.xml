@@ -55,7 +55,7 @@
             android:id="@+id/send_btn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="send"/>
+            android:text="@string/send_txt"/>
 
     </LinearLayout>
 

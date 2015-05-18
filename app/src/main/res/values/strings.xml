@@ -62,6 +62,7 @@
     <string name="loading_campaign_matches_message_txt">Loading Campaign Matches Data...</string>
     <string name="downloading_pdf_message_txt">Downloading PDF file ...</string>
     <string name="loading_take_action_message_txt">Loading Take Action Data...</string>
+    <string name="send_txt">Send</string>
 
     <string-array name="salutation_array">
         <item>Mr.</item>
