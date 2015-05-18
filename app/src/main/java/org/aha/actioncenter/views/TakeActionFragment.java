@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.utility.AHABusProvider;
 
@@ -49,6 +48,11 @@ public class TakeActionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        Fragment fragment = new GuidlinesFragment();
+        getFragmentManager().beginTransaction().add(R.id.content_frame, fragment).addToBackStack(null);
+
+
     }
 
     @Nullable
@@ -58,7 +62,7 @@ public class TakeActionFragment extends Fragment {
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
-        ((MainActivity)getActivity()).setTitle("Personalize the Message");
+        getActivity().setTitle("Personalize the Message");
 
 
         String mMessages = getArguments().getString("message");
