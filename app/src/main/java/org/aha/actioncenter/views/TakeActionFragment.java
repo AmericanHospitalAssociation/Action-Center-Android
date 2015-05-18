@@ -76,7 +76,7 @@ public class TakeActionFragment extends Fragment {
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(),"Take Action Send Click", Toast.LENGTH_SHORT);
+                Toast.makeText(getActivity().getApplicationContext(),"Take Action Send Click", Toast.LENGTH_SHORT).show();
             }
         });
 
