@@ -12,6 +12,7 @@ public class VoterVoiceDataEvent extends Event {
     public static final String VOTER_VOICE_PROFILE_DATA = "VOTER_VOICE_PROFILE_DATA";
     public static final String VOTER_VOICE_GET_TARGETED_MESSAGE_DATA = "VOTER_VOICE_GET_TARGETED_MESSAGE_DATA";
     public static final String VOTER_VOICE_GET_MATCHES_FOR_CAMPAIGN_DATA = "VOTER_VOICE_GET_MATCHES_FOR_CAMPAIGN_DATA";
+    public static final String GET_MATCHED_TARGETS = "GET_MATCHED_TARGETS";
 
     private boolean mSuccess = false;
 

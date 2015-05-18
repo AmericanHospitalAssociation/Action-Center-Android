@@ -9,8 +9,8 @@ import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
-import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -66,20 +66,20 @@ public class MatchesCampaignVoterVoiceAsyncTask extends AsyncTask<Void, Void, St
     protected void onPostExecute(String feed) {
         super.onPostExecute(feed);
 
-        JSONArray json = null;
+        JSONObject json = null;
 
         try {
-            json = new JSONArray(feed);
+            json = new JSONObject(feed);
+
+            Utility.getInstance().saveCampaignMatches(json);
+
         }
         catch (JSONException e) {
             e.printStackTrace();
         }
 
-
         if (json != null) {
-            VoterVoiceDataEvent event = new VoterVoiceDataEvent(VoterVoiceDataEvent.VOTER_VOICE_GET_MATCHES_FOR_CAMPAIGN_DATA);
-            event.setSuccess(true);
-            event.setData(json);
+            VoterVoiceDataEvent event = new VoterVoiceDataEvent(VoterVoiceDataEvent.GET_MATCHED_TARGETS);
             AHABusProvider.getInstance().post(event);
         }
 

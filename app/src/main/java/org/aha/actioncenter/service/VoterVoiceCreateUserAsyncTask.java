@@ -88,8 +88,6 @@ public class VoterVoiceCreateUserAsyncTask extends AsyncTask<Void, Void, String>
             e.printStackTrace();
         }
 
-
-
         VoterVoiceDataEvent event = new VoterVoiceDataEvent(VoterVoiceDataEvent.VOTER_VOICE_CREATE_DATA);
         AHABusProvider.getInstance().post(event);
 

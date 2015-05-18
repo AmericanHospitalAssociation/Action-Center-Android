@@ -49,14 +49,14 @@ public class VoterVoiceMatchesCampaignAsyncTask extends AsyncTask<Void, Void, St
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((BaseActivity)activity).showProgressDialog("American Hospital Association", "Create Directory User ...");
+                ((BaseActivity) activity).showProgressDialog("American Hospital Association", "Create Directory User ...");
             }
         }
     }
 
     @Override
     protected void onCancelled() {
-        ((BaseActivity)activity).closeProgressDialog();
+        ((BaseActivity) activity).closeProgressDialog();
         super.onCancelled();
     }
 
@@ -77,10 +77,11 @@ public class VoterVoiceMatchesCampaignAsyncTask extends AsyncTask<Void, Void, St
             e.printStackTrace();
         }
 
+
         VoterVoiceDataEvent event = new VoterVoiceDataEvent(VoterVoiceDataEvent.VOTER_VOICE_GET_CAMPAIGN_DATA);
         AHABusProvider.getInstance().post(event);
 
-        ((BaseActivity)activity).closeProgressDialog();
+        ((BaseActivity) activity).closeProgressDialog();
 
     }
 

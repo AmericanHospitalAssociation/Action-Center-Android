@@ -39,6 +39,7 @@ import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.models.NavigationItem;
 import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.service.CampaignSummaryAsyncTask;
+import org.aha.actioncenter.service.MatchesCampaignVoterVoiceAsyncTask;
 import org.aha.actioncenter.service.PdfDownloadAsyncTask;
 import org.aha.actioncenter.service.VoterVoiceCreateUserAsyncTask;
 import org.aha.actioncenter.service.VoterVoiceMatchesCampaignAsyncTask;
@@ -237,8 +238,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
     //TODO: Disable multiple clicks, data request.
     //private boolean onePassClick = false;
-
-    public void selectItem(){
+    public void selectItem() {
         selectItem(currentNavigationItem);
     }
 
@@ -251,7 +251,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
         if (item.id.equals(Utility.HOME)) {
             fragment = new HomeFragment();
-            getFragmentManager(). popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            getFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
         if (item.id.equals(Utility.ACTION_ALERT))
             fragment = new ActionAlertListFragment();
@@ -270,7 +270,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         if (item.id.equals(Utility.WORKING_WITH_CONGRESS)) {
             List<FeedItem> list = Utility.getInstance(mContext).getFeedData(Utility.WORKING_WITH_CONGRESS);
 
-            if(Utility.getInstance().isNetworkAvailable(this)) {
+            if (Utility.getInstance().isNetworkAvailable(this)) {
                 try {
                     new PdfDownloadAsyncTask(new URL(list.get(0).ResourceURI.isEmpty() ? list.get(0).box_link_dir : list.get(0).ResourceURI), getApplicationContext(), this).execute();
                 }
@@ -514,19 +514,19 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             setTitle("Events");
         if (fragment instanceof TwitterFeedListFragment)
             setTitle("Twitter Feed");
-        if(fragment instanceof DirectoryListFragment)
+        if (fragment instanceof DirectoryListFragment)
             setTitle("Directory");
-        if(fragment instanceof NewsListFragment)
+        if (fragment instanceof NewsListFragment)
             setTitle("AHA News");
-        if(fragment instanceof NewsDetailInfoFragment)
+        if (fragment instanceof NewsDetailInfoFragment)
             setTitle("AHA News");
-        if(fragment instanceof TakeActionFragment)
+        if (fragment instanceof TakeActionFragment)
             setTitle("Take Action");
-        if(fragment instanceof MissingInfoFragment)
+        if (fragment instanceof MissingInfoFragment)
             setTitle("Update User Information");
-        if(fragment instanceof CampaignDetailInfoFragment)
+        if (fragment instanceof CampaignDetailInfoFragment)
             setTitle("Campaigns");
-        if(fragment instanceof CampaignSummaryListFragment)
+        if (fragment instanceof CampaignSummaryListFragment)
             setTitle("Campaigns");
 
 
@@ -584,7 +584,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
     @Subscribe
     public void subscribeOnPDFDownload(PdfDataEvent event) {
 
-        showProgressDialog("American Hospital Association","Opening Download ...");
+        showProgressDialog("American Hospital Association", "Opening Download ...");
 
         if (Utility.canDisplayPdf(mContext)) {
             try {
@@ -613,14 +613,12 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         else {
             progressDialog.dismiss();
 
-            new AlertDialog.Builder(this).setTitle("American Hospital Association")
-                    .setMessage("No PDF viewer installed.  Please download pdf viewer from Google Play Store.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            //getFragmentManager().popBackStack();
-                        }
-                    }).show();
+            new AlertDialog.Builder(this).setTitle("American Hospital Association").setMessage("No PDF viewer installed.  Please download pdf viewer from Google Play Store.").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    //getFragmentManager().popBackStack();
+                }
+            }).show();
 
         }
     }
@@ -631,7 +629,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
         closeProgressDialog();
 
-        if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_CREATE_DATA)) {
+        if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_CREATE_DATA) || event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_MATCHES_FOR_CAMPAIGN_DATA)) {
 
             OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
 
@@ -657,7 +655,12 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             }
 
             if (Utility.getInstance().isNetworkAvailable(this)) {
-                new VoterVoiceMatchesCampaignAsyncTask(url, getApplicationContext(), this).execute();
+                if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_MATCHES_FOR_CAMPAIGN_DATA)) {
+                    new MatchesCampaignVoterVoiceAsyncTask(url, getApplicationContext(), this).execute();
+                }
+                else {
+                    new VoterVoiceMatchesCampaignAsyncTask(url, getApplicationContext(), this).execute();
+                }
             }
 
         }
@@ -676,6 +679,11 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             Fragment fragment = new DirectoryListFragment();
             addToFragmentBackStack(fragment, Utility.DIRECTORY, "Directory");
 
+
+        }
+        else if (event.getTagName().equals(VoterVoiceDataEvent.GET_MATCHED_TARGETS)) {
+
+            Log.d(TAG, "debug");
 
         }
         else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_POST_DATA)) {

@@ -13,9 +13,14 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import org.aha.actioncenter.R;
+import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.models.CampaignSummaryItem;
+import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
 import org.aha.actioncenter.views.CampaignSummaryDetailInfoFragment;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 
@@ -44,6 +49,7 @@ public class CampaignSummaryFeedAdapter extends RecyclerView.Adapter<CampaignSum
 
         protected TextView title_txt = null;
 
+
         public ViewHolder(View v) {
             super(v);
             // Define click listener for the ViewHolder's View.
@@ -52,8 +58,23 @@ public class CampaignSummaryFeedAdapter extends RecyclerView.Adapter<CampaignSum
                 public void onClick(View v) {
 
                     int position = getAdapterPosition();
+                    URL mUrl = null;
 
                     CampaignSummaryItem item = mDataSet.get(position);
+
+                    try {
+                        String urlString = mActivity.getString(R.string.vv_matches_campaign_url);
+                        urlString = urlString.replace("mCampaignId", item.id);
+                        urlString = urlString.replace("mToken", Utility.getInstance(mActivity.getApplicationContext()).getLoginData().token);
+                        mUrl = new URL(urlString);
+
+                    }
+                    catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+
+                    VoterVoiceDataEvent event = new VoterVoiceDataEvent(VoterVoiceDataEvent.VOTER_VOICE_GET_MATCHES_FOR_CAMPAIGN_DATA);
+                    AHABusProvider.getInstance().post(event);
 
                     Fragment fragment = new CampaignSummaryDetailInfoFragment();
                     Bundle args = new Bundle();
