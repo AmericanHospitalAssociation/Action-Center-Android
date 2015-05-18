@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.EventsDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -52,7 +53,7 @@ public class EventsAsyncTask extends AsyncTask<Void, Void, String> {
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((BaseActivity)activity).showProgressDialog("American Hospital Association","Loading Event Data...");
+                ((BaseActivity)activity).showProgressDialog("American Hospital Association", mContext.getString(R.string.loading_event_message_txt));
             }
         }
     }

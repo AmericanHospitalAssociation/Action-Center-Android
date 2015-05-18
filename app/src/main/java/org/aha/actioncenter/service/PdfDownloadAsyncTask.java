@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 
+import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.PdfDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -51,7 +52,7 @@ public class PdfDownloadAsyncTask extends AsyncTask<Void, Void, String> {
         }
 
         if (activity != null) {
-            ((BaseActivity)activity).showProgressDialog("American Hospital Association", "Downloading PDF file ...");
+            ((BaseActivity)activity).showProgressDialog("American Hospital Association", mContext.getString(R.string.downloading_pdf_message_txt));
         }
     }
 

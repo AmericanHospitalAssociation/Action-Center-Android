@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import org.aha.actioncenter.BaseActivity;
+import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.NewsDataEvent;
 import org.aha.actioncenter.models.NewsItem;
 import org.aha.actioncenter.utility.AHABusProvider;
@@ -56,7 +57,7 @@ public class NewsLongDescriptionAsyncTask extends AsyncTask<Void, Void, String> 
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((BaseActivity)activity).showProgressDialog("American Hospital Association", "Loading News Long Description...");
+                ((BaseActivity)activity).showProgressDialog("American Hospital Association", mContext.getString(R.string.loading_message_txt));
             }
         }
     }

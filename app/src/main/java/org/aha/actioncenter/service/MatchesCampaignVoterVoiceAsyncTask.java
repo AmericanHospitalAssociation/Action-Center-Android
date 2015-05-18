@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import org.aha.actioncenter.BaseActivity;
+import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -49,7 +50,7 @@ public class MatchesCampaignVoterVoiceAsyncTask extends AsyncTask<Void, Void, St
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((BaseActivity)activity).showProgressDialog("American Hospital Association", "Loading Campaign Matches Data...");
+                ((BaseActivity)activity).showProgressDialog("American Hospital Association", mContext.getString(R.string.loading_campaign_matches_message_txt));
             }
         }
     }

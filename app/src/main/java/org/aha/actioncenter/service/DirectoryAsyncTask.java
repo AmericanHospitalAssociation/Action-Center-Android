@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.CampaignDataEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -52,7 +53,7 @@ public class DirectoryAsyncTask extends AsyncTask<Void, Void, String> {
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((BaseActivity)activity).showProgressDialog("American Hospital Association","Loading Directory Data...");
+                ((BaseActivity)activity).showProgressDialog("American Hospital Association", mContext.getString(R.string.loading_directory_message_txt));
             }
         }
     }

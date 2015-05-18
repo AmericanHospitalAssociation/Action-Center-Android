@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import org.aha.actioncenter.R;
 
 
 import org.aha.actioncenter.events.FeedDataEvent;
@@ -54,7 +55,7 @@ public class FeedAsyncTask extends AsyncTask<Void, Void, String> {
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((BaseActivity)activity).showProgressDialog("American Hospital Association", "Loading Data...");
+                ((BaseActivity)activity).showProgressDialog("American Hospital Association", mContext.getString(R.string.loading_message_txt));
             }
         }
     }
