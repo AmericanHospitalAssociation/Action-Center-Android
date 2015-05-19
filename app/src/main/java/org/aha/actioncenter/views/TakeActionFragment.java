@@ -113,11 +113,16 @@ public class TakeActionFragment extends Fragment {
         List<CampaignUserItem> directoryList = Utility.getInstance(mContext).getDirectoryData();
 
         if (list.size() > 0) {
-            guidelines_txt.setText(Html.fromHtml(list.get(0).guidelines));
-            Log.d(TAG, list.get(0).guidelines);
+            String s = list.get(0).guidelines;
+            s = s.replace("\r\n", "<br/>");
+            s = s.replace("<ul>", "");
+            s = s.replace("<li>", "&#8226;\t");
+            guidelines_txt.setText(Html.fromHtml(s));
+            Log.d(TAG, s);
         }
         else {
             guidelines_txt.setText("Guidelines are missing. Please contact AHA for assistance.");
+            Log.d(TAG, "Guidelines are missing. Please contact AHA for assistance.");
         }
 
         if (directoryList.size() > 0) {
