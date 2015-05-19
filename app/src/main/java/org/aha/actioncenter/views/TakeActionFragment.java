@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.aha.actioncenter.R;
+import org.aha.actioncenter.models.CampaignUserItem;
 import org.aha.actioncenter.models.TakeActionGuidelinesItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -36,6 +37,7 @@ public class TakeActionFragment extends Fragment {
     protected Button send_btn = null;
     private Context mContext = null;
     private List<TakeActionGuidelinesItem> list = null;
+    private List<CampaignUserItem>  directoryList = null;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -72,7 +74,7 @@ public class TakeActionFragment extends Fragment {
         getActivity().setTitle("Personalize the Message");
 
         list = Utility.getInstance(mContext).getTakeActionGuideline();
-
+        directoryList = Utility.getInstance(mContext).getDirectoryData();
 
         String mMessages = list.get(0).message;
         String mSubject = list.get(0).subject;
@@ -107,12 +109,26 @@ public class TakeActionFragment extends Fragment {
         TextView recipient_txt = (TextView) dialog.findViewById(R.id.recipient_txt);
         TextView guidelines_txt = (TextView) dialog.findViewById(R.id.guidelines_txt);
 
-        list = Utility.getInstance(mContext).getTakeActionGuideline();
+        List<CampaignUserItem> directoryList = Utility.getInstance(mContext).getDirectoryData();
 
         if (list.size() > 0)
             guidelines_txt.setText(Html.fromHtml(list.get(0).guidelines));
         else
             guidelines_txt.setText("Guidelines are missing. Please contact AHA for assistance.");
+
+        if (directoryList.size() > 0) {
+            String recipientString = "";
+            for(int i=0; i <directoryList.size();i++){
+                recipientString += "&#8226;" + directoryList.get(i).name + "<br/>";
+            }
+            if(recipientString.length() > 0)
+                recipient_txt.setText(Html.fromHtml(recipientString));
+            else
+                recipient_txt.setText("Recipient list is missing.  Please contact AHA for assistance.");
+        }
+        else {
+            recipient_txt.setText("Guidelines are missing. Please contact AHA for assistance.");
+        }
 
 
         Button dialogButton = (Button) dialog.findViewById(R.id.btn_ok);
