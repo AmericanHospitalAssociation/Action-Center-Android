@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
                 android:orientation="vertical">
 
     <LinearLayout
@@ -34,7 +35,7 @@
         android:paddingTop="16dp"/>
 
     <TextView
-        android:id="@+id/guidlines_txt"
+        android:id="@+id/guidelines_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/recipient_txt"

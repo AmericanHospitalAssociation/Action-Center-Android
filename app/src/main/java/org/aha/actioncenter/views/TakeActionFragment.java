@@ -1,15 +1,18 @@
 package org.aha.actioncenter.views;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -95,7 +98,33 @@ public class TakeActionFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final Dialog dialog = new Dialog(getActivity());
 
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); //before
+        dialog.setContentView(R.layout.guidlines_info_view);
+
+
+        TextView recipient_txt = (TextView) dialog.findViewById(R.id.recipient_txt);
+        TextView guidelines_txt = (TextView) dialog.findViewById(R.id.guidelines_txt);
+
+        list = Utility.getInstance(mContext).getTakeActionGuideline();
+
+        if (list.size() > 0)
+            guidelines_txt.setText(Html.fromHtml(list.get(0).guidelines));
+        else
+            guidelines_txt.setText("Guidelines are missing. Please contact AHA for assistance.");
+
+
+        Button dialogButton = (Button) dialog.findViewById(R.id.btn_ok);
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     @Override
