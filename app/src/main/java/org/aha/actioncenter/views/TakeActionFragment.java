@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -111,15 +112,18 @@ public class TakeActionFragment extends Fragment {
 
         List<CampaignUserItem> directoryList = Utility.getInstance(mContext).getDirectoryData();
 
-        if (list.size() > 0)
+        if (list.size() > 0) {
             guidelines_txt.setText(Html.fromHtml(list.get(0).guidelines));
-        else
+            Log.d(TAG, list.get(0).guidelines);
+        }
+        else {
             guidelines_txt.setText("Guidelines are missing. Please contact AHA for assistance.");
+        }
 
         if (directoryList.size() > 0) {
             String recipientString = "";
             for(int i=0; i <directoryList.size();i++){
-                recipientString += "&#8226;" + directoryList.get(i).name + "<br/>";
+                recipientString += "&#8226;\t" + directoryList.get(i).name + "<br/>";
             }
             if(recipientString.length() > 0)
                 recipient_txt.setText(Html.fromHtml(recipientString));

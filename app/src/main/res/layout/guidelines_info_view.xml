@@ -19,17 +19,26 @@
             android:singleLine="false"
             android:textSize="20dp"
             android:gravity="center_horizontal"
-            android:text="Guidlines"
+            android:text="Guidelines"
             android:textColor="#ffffffff"/>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/recipient_txt"
+        android:id="@+id/recipients_lbl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_lbl"
-        android:paddingBottom="16dp"
+        android:text="Recipients:"
+        android:textStyle="bold"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"/>
+
+    <TextView
+        android:id="@+id/recipient_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recipients_lbl"
         android:paddingLeft="16dp"
         android:text="Representatives and Legislators"
         android:paddingTop="16dp"/>
