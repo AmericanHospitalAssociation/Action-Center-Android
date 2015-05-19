@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.otto.Subscribe;
 
@@ -30,13 +29,10 @@ import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.service.TakeActionAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by markusmcgee on 4/17/15.
@@ -82,7 +78,8 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
-        Type campaignSummaryItemType = new TypeToken<CampaignSummaryItem>(){}.getType();
+        Type campaignSummaryItemType = new TypeToken<CampaignSummaryItem>() {
+        }.getType();
         item = new Gson().fromJson(getArguments().getString("item"), campaignSummaryItemType);
 
         title_txt = (TextView) view.findViewById(R.id.title_txt);
@@ -105,7 +102,7 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
                         public void onClick(DialogInterface arg0, int arg1) {
 
                             Fragment fragment = new MissingInfoFragment();
-                            ((MainActivity)getActivity()).addToFragmentBackStack(fragment, "update-user", "Update User Information");
+                            ((MainActivity) getActivity()).addToFragmentBackStack(fragment, "update-user", "Update User Information");
 
                             Log.d(TAG, "debug");
                         }
@@ -113,17 +110,11 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
                     //return;
                 }
 
-
-                if(!mShowUserGuidliness){
-
-
-                }
-
                 try {
                     String urlString = getResources().getString(R.string.vv_targeted_message_url);
                     urlString = urlString.replace("mCampaignId", item.id);
                     URL url = new URL(urlString);
-                    if(Utility.getInstance().isNetworkAvailable(getActivity())) {
+                    if (Utility.getInstance().isNetworkAvailable(getActivity())) {
                         new TakeActionAsyncTask(url, getActivity().getApplicationContext(), getActivity()).execute();
                     }
                 }
@@ -147,42 +138,13 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
+
     @Subscribe
-    public void subscribeTakeActionEvent(TakeActionEvent event){
-        JSONObject json = event.getData();
-        try {
-
-            Map map = new Gson().fromJson(json.toString(), Map.class);
-
-            LinkedTreeMap tree = (LinkedTreeMap) map.get("response");//.get("body").get(0).get("messages"));
-            ArrayList body = (ArrayList) tree.get("body");
-            LinkedTreeMap list = (LinkedTreeMap)body.get(0);
-            ArrayList messages = (ArrayList)list.get("messages");
-            LinkedTreeMap messageMap = (LinkedTreeMap)messages.get(0);
-
-            String mMessage = (String)messageMap.get("message");
-            String mGuidelines = (String)messageMap.get("guidelines");
-            String mSubject = (String)messageMap.get("subject");
-
-            FragmentManager fragmentManager = getFragmentManager();
-            TakeActionFragment fragment = new TakeActionFragment();
-
-            Bundle args = new Bundle();
-            args.putString("message", mMessage);
-            args.putString("guidelines", mGuidelines);
-            args.putString("subject", mSubject);
-
-            fragment.setArguments(args);
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("take-action").commit();
-
-            Log.d(TAG, "debug");
-
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void subscribeTakeActionEvent(TakeActionEvent event) {
+        FragmentManager fragmentManager = getFragmentManager();
+        TakeActionFragment fragment = new TakeActionFragment();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("take-action").commit();
 
         Log.d(TAG, "debug");
-
     }
 }

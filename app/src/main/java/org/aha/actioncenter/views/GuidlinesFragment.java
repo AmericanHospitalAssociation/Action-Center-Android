@@ -26,12 +26,15 @@ public class GuidlinesFragment extends Fragment {
     private TextView guidlines_txt = null;
     private Context mContext = null;
     private List<CampaignUserItem> mList;
+    private Bundle bundle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mContext = getActivity().getApplicationContext();
-
         mList = Utility.getInstance(mContext).getDirectoryData();
+
+        bundle = getArguments();
+
         super.onCreate(savedInstanceState);
     }
 
@@ -43,6 +46,7 @@ public class GuidlinesFragment extends Fragment {
         btn_ok = (Button)view.findViewById(R.id.btn_ok);
         recipient_txt = (TextView)view.findViewById(R.id.recipient_txt);
         guidlines_txt = (TextView)view.findViewById(R.id.guidlines_txt);
+
 
 
 

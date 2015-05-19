@@ -9,6 +9,7 @@ import org.aha.actioncenter.R;
 import org.aha.actioncenter.events.TakeActionEvent;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,14 +52,14 @@ public class TakeActionAsyncTask extends AsyncTask<Void, Void, String> {
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((BaseActivity)activity).showProgressDialog("American Hospital Association", mContext.getString(R.string.loading_take_action_message_txt));
+                ((BaseActivity) activity).showProgressDialog("American Hospital Association", mContext.getString(R.string.loading_take_action_message_txt));
             }
         }
     }
 
     @Override
     protected void onCancelled() {
-        ((BaseActivity)activity).closeProgressDialog();
+        ((BaseActivity) activity).closeProgressDialog();
         super.onCancelled();
     }
 
@@ -67,21 +68,22 @@ public class TakeActionAsyncTask extends AsyncTask<Void, Void, String> {
         super.onPostExecute(feed);
 
         JSONObject json = null;
+        JSONArray array = null;
 
         try {
             json = new JSONObject(feed);
+            array = json.getJSONObject("response").getJSONArray("body").getJSONObject(0).getJSONArray("messages");
+            Utility.getInstance(mContext).saveTakeActionGuideline(array);
+
         }
         catch (JSONException e) {
             e.printStackTrace();
         }
 
         TakeActionEvent event = new TakeActionEvent(TakeActionEvent.TAKE_ACTION_DATA);
-        if(json != null) {
-            event.setData(json);
-        }
         AHABusProvider.getInstance().post(event);
 
-        ((BaseActivity)activity).closeProgressDialog();
+        ((BaseActivity) activity).closeProgressDialog();
     }
 
     @Override

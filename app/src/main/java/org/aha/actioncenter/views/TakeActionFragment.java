@@ -1,6 +1,7 @@
 package org.aha.actioncenter.views;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -15,7 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.aha.actioncenter.R;
+import org.aha.actioncenter.models.TakeActionGuidelinesItem;
 import org.aha.actioncenter.utility.AHABusProvider;
+import org.aha.actioncenter.utility.Utility;
+
+import java.util.List;
 
 /**
  * Created by markusmcgee on 4/17/15.
@@ -26,6 +31,8 @@ public class TakeActionFragment extends Fragment {
     protected TextView subject_txt = null;
     protected EditText message_txt = null;
     protected Button send_btn = null;
+    private Context mContext = null;
+    private List<TakeActionGuidelinesItem> list = null;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -49,10 +56,7 @@ public class TakeActionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        Fragment fragment = new GuidlinesFragment();
-        getFragmentManager().beginTransaction().add(R.id.content_frame, fragment).addToBackStack(null);
-
-
+        mContext = getActivity().getApplicationContext();
     }
 
     @Nullable
@@ -64,10 +68,11 @@ public class TakeActionFragment extends Fragment {
 
         getActivity().setTitle("Personalize the Message");
 
+        list = Utility.getInstance(mContext).getTakeActionGuideline();
 
-        String mMessages = getArguments().getString("message");
-        String mSubject = getArguments().getString("subject");
-        String mGuidelines = getArguments().getString("guidelines");
+
+        String mMessages = list.get(0).message;
+        String mSubject = list.get(0).subject;
 
         subject_txt = (TextView) view.findViewById(R.id.subject_txt);
         message_txt = (EditText) view.findViewById(R.id.message_txt);
@@ -76,16 +81,21 @@ public class TakeActionFragment extends Fragment {
         subject_txt.setText(mSubject);
         message_txt.setText(mMessages);
 
-
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(),"Take Action Send Click", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Take Action Send Click", Toast.LENGTH_SHORT).show();
             }
         });
 
-
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
     }
 
     @Override

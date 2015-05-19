@@ -34,6 +34,7 @@ import org.aha.actioncenter.data.AHAExpandableListAdapter;
 import org.aha.actioncenter.events.CampaignDataEvent;
 import org.aha.actioncenter.events.FeedDataEvent;
 import org.aha.actioncenter.events.PdfDataEvent;
+import org.aha.actioncenter.events.TakeActionEvent;
 import org.aha.actioncenter.events.VoterVoiceDataEvent;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.models.NavigationItem;
@@ -623,6 +624,12 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         }
     }
 
+    @Subscribe
+    public void subscribeTakeAction(TakeActionEvent event){
+        if(event.getTagName().equals(TakeActionEvent.TAKE_ACTION)){
+
+        }
+    }
 
     @Subscribe
     public void subcribeVoterVoiceEvents(VoterVoiceDataEvent event) {

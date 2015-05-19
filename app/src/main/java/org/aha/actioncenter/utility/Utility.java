@@ -21,6 +21,7 @@ import org.aha.actioncenter.models.EventItem;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.models.NewsItem;
 import org.aha.actioncenter.models.OAMItem;
+import org.aha.actioncenter.models.TakeActionGuidelinesItem;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,23 +45,24 @@ public class Utility {
     private static boolean mDirectoryDataLoaded = false;
     private static boolean mCampaignSummaryDataLoaded = false;
 
-    public static String HOME = "home";
-    public static String ACTION_CENTER = "action-center";
-    public static String ADDITIONAL_INFO = "additional-info";
-    public static String LETTER = "letter";
-    public static String PRESS_RELEASE = "press-release";
-    public static String TESTIMONY = "testimony";
-    public static String ADVISORY = "advisory";
-    public static String BULLETIN = "bulletin";
-    public static String ACTION_ALERT = "action-alert";
-    public static String FACT_SHEET = "issue-papers";
-    public static String NEWS = "aha-news";
-    public static String CONTACT_US = "contact-us";
-    public static String CONTACT_YOUR_LEGISLATORS = "contact-your-legislators";
-    public static String TWITTER_FEEDS = "twitter-feeds";
-    public static String DIRECTORY = "directory";
-    public static String CAMPAIGN_SUMMARY_LIST = "campaign-summary-list";
-    public static String CAMPAIGN = "campaign";
+    public static final String HOME = "home";
+    public static final String ACTION_CENTER = "action-center";
+    public static final String ADDITIONAL_INFO = "additional-info";
+    public static final String LETTER = "letter";
+    public static final String PRESS_RELEASE = "press-release";
+    public static final String TESTIMONY = "testimony";
+    public static final String ADVISORY = "advisory";
+    public static final String BULLETIN = "bulletin";
+    public static final String ACTION_ALERT = "action-alert";
+    public static final String FACT_SHEET = "issue-papers";
+    public static final String NEWS = "aha-news";
+    public static final String CONTACT_US = "contact-us";
+    public static final String CONTACT_YOUR_LEGISLATORS = "contact-your-legislators";
+    public static final String TWITTER_FEEDS = "twitter-feeds";
+    public static final String DIRECTORY = "directory";
+    public static final String CAMPAIGN_SUMMARY_LIST = "campaign-summary-list";
+    public static final String CAMPAIGN = "campaign";
+    public static final String TAKE_ACTION_GUIDELINES = "take_action_guidelines";
 
     public static String EVENTS = "events";
 
@@ -70,6 +72,7 @@ public class Utility {
     public static final String MIME_TYPE_PDF = "application/pdf";
 
     private Activity mActivity;
+    private static boolean mTakeActionGuidelineDataLoaded = false;
 
 
     private Utility() {
@@ -125,10 +128,7 @@ public class Utility {
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         // if no network is available networkInfo will be null
         // otherwise check if we are connected
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        }
-        return false;
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     public void parseFeedData(JSONArray jArray) {
@@ -687,5 +687,46 @@ public class Utility {
         return mDirectoryDataLoaded;
     }
 
+    public boolean isTakeActionGuidelineDataLoaded(){
+        return mTakeActionGuidelineDataLoaded;
+    }
+
+    public void setTakeActionGuidelineDataLoaded(boolean val){
+        mTakeActionGuidelineDataLoaded = val;
+    }
+
+    public void saveTakeActionGuideline(JSONArray array) {
+
+        SharedPreferences prefs;
+        SharedPreferences.Editor editor;
+
+        Type type = new TypeToken<ArrayList<TakeActionGuidelinesItem>>() {
+        }.getType();
+
+        List<TakeActionGuidelinesItem> list;
+        list = new Gson().fromJson(array.toString(), type);
+
+        prefs = mContext.getSharedPreferences(TAKE_ACTION_GUIDELINES, Context.MODE_PRIVATE);
+        editor = prefs.edit();
+        editor.putString(TAKE_ACTION_GUIDELINES, new Gson().toJson(list));
+        editor.apply();
+
+        mTakeActionGuidelineDataLoaded = true;
+    }
+
+    public List<TakeActionGuidelinesItem> getTakeActionGuideline() {
+
+        SharedPreferences prefs = mContext.getSharedPreferences(TAKE_ACTION_GUIDELINES, Context.MODE_PRIVATE);
+        String dataString = prefs.getString(TAKE_ACTION_GUIDELINES, "");
+
+        ArrayList<TakeActionGuidelinesItem> list;
+
+        Type type = new TypeToken<ArrayList<TakeActionGuidelinesItem>>() {
+        }.getType();
+
+        list = new Gson().fromJson(dataString, type);
+
+        return list;
+    }
 
 }
