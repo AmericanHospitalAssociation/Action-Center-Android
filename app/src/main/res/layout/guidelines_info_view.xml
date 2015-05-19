@@ -41,7 +41,7 @@
         android:layout_below="@id/recipient_txt"
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
-        android:text="Guidlines"
+        android:text="Guidelines"
         android:paddingTop="16dp"/>
 
     <LinearLayout

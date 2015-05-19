@@ -103,7 +103,7 @@ public class TakeActionFragment extends Fragment {
         final Dialog dialog = new Dialog(getActivity());
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); //before
-        dialog.setContentView(R.layout.guidlines_info_view);
+        dialog.setContentView(R.layout.guidelines_info_view);
 
 
         TextView recipient_txt = (TextView) dialog.findViewById(R.id.recipient_txt);

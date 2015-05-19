@@ -46,7 +46,7 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
     protected TextView resource_uri_txt = null;
     protected Button take_action_btn = null;
     private static CampaignSummaryItem item = null;
-    private boolean mShowUserGuidliness = false;
+    private boolean mShowUserGuideliness = false;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
