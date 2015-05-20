@@ -81,6 +81,7 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
         Type campaignSummaryItemType = new TypeToken<CampaignSummaryItem>() {
         }.getType();
         item = new Gson().fromJson(getArguments().getString("item"), campaignSummaryItemType);
+        Utility.getInstance(getActivity().getApplicationContext()).saveCurrentCampaignSummaryItem(item);
 
         title_txt = (TextView) view.findViewById(R.id.title_txt);
         long_description_txt = (TextView) view.findViewById(R.id.long_description_txt);

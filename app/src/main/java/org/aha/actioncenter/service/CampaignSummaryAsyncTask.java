@@ -75,7 +75,6 @@ public class CampaignSummaryAsyncTask extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
         }
 
-
         if (json != null) {
             VoterVoiceDataEvent event = new VoterVoiceDataEvent(VoterVoiceDataEvent.VOTER_VOICE_GET_CAMPAIGN_LIST_DATA);
             Utility.getInstance(mContext).saveCampaignSummaryData(json);

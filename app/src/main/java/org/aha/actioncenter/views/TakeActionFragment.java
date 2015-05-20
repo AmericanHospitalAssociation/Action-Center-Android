@@ -20,11 +20,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.aha.actioncenter.R;
+import org.aha.actioncenter.models.CampaignSummaryItem;
 import org.aha.actioncenter.models.CampaignUserItem;
+import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.models.TakeActionGuidelinesItem;
+import org.aha.actioncenter.service.TakeActionEmailAsyncTask;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -38,7 +45,7 @@ public class TakeActionFragment extends Fragment {
     protected Button send_btn = null;
     private Context mContext = null;
     private List<TakeActionGuidelinesItem> list = null;
-    private List<CampaignUserItem>  directoryList = null;
+    private List<CampaignUserItem> directoryList = null;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -91,6 +98,41 @@ public class TakeActionFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity().getApplicationContext(), "Take Action Send Click", Toast.LENGTH_SHORT).show();
+
+                try {
+                    String urlString = getString(R.string.take_action_url);
+
+                    OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
+
+                    CampaignSummaryItem currentCampaignSummaryItem = Utility.getInstance(mContext).getCurrentCampaignSummaryItem();
+
+                    urlString = urlString.replace("mUserId", oamItem.userid);
+                    urlString = urlString.replace("mSignature", oamItem.first_name + " " + oamItem.last_name);
+                    urlString = urlString.replace("mEmail", URLEncoder.encode(oamItem.email,"UTF-8"));
+                    urlString = urlString.replace("mAddress", oamItem.address_line);
+                    urlString = urlString.replace("mZipcode", oamItem.zip.substring(0, 5));
+                    urlString = urlString.replace("mSubject", URLEncoder.encode(subject_txt.getText().toString(), "UTF-8"));
+                    urlString = urlString.replace("mBody", URLEncoder.encode(message_txt.getText().toString(), "UTF-8"));
+                    urlString = urlString.replace("mToken", oamItem.token);
+                    urlString = urlString.replace("mMessageId", Utility.getInstance(mContext).getTakeActionBodyId());
+                    urlString = urlString.replace("mCampaignId", currentCampaignSummaryItem.id);
+                    urlString = urlString.replace("mTargets", Utility.getInstance(mContext).getTargetsForTakeAction());
+
+                    URL url = new URL(urlString);
+
+                    if (Utility.getInstance().isNetworkAvailable(getActivity())) {
+                        new TakeActionEmailAsyncTask(url, mContext, getActivity()).execute();
+                    }
+                }
+                catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -127,10 +169,10 @@ public class TakeActionFragment extends Fragment {
 
         if (directoryList.size() > 0) {
             String recipientString = "";
-            for(int i=0; i <directoryList.size();i++){
+            for (int i = 0; i < directoryList.size(); i++) {
                 recipientString += "&#8226;\t" + directoryList.get(i).name + "<br/>";
             }
-            if(recipientString.length() > 0)
+            if (recipientString.length() > 0)
                 recipient_txt.setText(Html.fromHtml(recipientString));
             else
                 recipient_txt.setText("Recipient list is missing.  Please contact AHA for assistance.");

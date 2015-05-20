@@ -568,7 +568,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
     @Subscribe
     public void subscribeOnCampaignDataEvent(CampaignDataEvent event) {
         try {
-            JSONArray jArray = null;
+            JSONArray jArray;
             jArray = (JSONArray) event.getData().getJSONArray("items");
             Utility.getInstance(getApplicationContext()).parseCampaignData(jArray);
 

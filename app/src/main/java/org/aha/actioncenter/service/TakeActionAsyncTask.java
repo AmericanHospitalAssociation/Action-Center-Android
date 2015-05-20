@@ -68,12 +68,18 @@ public class TakeActionAsyncTask extends AsyncTask<Void, Void, String> {
         super.onPostExecute(feed);
 
         JSONObject json = null;
-        JSONArray array = null;
+        JSONArray aMessages = null;
+        JSONArray aPreselectedAnswers = null;
 
         try {
             json = new JSONObject(feed);
-            array = json.getJSONObject("response").getJSONArray("body").getJSONObject(0).getJSONArray("messages");
-            Utility.getInstance(mContext).saveTakeActionGuideline(array);
+            aMessages = json.getJSONObject("response").getJSONArray("body").getJSONObject(0).getJSONArray("messages");
+            Utility.getInstance(mContext).saveTakeActionGuideline(aMessages);
+            Utility.getInstance(mContext).saveTakeActionBodyId(json.getJSONObject("response").getJSONArray("body").getJSONObject(0).get("id").toString());
+
+            aPreselectedAnswers = json.getJSONObject("response").getJSONArray("body").getJSONObject(0).getJSONArray("preselectedAnswers");
+            Utility.getInstance(mContext).savePreselectedAnswers(aPreselectedAnswers);
+
 
         }
         catch (JSONException e) {

@@ -21,6 +21,7 @@ import org.aha.actioncenter.models.EventItem;
 import org.aha.actioncenter.models.FeedItem;
 import org.aha.actioncenter.models.NewsItem;
 import org.aha.actioncenter.models.OAMItem;
+import org.aha.actioncenter.models.PreselectedAnswersItem;
 import org.aha.actioncenter.models.TakeActionGuidelinesItem;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +38,7 @@ public class Utility {
 
     private static final Utility INSTANCE = new Utility();
     private static final String TAG = "Utility";
+
     private static Context mContext;
     private static boolean mFeedDataLoaded = false;
     private static boolean mEventDataLoaded = false;
@@ -61,8 +63,11 @@ public class Utility {
     public static final String TWITTER_FEEDS = "twitter-feeds";
     public static final String DIRECTORY = "directory";
     public static final String CAMPAIGN_SUMMARY_LIST = "campaign-summary-list";
+    public static final String CAMPAIGN_SUMMARY_PRESELECTED_ANSWERS_LIST = "campaign-summary-preselected-answers-list";
     public static final String CAMPAIGN = "campaign";
+    public static final String CURRENT_CAMPAIGN_SUMMARY_ITEM = "current-campaign-summary-item";
     public static final String TAKE_ACTION_GUIDELINES = "take_action_guidelines";
+    public static final String TAKE_ACTION_BODY_ID = "take-action-body-id";
 
     public static String EVENTS = "events";
 
@@ -71,7 +76,7 @@ public class Utility {
 
     public static final String MIME_TYPE_PDF = "application/pdf";
 
-    private Activity mActivity;
+    protected Activity mActivity;
     private static boolean mTakeActionGuidelineDataLoaded = false;
 
 
@@ -138,17 +143,17 @@ public class Utility {
 
         mFeedDataLoaded = false;
 
-        ArrayList<FeedItem> additionalInfo = new ArrayList<FeedItem>();
-        ArrayList<FeedItem> letter = new ArrayList<FeedItem>();
-        ArrayList<FeedItem> pressRelease = new ArrayList<FeedItem>();
-        ArrayList<FeedItem> testimony = new ArrayList<FeedItem>();
-        ArrayList<FeedItem> advisory = new ArrayList<FeedItem>();
-        ArrayList<FeedItem> bulletin = new ArrayList<FeedItem>();
-        ArrayList<FeedItem> actionAlert = new ArrayList<FeedItem>();
-        ArrayList<FeedItem> factSheet = new ArrayList<FeedItem>();
+        ArrayList<FeedItem> additionalInfo = new ArrayList<>();
+        ArrayList<FeedItem> letter = new ArrayList<>();
+        ArrayList<FeedItem> pressRelease = new ArrayList<>();
+        ArrayList<FeedItem> testimony = new ArrayList<>();
+        ArrayList<FeedItem> advisory = new ArrayList<>();
+        ArrayList<FeedItem> bulletin = new ArrayList<>();
+        ArrayList<FeedItem> actionAlert = new ArrayList<>();
+        ArrayList<FeedItem> factSheet = new ArrayList<>();
 
-        ArrayList<FeedItem> workingWithCongress = new ArrayList<FeedItem>();
-        ArrayList<FeedItem> congressionalCalendar = new ArrayList<FeedItem>();
+        ArrayList<FeedItem> workingWithCongress = new ArrayList<>();
+        ArrayList<FeedItem> congressionalCalendar = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
 
@@ -420,12 +425,12 @@ public class Utility {
 
     public void parseCampaignData(JSONArray jArray) {
 
-        Gson gson = null;
+        Gson gson;
         int count = jArray.length();
 
         mCampaignDataLoaded = false;
 
-        ArrayList<CampaignItem> campaignList = new ArrayList<CampaignItem>();
+        ArrayList<CampaignItem> campaignList = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
 
@@ -483,7 +488,7 @@ public class Utility {
         SharedPreferences prefs = mContext.getSharedPreferences(CAMPAIGN_SUMMARY_LIST, Context.MODE_PRIVATE);
         String dataString = prefs.getString(CAMPAIGN_SUMMARY_LIST, "");
 
-        JSONObject jsonobj = null;
+        JSONObject jsonobj;
         ArrayList<CampaignSummaryItem> list = new ArrayList<CampaignSummaryItem>();
 
         try {
@@ -633,11 +638,11 @@ public class Utility {
         try {
             JSONArray jArray = json.getJSONObject("response").getJSONArray("body");
 
-            int icount = 0;
+            int icount;
             icount = jArray.length();
 
             for (int i = 0; i < icount; i++) {
-                JSONObject jObj = null;
+                JSONObject jObj;
                 jObj = jArray.getJSONObject(i);
 
                 if (jObj.get("groupId").equals("US Senators")) {
@@ -687,11 +692,11 @@ public class Utility {
         return mDirectoryDataLoaded;
     }
 
-    public boolean isTakeActionGuidelineDataLoaded(){
+    public boolean isTakeActionGuidelineDataLoaded() {
         return mTakeActionGuidelineDataLoaded;
     }
 
-    public void setTakeActionGuidelineDataLoaded(boolean val){
+    public void setTakeActionGuidelineDataLoaded(boolean val) {
         mTakeActionGuidelineDataLoaded = val;
     }
 
@@ -722,6 +727,96 @@ public class Utility {
         ArrayList<TakeActionGuidelinesItem> list;
 
         Type type = new TypeToken<ArrayList<TakeActionGuidelinesItem>>() {
+        }.getType();
+
+        list = new Gson().fromJson(dataString, type);
+
+        return list;
+    }
+
+    public void saveTakeActionBodyId(String s) {
+        SharedPreferences prefs;
+        SharedPreferences.Editor editor;
+
+        prefs = mContext.getSharedPreferences(TAKE_ACTION_BODY_ID, Context.MODE_PRIVATE);
+        editor = prefs.edit();
+        editor.putString(TAKE_ACTION_BODY_ID, s);
+        editor.apply();
+    }
+
+    public String getTakeActionBodyId() {
+        SharedPreferences prefs = mContext.getSharedPreferences(TAKE_ACTION_BODY_ID, Context.MODE_PRIVATE);
+        return prefs.getString(TAKE_ACTION_BODY_ID, "");
+    }
+
+    public CampaignSummaryItem getCurrentCampaignSummaryItem() {
+        SharedPreferences prefs = mContext.getSharedPreferences(CURRENT_CAMPAIGN_SUMMARY_ITEM, Context.MODE_PRIVATE);
+
+        Type type = new TypeToken<CampaignSummaryItem>() {
+        }.getType();
+
+        CampaignSummaryItem item = new Gson().fromJson(prefs.getString(CURRENT_CAMPAIGN_SUMMARY_ITEM, ""), type);
+
+        return item;
+    }
+
+    public void saveCurrentCampaignSummaryItem(CampaignSummaryItem item) {
+        SharedPreferences prefs = mContext.getSharedPreferences(CURRENT_CAMPAIGN_SUMMARY_ITEM, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putString(CURRENT_CAMPAIGN_SUMMARY_ITEM, new Gson().toJson(item));
+
+        editor.apply();
+    }
+
+    public String getTargetsForTakeAction() {
+
+        List<CampaignUserItem> directory = getDirectoryData();
+        List<PreselectedAnswersItem> preselectedAnswers = getPreselectedAnswers();
+
+        String sTarget = "";
+        int i = 0;
+        for (CampaignUserItem item : directory) {
+            sTarget += sTarget + "&targets[" + i + "][" + item.type + "]";
+            sTarget += sTarget + "&targets[" + i + "][" + item.id + "]";
+            sTarget += sTarget + "&targets[" + i + "][deliveryMethod]=webform";
+
+            int j = 0;
+            for (PreselectedAnswersItem preselected : preselectedAnswers) {
+                sTarget += sTarget + "&targets[" + i + "][questionnaire][" + j + "][question]=" + preselected.question;
+                sTarget += sTarget + "&targets[" + i + "][questionnaire][" + j + "][answer]=" + preselected.answer;
+                j++;
+            }
+            i++;
+        }
+
+        return sTarget;
+    }
+
+    public void savePreselectedAnswers(JSONArray array) {
+        SharedPreferences prefs;
+        SharedPreferences.Editor editor;
+
+        Type type = new TypeToken<ArrayList<PreselectedAnswersItem>>() {
+        }.getType();
+
+        List<PreselectedAnswersItem> list;
+        list = new Gson().fromJson(array.toString(), type);
+
+        prefs = mContext.getSharedPreferences(CAMPAIGN_SUMMARY_PRESELECTED_ANSWERS_LIST, Context.MODE_PRIVATE);
+        editor = prefs.edit();
+        editor.putString(CAMPAIGN_SUMMARY_PRESELECTED_ANSWERS_LIST, new Gson().toJson(list));
+        editor.apply();
+    }
+
+    public List<PreselectedAnswersItem> getPreselectedAnswers() {
+
+        SharedPreferences prefs = mContext.getSharedPreferences(CAMPAIGN_SUMMARY_PRESELECTED_ANSWERS_LIST, Context.MODE_PRIVATE);
+        String dataString = prefs.getString(CAMPAIGN_SUMMARY_PRESELECTED_ANSWERS_LIST, "");
+
+        ArrayList<PreselectedAnswersItem> list;
+
+        Type type = new TypeToken<ArrayList<PreselectedAnswersItem>>() {
         }.getType();
 
         list = new Gson().fromJson(dataString, type);
