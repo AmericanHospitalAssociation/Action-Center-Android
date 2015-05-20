@@ -88,7 +88,7 @@ public class TakeActionEmailAsyncTask extends AsyncTask<Void, Void, String> {
 
         try {
             String status = json.getJSONObject("response").getString("status");
-            if(status.equals("200")){
+            if(status.matches("2[0-9][0-9]")){
                 new AlertDialog.Builder(activity)
                         .setTitle("Email Sent")
                         .setMessage("You will receive a confirmation email shortly. Thank you.")
