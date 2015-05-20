@@ -788,8 +788,8 @@ public class Utility {
 
                 int j = 0;
                 for (PreselectedAnswersItem preselected : preselectedAnswers) {
-                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + j + "][question]", "UTF-8") + "=" + preselected.question);
-                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + j + "][answer]", "UTF-8") + "=" + preselected.answer);
+                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + j + "][question]", "UTF-8") + "=" + URLEncoder.encode(preselected.question,"UTF-8"));
+                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + j + "][answer]", "UTF-8") + "=" + URLEncoder.encode(preselected.answer,"UTF-8"));
 
                     sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + preselectedAnswers.size() + "][question]", "UTF-8") + "=Prefix");
                     if (oamItem.prefix == null) {
