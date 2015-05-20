@@ -107,18 +107,21 @@ public class TakeActionFragment extends Fragment {
                     CampaignSummaryItem currentCampaignSummaryItem = Utility.getInstance(mContext).getCurrentCampaignSummaryItem();
 
                     urlString = urlString.replace("mUserId", oamItem.userid);
-                    urlString = urlString.replace("mSignature", oamItem.first_name + " " + oamItem.last_name);
+                    urlString = urlString.replace("mSignature", oamItem.first_name + "%20" + oamItem.last_name);
                     urlString = urlString.replace("mEmail", URLEncoder.encode(oamItem.email,"UTF-8"));
-                    urlString = urlString.replace("mAddress", oamItem.address_line);
+                    urlString = urlString.replace("mAddress", URLEncoder.encode(oamItem.address_line,"UTF-8"));
                     urlString = urlString.replace("mZipcode", oamItem.zip.substring(0, 5));
                     urlString = urlString.replace("mSubject", URLEncoder.encode(subject_txt.getText().toString(), "UTF-8"));
                     urlString = urlString.replace("mBody", URLEncoder.encode(message_txt.getText().toString(), "UTF-8"));
                     urlString = urlString.replace("mToken", oamItem.token);
                     urlString = urlString.replace("mMessageId", Utility.getInstance(mContext).getTakeActionBodyId());
                     urlString = urlString.replace("mCampaignId", currentCampaignSummaryItem.id);
-                    urlString = urlString.replace("mTargets", Utility.getInstance(mContext).getTargetsForTakeAction());
+                    urlString = urlString.replace("&mTargets", Utility.getInstance(mContext).getTargetsForTakeAction());
+
+                    Log.d(TAG, urlString);
 
                     URL url = new URL(urlString);
+
 
                     if (Utility.getInstance().isNetworkAvailable(getActivity())) {
                         new TakeActionEmailAsyncTask(url, mContext, getActivity()).execute();

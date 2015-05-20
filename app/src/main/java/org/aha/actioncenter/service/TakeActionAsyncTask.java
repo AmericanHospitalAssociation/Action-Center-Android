@@ -77,7 +77,7 @@ public class TakeActionAsyncTask extends AsyncTask<Void, Void, String> {
             Utility.getInstance(mContext).saveTakeActionGuideline(aMessages);
             Utility.getInstance(mContext).saveTakeActionBodyId(json.getJSONObject("response").getJSONArray("body").getJSONObject(0).get("id").toString());
 
-            aPreselectedAnswers = json.getJSONObject("response").getJSONArray("body").getJSONObject(0).getJSONArray("preselectedAnswers");
+            aPreselectedAnswers = json.getJSONObject("response").getJSONArray("body").getJSONObject(0).getJSONArray("preSelectedAnswers");
             Utility.getInstance(mContext).savePreselectedAnswers(aPreselectedAnswers);
 
 

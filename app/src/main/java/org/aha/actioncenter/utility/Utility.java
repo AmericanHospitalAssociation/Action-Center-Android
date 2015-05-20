@@ -27,7 +27,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -773,24 +775,40 @@ public class Utility {
 
         List<CampaignUserItem> directory = getDirectoryData();
         List<PreselectedAnswersItem> preselectedAnswers = getPreselectedAnswers();
+        OAMItem oamItem = getLoginData();
 
-        String sTarget = "";
         int i = 0;
-        for (CampaignUserItem item : directory) {
-            sTarget += sTarget + "&targets[" + i + "][" + item.type + "]";
-            sTarget += sTarget + "&targets[" + i + "][" + item.id + "]";
-            sTarget += sTarget + "&targets[" + i + "][deliveryMethod]=webform";
+        String sTargets = "";
+        String sTarget = "";
+        try {
+            for (CampaignUserItem item : directory) {
+                sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][type]", "UTF-8") + "=" + item.type);
+                sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][id]", "UTF-8") + "=" + item.id);
+                sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][deliveryMethod]", "UTF-8") + "=webform");
 
-            int j = 0;
-            for (PreselectedAnswersItem preselected : preselectedAnswers) {
-                sTarget += sTarget + "&targets[" + i + "][questionnaire][" + j + "][question]=" + preselected.question;
-                sTarget += sTarget + "&targets[" + i + "][questionnaire][" + j + "][answer]=" + preselected.answer;
-                j++;
+                int j = 0;
+                for (PreselectedAnswersItem preselected : preselectedAnswers) {
+                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + j + "][question]", "UTF-8") + "=" + preselected.question);
+                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + j + "][answer]", "UTF-8") + "=" + preselected.answer);
+
+                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + preselectedAnswers.size() + "][question]", "UTF-8") + "=Prefix");
+                    if (oamItem.prefix == null) {
+                        sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + preselectedAnswers.size() + "][answer]", "UTF-8") + "=Mr.");
+                    }
+                    else {
+                        sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + preselectedAnswers.size() + "][answer]", "UTF-8") + "=" + oamItem.prefix);
+                    }
+                    j++;
+                }
+                i++;
             }
-            i++;
+            sTargets = sTargets.concat(sTarget);
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
 
-        return sTarget;
+        return sTargets;
     }
 
     public void savePreselectedAnswers(JSONArray array) {
