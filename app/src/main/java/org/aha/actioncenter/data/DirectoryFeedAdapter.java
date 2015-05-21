@@ -30,6 +30,7 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
     public DirectoryFeedAdapter(Activity activity, List<CampaignUserItem> dataSet) {
         mActivity = activity;
         mDataSet = dataSet;
+
     }
 
     /**
@@ -73,11 +74,22 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
         }
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        CampaignUserItem item = mDataSet.get(position);
+        return (item.isHeader ? 0 : 1);
+    }
+
     // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.directory_item_view, viewGroup, false);
+
+        View v;
+        if (viewType == 0)
+            v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.directory_header_item_view, viewGroup, false);
+        else
+            v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.directory_item_view, viewGroup, false);
 
         return new ViewHolder(v);
     }

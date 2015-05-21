@@ -627,9 +627,9 @@ public class Utility {
 
     public void saveCampaignMatches(JSONObject json) {
 
-        ArrayList<CampaignUserItem> directoryItemsArray = new ArrayList<CampaignUserItem>();
-        ArrayList<CampaignUserItem> usSenatorsItemArray = new ArrayList<CampaignUserItem>();
-        ArrayList<CampaignUserItem> usRepresentativeItemArray = new ArrayList<CampaignUserItem>();
+        ArrayList<CampaignUserItem> directoryItemsArray = new ArrayList<>();
+        ArrayList<CampaignUserItem> usSenatorsItemArray = new ArrayList<>();
+        ArrayList<CampaignUserItem> usRepresentativeItemArray = new ArrayList<>();
 
         Type campaignItemArrayListType = new TypeToken<ArrayList<CampaignUserItem>>() {
         }.getType();
@@ -655,6 +655,11 @@ public class Utility {
                         item.groupId = jObj.getString("groupId");
                         usSenatorsItemArray.set(j, item);
                     }
+                    CampaignUserItem item = new CampaignUserItem();
+                    item.name = "US Senators";
+                    item.isHeader = true;
+                    usSenatorsItemArray.add(0,item);
+
                 }
                 if (jObj.get("groupId").equals("US Representative")) {
                     usRepresentativeItemArray = new Gson().fromJson(jObj.getJSONArray("matches").toString(), campaignItemArrayListType);
@@ -664,6 +669,10 @@ public class Utility {
                         item.groupId = jObj.getString("groupId");
                         usRepresentativeItemArray.set(j, item);
                     }
+                    CampaignUserItem item = new CampaignUserItem();
+                    item.name = "US Representative";
+                    item.isHeader = true;
+                    usRepresentativeItemArray.add(0,item);
                 }
             }
 

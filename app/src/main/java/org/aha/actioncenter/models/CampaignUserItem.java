@@ -9,5 +9,7 @@ public class CampaignUserItem {
     public String id = "";
     public String name = "";
     public String type = "";
+    public boolean isHeader = false;
+
 }
 
