@@ -1,6 +1,8 @@
 package org.aha.actioncenter.data;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,8 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.CampaignUserItem;
+import org.aha.actioncenter.views.CampaignSummaryListFragment;
 
 import java.util.List;
 
@@ -49,7 +55,6 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
 
-                    /*
                     Fragment fragment = null;
                     Bundle args = new Bundle();
 
@@ -58,14 +63,11 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
                     CampaignUserItem item = mDataSet.get(position);
 
                     args.putString("item", new Gson().toJson(item));
-                    fragment = new CampaignDetailInfoFragment();
+                    fragment = new CampaignSummaryListFragment();
                     fragment.setArguments(args);
 
-                    // Insert the fragment by replacing any existing fragment
-                    FragmentManager fragmentManager = mActivity.getFragmentManager();
+                    ((MainActivity)mActivity).addToAppBackStack(fragment, "campaign-summary", "Campaigns");
 
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-                    */
                 }
             });
 
