@@ -13,8 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="false"
-            android:textSize="20dp"
-            android:text="title"
+            android:textSize="16dp"
+            android:text="US"
             android:textColor="@android:color/white"/>
 
 
