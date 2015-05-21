@@ -131,11 +131,16 @@ public class Utility {
     }
 
     public boolean isNetworkAvailable() {
-        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        // if no network is available networkInfo will be null
-        // otherwise check if we are connected
-        return networkInfo != null && networkInfo.isConnected();
+        if(mContext != null) {
+            ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            // if no network is available networkInfo will be null
+            // otherwise check if we are connected
+            return networkInfo != null && networkInfo.isConnected();
+        }
+        else{
+            return false;
+        }
     }
 
     public void parseFeedData(JSONArray jArray) {

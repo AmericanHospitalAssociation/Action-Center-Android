@@ -353,6 +353,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 String urlString = getResources().getString(R.string.vv_campaign_summary_url);
                 URL url = new URL(urlString);
                 if (Utility.getInstance().isNetworkAvailable(this)) {
+                    new VoterVoiceCreateUserAsyncTask(url, mContext, this).execute();
                     new CampaignSummaryAsyncTask(url, mContext, this).execute();
                 }
             }
@@ -496,9 +497,9 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         if (fragment instanceof SpecialBulletinDetailInfoFragment)
             setTitle("Special Bulletins");
         if (fragment instanceof AdvisoryListFragment)
-            setTitle("Advisory");
+            setTitle("Advisories");
         if (fragment instanceof AdvisoryDetailInfoFragment)
-            setTitle("Advisory");
+            setTitle("Advisories");
         if (fragment instanceof LetterListFragment)
             setTitle("Letters");
         if (fragment instanceof LetterDetailInfoFragment)

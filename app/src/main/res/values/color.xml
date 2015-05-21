@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="aha_blue">#003087</color>
+    <color name="aha_light_blue">#0152E5</color>
+    <color name="aha_light_blue_alpha_50">#800152E5</color>
     <color name="aha_red">#9d2235</color>
     <color name="aha_grey">#a1a1a1</color>
     <color name="aha_dark_grey">#888888</color>

@@ -3,7 +3,7 @@
              android:id="@+id/feed_table_row"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:background="@color/aha_blue"
+             android:background="@color/aha_light_blue"
              android:gravity="center_vertical">
 
 
@@ -14,7 +14,7 @@
             android:singleLine="false"
             android:textSize="20dp"
             android:text="title"
-            android:textColor="#ffffffff"/>
+            android:textColor="#000"/>
 
 
 

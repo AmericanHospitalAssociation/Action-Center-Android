@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -45,6 +46,7 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         protected TextView name_txt = null;
+        protected Button take_action_btn = null;
 
         public ViewHolder(View v) {
             super(v);
@@ -54,25 +56,30 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
-
-                    Fragment fragment = null;
-                    Bundle args = new Bundle();
-
-                    int position = getAdapterPosition();
-
-                    CampaignUserItem item = mDataSet.get(position);
-
-                    args.putString("item", new Gson().toJson(item));
-                    fragment = new CampaignSummaryListFragment();
-                    fragment.setArguments(args);
-
-                    ((MainActivity)mActivity).addToAppBackStack(fragment, "campaign-summary", "Campaigns");
-
                 }
             });
 
             name_txt = (TextView) v.findViewById(R.id.name_txt);
+            take_action_btn = (Button) v.findViewById(R.id.take_action_btn);
+            if(take_action_btn != null) {
+                take_action_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Fragment fragment = null;
+                        Bundle args = new Bundle();
 
+                        int position = getAdapterPosition();
+
+                        CampaignUserItem item = mDataSet.get(position);
+
+                        args.putString("item", new Gson().toJson(item));
+                        fragment = new CampaignSummaryListFragment();
+                        fragment.setArguments(args);
+
+                        ((MainActivity) mActivity).addToAppBackStack(fragment, "campaign-summary", "Campaigns");
+                    }
+                });
+            }
         }
     }
 
