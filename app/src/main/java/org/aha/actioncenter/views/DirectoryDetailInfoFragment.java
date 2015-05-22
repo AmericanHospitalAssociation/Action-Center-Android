@@ -1,20 +1,30 @@
 package org.aha.actioncenter.views;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.models.LegislatorItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by markusmcgee on 4/17/15.
@@ -48,7 +58,7 @@ public class DirectoryDetailInfoFragment extends Fragment {
 
         item = Utility.getInstance(getActivity().getApplicationContext()).getLegislatorItem();
 
-        Log.d(TAG,"debug");
+
     }
 
     @Nullable
@@ -58,6 +68,40 @@ public class DirectoryDetailInfoFragment extends Fragment {
         //OttoBus must be registered after inflate.inflate or app blows up.
         AHABusProvider.getInstance().register(this);
 
+        LinearLayout content = (LinearLayout) view.findViewById(R.id.content);
+        ImageView imageView = (ImageView)view.findViewById(R.id.image_view);
+        TextView textView = new TextView(getActivity().getApplicationContext());
+        textView.setText(item.displayName);
+        textView.setTypeface(Typeface.DEFAULT_BOLD);
+        textView.setTextColor(getResources().getColor(android.R.color.black));
+        textView.setPadding(0,15,0,0);
+        content.addView(textView);
+
+        new ImageLoadTask(item.photoUrl,imageView).execute();
+
+        for(LegislatorItem.Sections section: item.sections){
+
+            TextView sectionLabel = new TextView(getActivity().getApplicationContext());
+            sectionLabel.setText(section.name);
+            sectionLabel.setTypeface(Typeface.DEFAULT_BOLD);
+            sectionLabel.setPadding(0,10,0,0);
+            sectionLabel.setTextColor(getResources().getColor(android.R.color.black));
+            content.addView(sectionLabel);
+
+            for(LegislatorItem.Properties property: section.properties){
+            TextView propertyName = new TextView(getActivity().getApplicationContext());
+            TextView propertyValue = new TextView(getActivity().getApplicationContext());
+                propertyName.setText(property.name);
+                propertyName.setTypeface(Typeface.DEFAULT_BOLD);
+                propertyName.setTextColor(getResources().getColor(android.R.color.black));
+                propertyName.setPadding(0, 5, 0, 0);
+                content.addView(propertyName);
+
+                propertyValue.setText(property.value);
+                propertyValue.setTextColor(getResources().getColor(android.R.color.black));
+                content.addView(propertyValue);
+            }
+        }
 
         return view;
     }
@@ -73,6 +117,41 @@ public class DirectoryDetailInfoFragment extends Fragment {
     public void onPause() {
         super.onPause();
         AHABusProvider.getInstance().unregister(this);
+    }
+
+    private class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
+
+        private String url;
+        private ImageView imageView;
+
+        public ImageLoadTask(String url, ImageView imageView) {
+            this.url = url;
+            this.imageView = imageView;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            try {
+                URL urlConnection = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) urlConnection
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                return myBitmap;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            imageView.setImageBitmap(result);
+        }
+
     }
 
 }

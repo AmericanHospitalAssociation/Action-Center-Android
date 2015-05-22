@@ -11,12 +11,12 @@ public class LegislatorItem {
     public String photoUrl;
     public ArrayList<Sections> sections;
 
-    private class Sections {
+    public class Sections {
         public String name;
         public ArrayList<Properties> properties;
     }
 
-    private class Properties {
+    public class Properties {
         public String description;
         public String name;
         public String value;

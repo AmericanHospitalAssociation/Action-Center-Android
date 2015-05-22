@@ -19,6 +19,7 @@ import org.aha.actioncenter.R;
 import org.aha.actioncenter.data.DirectoryFeedAdapter;
 import org.aha.actioncenter.events.LegislatorInfoDataEvent;
 import org.aha.actioncenter.models.CampaignUserItem;
+import org.aha.actioncenter.models.LegislatorItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
 
@@ -88,11 +89,10 @@ public class DirectoryListFragment extends Fragment {
         Fragment fragment;
         Bundle args = new Bundle();
 
+        LegislatorItem item = Utility.getInstance(getActivity().getApplicationContext()).getLegislatorItem();
 
         fragment = new DirectoryDetailInfoFragment();
-        fragment.setArguments(args);
-
-        ((MainActivity) getActivity()).addToAppBackStack(fragment, "directory", "Directory");
+        ((MainActivity) getActivity()).addToAppBackStack(fragment, "directory", item.displayName);
 
     }
 }
