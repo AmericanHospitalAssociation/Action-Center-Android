@@ -353,7 +353,8 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 String urlString = getResources().getString(R.string.vv_campaign_summary_url);
                 URL url = new URL(urlString);
                 if (Utility.getInstance().isNetworkAvailable(this)) {
-                    new VoterVoiceCreateUserAsyncTask(url, mContext, this).execute();
+                    //TODO:  Make this work.
+                    //new VoterVoiceCreateUserAsyncTask(url, mContext, this).execute();
                     new CampaignSummaryAsyncTask(url, mContext, this).execute();
                 }
             }

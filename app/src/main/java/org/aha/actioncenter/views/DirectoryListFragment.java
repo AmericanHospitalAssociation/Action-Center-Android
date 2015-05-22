@@ -6,13 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
 
+import com.squareup.otto.Subscribe;
+
+import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
 import org.aha.actioncenter.data.DirectoryFeedAdapter;
+import org.aha.actioncenter.events.LegislatorInfoDataEvent;
 import org.aha.actioncenter.models.CampaignUserItem;
 import org.aha.actioncenter.utility.AHABusProvider;
 import org.aha.actioncenter.utility.Utility;
@@ -52,7 +57,7 @@ public class DirectoryListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).hasData(Utility.DIRECTORY)) {
+        if (Utility.getInstance(mContext).hasData(Utility.DIRECTORY)) {
             if (Utility.getInstance(mContext).isDirectoryDataLoaded()) {
                 list = Utility.getInstance(mContext).getDirectoryData();
                 mAdapter = new DirectoryFeedAdapter(getActivity(), list);
@@ -75,16 +80,19 @@ public class DirectoryListFragment extends Fragment {
         AHABusProvider.getInstance().unregister(this);
     }
 
-    /*
-    //Subscribe to Feed data event.  If data comes in update view.
     @Subscribe
-    public void subscribeOnFeedDataEvent(FeedDataEvent event) {
-        // specify an adapter (see also next example)
-        if(Utility.getInstance(mContext).isEventDataLoaded()) {
-            list = Utility.getInstance(mContext).getEventData(Utility.getInstance().EVENTS);
-            mAdapter = new EventsFeedAdapter(getActivity(), list);
-            mRecyclerView.setAdapter(mAdapter);
-        }
+    public void subscribeOnLegislatorEventData(LegislatorInfoDataEvent event) {
+
+        Log.d(TAG, "debug");
+
+        Fragment fragment;
+        Bundle args = new Bundle();
+
+
+        fragment = new DirectoryDetailInfoFragment();
+        fragment.setArguments(args);
+
+        ((MainActivity) getActivity()).addToAppBackStack(fragment, "directory", "Directory");
+
     }
-    */
 }

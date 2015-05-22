@@ -53,14 +53,14 @@ public class LegislatorInfoAsyncTask extends AsyncTask<Void, Void, String> {
 
         if (!isCancelled()) {
             if (activity != null) {
-                ((BaseActivity)activity).showProgressDialog("American Hospital Association", mContext.getString(R.string.loading_legislator_message_txt));
+                ((BaseActivity) activity).showProgressDialog("American Hospital Association", mContext.getString(R.string.loading_legislator_message_txt));
             }
         }
     }
 
     @Override
     protected void onCancelled() {
-        ((BaseActivity)activity).closeProgressDialog();
+        ((BaseActivity) activity).closeProgressDialog();
         super.onCancelled();
     }
 
@@ -70,7 +70,6 @@ public class LegislatorInfoAsyncTask extends AsyncTask<Void, Void, String> {
         super.onPostExecute(feed);
 
         JSONObject json = null;
-
         try {
             json = new JSONObject(feed);
         }
@@ -78,15 +77,17 @@ public class LegislatorInfoAsyncTask extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
         }
 
+        Utility.getInstance(mContext).saveLegislatorInfo(json);
+
         LegislatorInfoDataEvent event = new LegislatorInfoDataEvent(LegislatorInfoDataEvent.LEGISLATOR_DATA);
         AHABusProvider.getInstance().post(event);
 
-        ((BaseActivity)activity).closeProgressDialog();
+        ((BaseActivity) activity).closeProgressDialog();
     }
 
     @Override
     protected String doInBackground(Void... voids) {
-        if(!Utility.getInstance(mContext).isNetworkAvailable()) {
+        if (!Utility.getInstance(mContext).isNetworkAvailable()) {
             return "";
         }
 
@@ -107,8 +108,8 @@ public class LegislatorInfoAsyncTask extends AsyncTask<Void, Void, String> {
 
     public static String readStream(InputStream in) throws IOException {
         StringBuilder sb = new StringBuilder();
-        BufferedReader r = new BufferedReader(new InputStreamReader(in),1000);
-        for (String line = r.readLine(); line != null; line =r.readLine()){
+        BufferedReader r = new BufferedReader(new InputStreamReader(in), 1000);
+        for (String line = r.readLine(); line != null; line = r.readLine()) {
             sb.append(line);
         }
         in.close();

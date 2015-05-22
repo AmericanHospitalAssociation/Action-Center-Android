@@ -12,15 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
-import org.aha.actioncenter.events.LegislatorInfoDataEvent;
 import org.aha.actioncenter.models.CampaignUserItem;
 import org.aha.actioncenter.service.LegislatorInfoAsyncTask;
 import org.aha.actioncenter.views.CampaignSummaryListFragment;
-import org.aha.actioncenter.views.DirectoryDetailInfoFragment;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -63,14 +60,21 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
 
-                    try {
-                        String urlString;
-                        urlString = mActivity.getString(R.string.vv_targeted_message_url);
-                        URL url = new URL(urlString);
-                        new LegislatorInfoAsyncTask(url, mActivity.getApplicationContext(), mActivity).execute();
-                    }
-                    catch (MalformedURLException e) {
-                        e.printStackTrace();
+                    int position = getAdapterPosition();
+                    CampaignUserItem item = mDataSet.get(position);
+
+                    if(item != null) {
+                        try {
+                            String urlString;
+                            urlString = mActivity.getString(R.string.vv_get_us_profile_url);
+                            urlString = urlString.replace("mId", item.id);
+                            urlString = urlString.replace("mType", item.type);
+                            URL url = new URL(urlString);
+                            new LegislatorInfoAsyncTask(url, mActivity.getApplicationContext(), mActivity).execute();
+                        }
+                        catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 }
@@ -136,26 +140,5 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
     public int getItemCount() {
         return mDataSet.size();
     }
-
-    @Subscribe
-    public void subscribeOnLegislatorEventData(LegislatorInfoDataEvent event) {
-
-        Log.d(TAG, "debug");
-
-        Fragment fragment;
-        Bundle args = new Bundle();
-
-        int position = getAdapterPosition();
-
-        CampaignUserItem item = mDataSet.get(position);
-
-        args.putString("item", new Gson().toJson(item));
-        fragment = new DirectoryDetailInfoFragment();
-        fragment.setArguments(args);
-
-        ((MainActivity) mActivity).addToAppBackStack(fragment, "directory", "Directory");
-
-    }
-
 
 }

@@ -19,6 +19,7 @@ import org.aha.actioncenter.models.CampaignSummaryItem;
 import org.aha.actioncenter.models.CampaignUserItem;
 import org.aha.actioncenter.models.EventItem;
 import org.aha.actioncenter.models.FeedItem;
+import org.aha.actioncenter.models.LegislatorItem;
 import org.aha.actioncenter.models.NewsItem;
 import org.aha.actioncenter.models.OAMItem;
 import org.aha.actioncenter.models.PreselectedAnswersItem;
@@ -70,6 +71,8 @@ public class Utility {
     public static final String CURRENT_CAMPAIGN_SUMMARY_ITEM = "current-campaign-summary-item";
     public static final String TAKE_ACTION_GUIDELINES = "take_action_guidelines";
     public static final String TAKE_ACTION_BODY_ID = "take-action-body-id";
+
+    public static final String LEGISLATOR_INFO = "legislator_info";
 
     public static String EVENTS = "events";
 
@@ -131,14 +134,14 @@ public class Utility {
     }
 
     public boolean isNetworkAvailable() {
-        if(mContext != null) {
+        if (mContext != null) {
             ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             // if no network is available networkInfo will be null
             // otherwise check if we are connected
             return networkInfo != null && networkInfo.isConnected();
         }
-        else{
+        else {
             return false;
         }
     }
@@ -663,7 +666,7 @@ public class Utility {
                     CampaignUserItem item = new CampaignUserItem();
                     item.name = "US Senators";
                     item.isHeader = true;
-                    usSenatorsItemArray.add(0,item);
+                    usSenatorsItemArray.add(0, item);
 
                 }
                 if (jObj.get("groupId").equals("US Representative")) {
@@ -677,7 +680,7 @@ public class Utility {
                     CampaignUserItem item = new CampaignUserItem();
                     item.name = "US Representative";
                     item.isHeader = true;
-                    usRepresentativeItemArray.add(0,item);
+                    usRepresentativeItemArray.add(0, item);
                 }
             }
 
@@ -802,8 +805,8 @@ public class Utility {
 
                 int j = 0;
                 for (PreselectedAnswersItem preselected : preselectedAnswers) {
-                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + j + "][question]", "UTF-8") + "=" + URLEncoder.encode(preselected.question,"UTF-8"));
-                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + j + "][answer]", "UTF-8") + "=" + URLEncoder.encode(preselected.answer,"UTF-8"));
+                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + j + "][question]", "UTF-8") + "=" + URLEncoder.encode(preselected.question, "UTF-8"));
+                    sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + j + "][answer]", "UTF-8") + "=" + URLEncoder.encode(preselected.answer, "UTF-8"));
 
                     sTarget = sTarget.concat("&" + URLEncoder.encode("targets[" + i + "][questionnaire][" + preselectedAnswers.size() + "][question]", "UTF-8") + "=Prefix");
                     if (oamItem.prefix == null) {
@@ -856,4 +859,38 @@ public class Utility {
         return list;
     }
 
+    public void saveLegislatorInfo(JSONObject json) {
+
+
+        SharedPreferences prefs;
+        SharedPreferences.Editor editor;
+
+        try {
+            prefs = mContext.getSharedPreferences(LEGISLATOR_INFO, Context.MODE_PRIVATE);
+            editor = prefs.edit();
+            editor.putString(LEGISLATOR_INFO, json.getJSONObject("response").getJSONObject("body").toString());
+            editor.apply();
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public LegislatorItem getLegislatorItem() {
+        LegislatorItem item = null;
+
+        try {
+            SharedPreferences prefs = mContext.getSharedPreferences(LEGISLATOR_INFO, Context.MODE_PRIVATE);
+            String dataString = prefs.getString(LEGISLATOR_INFO, "");
+
+            item = new Gson().fromJson(dataString, new TypeToken<LegislatorItem>() {
+            }.getType());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return item;
+    }
 }
