@@ -57,11 +57,12 @@
     <string name="loading_message_txt">Loading&#8230;</string>
     <string name="loading_campaign_message_txt">Loading Campaign Data&#8230;</string>
     <string name="loading_news_message_txt">Loading News Data...</string>
-    <string name="loading_directory_message_txt">Loading Directory Data...</string>
-    <string name="loading_event_message_txt">Loading Event Data...</string>
-    <string name="loading_campaign_matches_message_txt">Loading Campaign Matches Data...</string>
-    <string name="downloading_pdf_message_txt">Downloading PDF file ...</string>
-    <string name="loading_take_action_message_txt">Loading Take Action Data...</string>
+    <string name="loading_directory_message_txt">Loading Directory Data &#8230;</string>
+    <string name="loading_event_message_txt">Loading Event Data &#8230;</string>
+    <string name="loading_legislator_message_txt">Loading Legislator Info &#8230;</string>
+    <string name="loading_campaign_matches_message_txt">Loading Campaign Matches Data &#8230;</string>
+    <string name="downloading_pdf_message_txt">Downloading PDF file v</string>
+    <string name="loading_take_action_message_txt">Loading Take Action Data &#8230;</string>
     <string name="send_txt">send</string>
 
     <string-array name="salutation_array">

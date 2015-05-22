@@ -12,12 +12,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.squareup.otto.Subscribe;
 
 import org.aha.actioncenter.MainActivity;
 import org.aha.actioncenter.R;
+import org.aha.actioncenter.events.LegislatorInfoDataEvent;
 import org.aha.actioncenter.models.CampaignUserItem;
+import org.aha.actioncenter.service.LegislatorInfoAsyncTask;
 import org.aha.actioncenter.views.CampaignSummaryListFragment;
+import org.aha.actioncenter.views.DirectoryDetailInfoFragment;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 
@@ -56,16 +62,27 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
+
+                    try {
+                        String urlString;
+                        urlString = mActivity.getString(R.string.vv_targeted_message_url);
+                        URL url = new URL(urlString);
+                        new LegislatorInfoAsyncTask(url, mActivity.getApplicationContext(), mActivity).execute();
+                    }
+                    catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             });
 
             name_txt = (TextView) v.findViewById(R.id.name_txt);
             take_action_btn = (Button) v.findViewById(R.id.take_action_btn);
-            if(take_action_btn != null) {
+            if (take_action_btn != null) {
                 take_action_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Fragment fragment = null;
+                        Fragment fragment;
                         Bundle args = new Bundle();
 
                         int position = getAdapterPosition();
@@ -119,4 +136,26 @@ public class DirectoryFeedAdapter extends RecyclerView.Adapter<DirectoryFeedAdap
     public int getItemCount() {
         return mDataSet.size();
     }
+
+    @Subscribe
+    public void subscribeOnLegislatorEventData(LegislatorInfoDataEvent event) {
+
+        Log.d(TAG, "debug");
+
+        Fragment fragment;
+        Bundle args = new Bundle();
+
+        int position = getAdapterPosition();
+
+        CampaignUserItem item = mDataSet.get(position);
+
+        args.putString("item", new Gson().toJson(item));
+        fragment = new DirectoryDetailInfoFragment();
+        fragment.setArguments(args);
+
+        ((MainActivity) mActivity).addToAppBackStack(fragment, "directory", "Directory");
+
+    }
+
+
 }
