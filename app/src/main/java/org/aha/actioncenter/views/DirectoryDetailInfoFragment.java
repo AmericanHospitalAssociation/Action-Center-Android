@@ -113,7 +113,7 @@ public class DirectoryDetailInfoFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             Intent callIntent = new Intent(Intent.ACTION_CALL);
-                            callIntent.setData(Uri.parse("tel:+" + PhoneNumberUtils.getStrippedReversed(property.value)));
+                            callIntent.setData(Uri.parse("tel:+" + property.value));
                             startActivity(callIntent);
                         }
                     });
