@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +83,7 @@ public class DirectoryListFragment extends Fragment {
     @Subscribe
     public void subscribeOnLegislatorEventData(LegislatorInfoDataEvent event) {
 
-        Log.d(TAG, "debug");
+
 
         Fragment fragment;
         Bundle args = new Bundle();

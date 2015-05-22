@@ -512,7 +512,7 @@ public class Utility {
                 list.add(item);
             }
 
-            Log.d(TAG, "debug");
+
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -522,7 +522,7 @@ public class Utility {
     }
 
     public void saveCampaignSummaryData(JSONObject json) {
-        Log.d(TAG, "debug");
+
 
         mCampaignSummaryDataLoaded = false;
 
@@ -697,7 +697,7 @@ public class Utility {
             }
             editor.apply();
 
-            Log.d(TAG, "debug");
+
             mDirectoryDataLoaded = true;
 
         }

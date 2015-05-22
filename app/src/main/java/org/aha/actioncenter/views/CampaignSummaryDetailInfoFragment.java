@@ -105,7 +105,7 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
                             Fragment fragment = new MissingInfoFragment();
                             ((MainActivity) getActivity()).addToFragmentBackStack(fragment, "update-user", "Update User Information");
 
-                            Log.d(TAG, "debug");
+
                         }
                     }).create().show();
                     //return;
@@ -146,6 +146,6 @@ public class CampaignSummaryDetailInfoFragment extends Fragment {
         TakeActionFragment fragment = new TakeActionFragment();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("take-action").commit();
 
-        Log.d(TAG, "debug");
+
     }
 }

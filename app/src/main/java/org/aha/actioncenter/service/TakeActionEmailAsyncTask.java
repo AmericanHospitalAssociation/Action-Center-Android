@@ -122,7 +122,7 @@ public class TakeActionEmailAsyncTask extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
         }
 
-        Log.d(TAG, "debug");
+
 
 
     }

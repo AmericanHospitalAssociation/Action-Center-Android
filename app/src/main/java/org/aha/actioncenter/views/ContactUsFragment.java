@@ -117,7 +117,7 @@ public class ContactUsFragment extends Fragment implements View.OnClickListener 
             e.printStackTrace();
         }
 
-        Log.d(TAG, "debug");
+
     }
 
     @Override

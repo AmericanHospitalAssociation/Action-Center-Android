@@ -103,6 +103,8 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
     private View mClickedChild = null;
     private NavigationItem currentNavigationItem = null;
+    private OAMItem mOAMItem;
+    private boolean mContactYourLegislators;
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
 
@@ -299,53 +301,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
             }
         }
         if (item.id.equals(Utility.DIRECTORY)) {
-
-            OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
-
-            if (oamItem.prefix == null || oamItem.phone == null) {
-
-                new AlertDialog.Builder(this).setTitle("Additional Info Needed").setMessage("To enable matching you to your legislators, additional info is needed. Would you like to enter the needed info?").setNegativeButton(android.R.string.no, null).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-                        Fragment fragment = new MissingInfoFragment();
-                        addToFragmentBackStack(fragment, "update-user", "Update User Information");
-
-                        Log.d(TAG, "debug");
-
-                    }
-                }).create().show();
-
-            }
-            else {
-                try {
-
-                    String phone = PhoneNumberUtils.stripSeparators((oamItem.phone != null ? oamItem.phone : ""));
-
-                    String urlString = getResources().getString(R.string.vv_create_user_url);
-                    urlString = urlString.replace("mOrg", URLEncoder.encode((oamItem.org_name != null ? oamItem.org_name : ""), "UTF-8"));
-                    urlString = urlString.replace("mEmail", URLEncoder.encode((oamItem.email != null ? oamItem.email : ""), "UTF-8"));
-                    urlString = urlString.replace("mFirstName", URLEncoder.encode((oamItem.first_name != null ? oamItem.first_name : ""), "UTF-8"));
-                    urlString = urlString.replace("mLastName", URLEncoder.encode((oamItem.last_name != null ? oamItem.last_name : ""), "UTF-8"));
-                    urlString = urlString.replace("mAddress", URLEncoder.encode((oamItem.address_line != null ? oamItem.address_line : ""), "UTF-8"));
-                    urlString = urlString.replace("mZipcode", URLEncoder.encode((oamItem.zip != null ? oamItem.zip.substring(0, 5) : ""), "UTF-8"));
-                    urlString = urlString.replace("mCountry", URLEncoder.encode((oamItem.country != null ? oamItem.country : "us"), "UTF-8"));
-                    urlString = urlString.replace("mCity", URLEncoder.encode((oamItem.city != null ? oamItem.city : ""), "UTF-8"));
-                    urlString = urlString.replace("mPhone", phone);
-                    urlString = urlString.replace("mPrefix", URLEncoder.encode((oamItem.prefix != null ? oamItem.prefix : ""), "UTF-8"));
-
-                    Log.d(TAG, urlString);
-                    URL url = new URL(urlString);
-                    if (Utility.getInstance().isNetworkAvailable(this)) {
-                        new VoterVoiceCreateUserAsyncTask(url, getApplicationContext(), this).execute();
-                    }
-                }
-                catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }
+            doVoterVoiceCreateUser();
         }
         if (item.id.equals(Utility.CONTACT_YOUR_LEGISLATORS)) {
             try {
@@ -355,6 +311,8 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 if (Utility.getInstance().isNetworkAvailable(this)) {
                     //TODO:  Make this work.
                     //new VoterVoiceCreateUserAsyncTask(url, mContext, this).execute();
+                    mContactYourLegislators = true;
+                    doVoterVoiceCreateUser();
                     new CampaignSummaryAsyncTask(url, mContext, this).execute();
                 }
             }
@@ -377,6 +335,53 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         }
 
         addToFragmentBackStack(fragment, item);
+    }
+
+    private void doVoterVoiceCreateUser() {
+        mOAMItem = Utility.getInstance(mContext).getLoginData();
+        if (mOAMItem.prefix == null || mOAMItem.phone == null) {
+
+            new AlertDialog.Builder(this).setTitle("Additional Info Needed").setMessage("To enable matching you to your legislators, additional info is needed. Would you like to enter the needed info?").setNegativeButton(android.R.string.no, null).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) {
+
+                    Fragment fragment = new MissingInfoFragment();
+                    addToFragmentBackStack(fragment, "update-user", "Update User Information");
+
+
+                }
+            }).create().show();
+
+        }
+        else {
+            try {
+
+                String phone = PhoneNumberUtils.stripSeparators((mOAMItem.phone != null ? mOAMItem.phone : ""));
+
+                String urlString = getResources().getString(R.string.vv_create_user_url);
+                urlString = urlString.replace("mOrg", URLEncoder.encode((mOAMItem.org_name != null ? mOAMItem.org_name : ""), "UTF-8"));
+                urlString = urlString.replace("mEmail", URLEncoder.encode((mOAMItem.email != null ? mOAMItem.email : ""), "UTF-8"));
+                urlString = urlString.replace("mFirstName", URLEncoder.encode((mOAMItem.first_name != null ? mOAMItem.first_name : ""), "UTF-8"));
+                urlString = urlString.replace("mLastName", URLEncoder.encode((mOAMItem.last_name != null ? mOAMItem.last_name : ""), "UTF-8"));
+                urlString = urlString.replace("mAddress", URLEncoder.encode((mOAMItem.address_line != null ? mOAMItem.address_line : ""), "UTF-8"));
+                urlString = urlString.replace("mZipcode", URLEncoder.encode((mOAMItem.zip != null ? mOAMItem.zip.substring(0, 5) : ""), "UTF-8"));
+                urlString = urlString.replace("mCountry", URLEncoder.encode((mOAMItem.country != null ? mOAMItem.country : "us"), "UTF-8"));
+                urlString = urlString.replace("mCity", URLEncoder.encode((mOAMItem.city != null ? mOAMItem.city : ""), "UTF-8"));
+                urlString = urlString.replace("mPhone", phone);
+                urlString = urlString.replace("mPrefix", URLEncoder.encode((mOAMItem.prefix != null ? mOAMItem.prefix : ""), "UTF-8"));
+
+                Log.d(TAG, urlString);
+                URL url = new URL(urlString);
+                if (Utility.getInstance().isNetworkAvailable(this)) {
+                    new VoterVoiceCreateUserAsyncTask(url, getApplicationContext(), this).execute();
+                }
+            }
+            catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void addToFragmentBackStack(Fragment fragment, String navigationId, String navigationName) {
@@ -609,7 +614,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 }).show();
             }
             catch (Exception e) {
-                Log.d(TAG, "debug");
+
                 e.printStackTrace();
             }
         }
@@ -627,8 +632,8 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
     }
 
     @Subscribe
-    public void subscribeTakeAction(TakeActionEvent event){
-        if(event.getTagName().equals(TakeActionEvent.TAKE_ACTION)){
+    public void subscribeTakeAction(TakeActionEvent event) {
+        if (event.getTagName().equals(TakeActionEvent.TAKE_ACTION)) {
 
         }
     }
@@ -642,7 +647,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
 
             OAMItem oamItem = Utility.getInstance(mContext).getLoginData();
 
-            Log.d(TAG, "debug");
+
             URL url = null;
 
             try {
@@ -675,7 +680,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         }
         else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_CAMPAIGN_LIST_DATA)) {
 
-            Log.d(TAG, "debug");
+
             Fragment fragment = new CampaignSummaryListFragment();
             addToAppBackStack(fragment, "campaign-summary", "Campaigns");
 
@@ -683,26 +688,13 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
         }
         else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_CAMPAIGN_DATA)) {
 
-            Log.d(TAG, "debug");
+            if (mContactYourLegislators) {
+                mContactYourLegislators = false;
+                return;
+            }
 
             Fragment fragment = new DirectoryListFragment();
             addToFragmentBackStack(fragment, Utility.DIRECTORY, "Directory");
-
-
-        }
-        else if (event.getTagName().equals(VoterVoiceDataEvent.GET_MATCHED_TARGETS)) {
-
-            Log.d(TAG, "debug");
-
-        }
-        else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_POST_DATA)) {
-
-        }
-        else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_TARGETED_MESSAGE_DATA)) {
-
-        }
-        else if (event.getTagName().equals(VoterVoiceDataEvent.VOTER_VOICE_GET_MATCHES_FOR_CAMPAIGN_DATA)) {
-
         }
     }
 
