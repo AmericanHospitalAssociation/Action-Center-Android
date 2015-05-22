@@ -1,12 +1,16 @@
 package org.aha.actioncenter.views;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.telephony.PhoneNumberUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,36 +73,58 @@ public class DirectoryDetailInfoFragment extends Fragment {
         AHABusProvider.getInstance().register(this);
 
         LinearLayout content = (LinearLayout) view.findViewById(R.id.content);
-        ImageView imageView = (ImageView)view.findViewById(R.id.image_view);
+        ImageView imageView = (ImageView) view.findViewById(R.id.image_view);
         TextView textView = new TextView(getActivity().getApplicationContext());
         textView.setText(item.displayName);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
         textView.setTextColor(getResources().getColor(android.R.color.black));
-        textView.setPadding(0,15,0,0);
+        textView.setPadding(0, 15, 0, 0);
         content.addView(textView);
 
-        new ImageLoadTask(item.photoUrl,imageView).execute();
+        new ImageLoadTask(item.photoUrl, imageView).execute();
 
-        for(LegislatorItem.Sections section: item.sections){
+        for (LegislatorItem.Sections section : item.sections) {
 
             TextView sectionLabel = new TextView(getActivity().getApplicationContext());
             sectionLabel.setText(section.name);
             sectionLabel.setTypeface(Typeface.DEFAULT_BOLD);
-            sectionLabel.setPadding(0,10,0,0);
+            sectionLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            sectionLabel.setPadding(0, 10, 0, 0);
             sectionLabel.setTextColor(getResources().getColor(android.R.color.black));
             content.addView(sectionLabel);
 
-            for(LegislatorItem.Properties property: section.properties){
-            TextView propertyName = new TextView(getActivity().getApplicationContext());
-            TextView propertyValue = new TextView(getActivity().getApplicationContext());
+            for (final LegislatorItem.Properties property : section.properties) {
+
+                TextView propertyName = new TextView(getActivity().getApplicationContext());
+                TextView propertyValue = new TextView(getActivity().getApplicationContext());
+
                 propertyName.setText(property.name);
                 propertyName.setTypeface(Typeface.DEFAULT_BOLD);
+                propertyName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
                 propertyName.setTextColor(getResources().getColor(android.R.color.black));
                 propertyName.setPadding(0, 5, 0, 0);
                 content.addView(propertyName);
 
                 propertyValue.setText(property.value);
-                propertyValue.setTextColor(getResources().getColor(android.R.color.black));
+
+                if (property.name.equals("District Phone") || property.name.equals("Capitol Phone")) {
+
+                    propertyValue.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent callIntent = new Intent(Intent.ACTION_CALL);
+                            callIntent.setData(Uri.parse("tel:+" + PhoneNumberUtils.getStrippedReversed(property.value)));
+                            startActivity(callIntent);
+                        }
+                    });
+
+                    propertyValue.setTextColor(getResources().getColor(R.color.aha_blue));
+
+                }
+                else {
+                    propertyValue.setTextColor(getResources().getColor(android.R.color.black));
+                }
+
                 content.addView(propertyValue);
             }
         }
@@ -133,14 +159,14 @@ public class DirectoryDetailInfoFragment extends Fragment {
         protected Bitmap doInBackground(Void... params) {
             try {
                 URL urlConnection = new URL(url);
-                HttpURLConnection connection = (HttpURLConnection) urlConnection
-                        .openConnection();
+                HttpURLConnection connection = (HttpURLConnection) urlConnection.openConnection();
                 connection.setDoInput(true);
                 connection.connect();
                 InputStream input = connection.getInputStream();
                 Bitmap myBitmap = BitmapFactory.decodeStream(input);
                 return myBitmap;
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
