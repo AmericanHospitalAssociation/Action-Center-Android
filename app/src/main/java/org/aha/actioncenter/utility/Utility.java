@@ -347,10 +347,10 @@ public class Utility {
 
         Gson gson = new Gson();
 
-        Type oamItemArrayListType = new TypeToken<OAMItem>() {
+        Type type = new TypeToken<OAMItem>() {
         }.getType();
 
-        OAMItem item = gson.fromJson(dataString, oamItemArrayListType);
+        OAMItem item = gson.fromJson(dataString, type);
 
         return item;
     }

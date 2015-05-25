@@ -363,7 +363,7 @@ public class MainActivity extends BaseActivity implements ExpandableListView.OnG
                 urlString = urlString.replace("mFirstName", URLEncoder.encode((mOAMItem.first_name != null ? mOAMItem.first_name : ""), "UTF-8"));
                 urlString = urlString.replace("mLastName", URLEncoder.encode((mOAMItem.last_name != null ? mOAMItem.last_name : ""), "UTF-8"));
                 urlString = urlString.replace("mAddress", URLEncoder.encode((mOAMItem.address_line != null ? mOAMItem.address_line : ""), "UTF-8"));
-                urlString = urlString.replace("mZipcode", URLEncoder.encode((mOAMItem.zip != null ? mOAMItem.zip.substring(0, 5) : ""), "UTF-8"));
+                urlString = urlString.replace("mZipcode", URLEncoder.encode((mOAMItem.zip != null && !mOAMItem.zip.isEmpty() ? mOAMItem.zip.substring(0, 5) : ""), "UTF-8"));
                 urlString = urlString.replace("mCountry", URLEncoder.encode((mOAMItem.country != null ? mOAMItem.country : "us"), "UTF-8"));
                 urlString = urlString.replace("mCity", URLEncoder.encode((mOAMItem.city != null ? mOAMItem.city : ""), "UTF-8"));
                 urlString = urlString.replace("mPhone", phone);
