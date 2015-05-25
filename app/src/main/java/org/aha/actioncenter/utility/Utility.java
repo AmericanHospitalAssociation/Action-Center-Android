@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -622,10 +623,9 @@ public class Utility {
     }
 
     public void logoutCurrentUser() {
-        SharedPreferences prefs = mContext.getSharedPreferences("login", Context.MODE_PRIVATE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = prefs.edit();
-
-        editor.remove("login");
+        editor.clear();
         editor.commit();
     }
 
